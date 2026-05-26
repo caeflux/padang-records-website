@@ -220,6 +220,20 @@ body.nav-open{overflow:hidden}
 @media(max-width:720px){
   nav.open{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 }
+
+/* Footer compact on mobile — social links closer together */
+@media(max-width:720px){
+  footer{padding:32px 16px 20px;font-size:9px;letter-spacing:.15em}
+  footer .row{flex-direction:column;gap:14px;align-items:center;text-align:center}
+  footer .so{gap:14px 18px;justify-content:center}
+  footer .so a{padding:6px 4px;line-height:1.5;min-height:36px;display:inline-flex;align-items:center}
+  footer .mt{font-size:10px;margin-top:18px;letter-spacing:.22em}
+  footer .cp{margin-top:22px;font-size:9px;text-align:center}
+}
+@media(max-width:380px){
+  footer .so{gap:10px 14px}
+  footer .so a{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -349,7 +363,6 @@ body.nav-open{overflow:hidden}
       <a href="https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A" target="_blank" data-i18n="nav_padangtv">PadangTV</a>
       <a href="https://www.instagram.com/padangrecords/" target="_blank">Instagram</a>
       <a href="https://www.beatport.com/label/padang-records/76105" target="_blank">Beatport</a>
-      <a href="https://www.discogs.com/label/892420-Padang-Records" target="_blank">Discogs</a>
     </div>
   </div>
   <div class="mt" data-i18n="footer_motto">save your ears from sameness</div>
