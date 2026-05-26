@@ -14,6 +14,14 @@
       fr: '"Citizen of the Cosmos". Producteur de <b>Psychedelic Dark Progressive</b> sur Padang Records — mêle sons sombres, atmosphériques et trippy avec des basslines groovy. Racines Psytrance, Techno, Breakbeat et Ambient. A sorti <b>Cosmic Visitors</b> (10/2024) et <b>Spaceman</b> (03/2025); présent sur les VAs Padang <b>The Nightmare</b> (Funboosting DarkSide), <b>Nyctophilia II</b> (The Pinwheel) et <b>Reborn</b> (Let There Be Dark).',
       ja: '"Citizen of the Cosmos"。Padang Records 所属の <b>Psychedelic Dark Progressive</b> プロデューサー — ダーク、アトモスフェリック、トリッピーなサウンドをグルーヴィーなベースラインに融合。ルーツは Psytrance、Techno、Breakbeat、Ambient。<b>Cosmic Visitors</b>（2024年10月）と <b>Spaceman</b>（2025年3月）をリリース。Padang VA <b>The Nightmare</b>（Funboosting DarkSide）、<b>Nyctophilia II</b>（The Pinwheel）、<b>Reborn</b>（Let There Be Dark）に参加。'
     },
+    "Aru": {
+      en: '<b>Aru</b>, Peru. Live act and producer from the Padang Records family. Tracks on SoundCloud: <b>KIMURI</b> (12/2024), <b>TOTEM</b> (11/2020), <b>SOUR DIESEL</b> (03/2020) — soundscapes that range from dark progressive to psy minimal.',
+      es: '<b>Aru</b>, Perú. Live act y productor de la familia Padang Records. Pistas en SoundCloud: <b>KIMURI</b> (12/2024), <b>TOTEM</b> (11/2020), <b>SOUR DIESEL</b> (03/2020) — soundscapes que recorren desde dark progressive hasta psy minimal.',
+      de: '<b>Aru</b>, Peru. Live-Act und Produzent aus der Padang-Records-Familie. Tracks auf SoundCloud: <b>KIMURI</b> (12/2024), <b>TOTEM</b> (11/2020), <b>SOUR DIESEL</b> (03/2020) — Soundscapes von Dark Progressive bis Psy Minimal.',
+      fr: '<b>Aru</b>, Pérou. Live act et producteur de la famille Padang Records. Titres sur SoundCloud : <b>KIMURI</b> (12/2024), <b>TOTEM</b> (11/2020), <b>SOUR DIESEL</b> (03/2020) — soundscapes allant du dark progressive au psy minimal.',
+      ja: '<b>Aru</b>、ペルー。Padang Records ファミリーのライブアクト／プロデューサー。SoundCloud 配信曲：<b>KIMURI</b>（2024年12月）、<b>TOTEM</b>（2020年11月）、<b>SOUR DIESEL</b>（2020年3月）— ダーク・プログレッシブからサイ・ミニマルまで広がるサウンドスケープ。'
+    },
+
 
     "Akudama": {
       en: '<b>James Toa</b>, New Zealand. Immersed in psytech and dark progressive — hypnotic atmospheres and precisely sculpted lows. Part of the Padang Records family. Booking: akudamamusicc@gmail.com.',
