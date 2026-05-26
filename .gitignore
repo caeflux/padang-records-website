@@ -3,3 +3,4 @@ Thumbs.db
 *.bak
 *.swp
 servidor-local.bat
+*.backup
