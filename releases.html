@@ -16,7 +16,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:998;o
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 32px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;backdrop-filter:blur(14px);background:rgba(7,7,16,.55);border-bottom:1px solid rgba(196,255,61,.12)}
-nav .lg-wrap{display:flex;align-items:center;gap:10px;opacity:.92;transition:opacity .2s,transform .25s;color:var(--ink)}nav a:hover .lg-wrap{opacity:1;transform:scale(1.03);color:var(--neon-1)}nav .lg-icon{height:34px;width:auto;display:block;color:inherit}nav .lg-text{font-family:'Major Mono Display',monospace;font-size:16px;letter-spacing:.08em;color:inherit;text-transform:uppercase;line-height:1;white-space:nowrap}@media(max-width:520px){nav .lg-text{display:none}}@media(max-width:340px){nav .lg-icon{height:28px}}
+nav .lg-img{height:38px;width:auto;display:block;opacity:.92;transition:opacity .2s,transform .25s}nav a:hover .lg-img{opacity:1;transform:scale(1.03)}@media(max-width:720px){nav .lg-img{height:32px}}@media(max-width:420px){nav .lg-img{height:26px}}
 nav ul{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
 nav ul a{position:relative;opacity:.75;transition:opacity .2s;cursor:pointer}
 nav ul a:hover{opacity:1;color:var(--neon-1)}
@@ -112,7 +112,7 @@ body.nav-open{overflow:hidden}
 <body>
 
 <nav>
-  <a href="./index.html"><span class="lg-wrap" aria-label="Padang Records"><img class="lg-icon" src="./img/logo.svg" alt="" height="34" aria-hidden="true"><span class="lg-text">PADANG RECORDS</span></span></a>
+  <a href="./index.html"><img class="lg-img" src="./img/logo-full.png" alt="Padang Records" onerror="this.onerror=null;this.src='./img/logo.svg';this.style.height='34px'"></a>
   <ul>
     <li><a href="./index.html#m" data-i18n="nav_selo">Label</a></li>
     <li><a href="./releases.html" class="on" data-i18n="nav_releases">Releases</a></li>
