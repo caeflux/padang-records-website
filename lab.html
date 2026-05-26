@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PADANG LAB SERIES — DJ Sets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0908;--bg-2:#141210;--bg-3:#1d1a16;--ink:#e8e3d6;--ink-dim:#6b665e;--neon-1:#c4ff3d;--neon-2:#3a3633;--neon-3:#7a7569;--neon-4:#8a7a55;--sc:#ff5500}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 3px,rgba(0,0,0,.18) 3px,rgba(0,0,0,.18) 4px);mix-blend-mode:multiply}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.08;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 32px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;backdrop-filter:blur(14px);background:rgba(7,7,16,.55);border-bottom:1px solid rgba(196,255,61,.12)}
+nav .lg{height:34px;width:auto;display:block;opacity:.92;transition:opacity .2s,transform .3s;color:var(--ink)}nav .lg:hover{opacity:1;transform:scale(1.05);color:var(--neon-1)}
+nav ul{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
+nav ul a{position:relative;opacity:.75;transition:opacity .2s;cursor:pointer}
+nav ul a:hover{opacity:1;color:var(--neon-1)}
+nav ul a.on{color:var(--neon-1);opacity:1}
+nav ul a::before{content:"//";color:var(--neon-2);margin-right:6px;opacity:.4}
+
+.hero{position:relative;min-height:55vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:120px 32px 60px}
+.hero .bl{position:absolute;inset:-20%;z-index:0;filter:blur(60px);opacity:.6}
+.bl b{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:fl 22s infinite ease-in-out}
+.bl b:nth-child(1){width:55vw;height:55vw;left:-10%;top:-10%;background:radial-gradient(circle,var(--neon-2),transparent 65%)}
+.bl b:nth-child(2){width:50vw;height:50vw;right:-10%;top:10%;background:radial-gradient(circle,var(--neon-3),transparent 65%);animation-delay:-7s}
+.bl b:nth-child(3){width:60vw;height:60vw;left:20%;bottom:-25%;background:radial-gradient(circle,var(--sc),transparent 65%);animation-delay:-14s}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.1)}66%{transform:translate(-50px,40px) scale(.95)}}
+.hero .ct{position:relative;z-index:2;text-align:center;max-width:1100px}
+.hero .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--neon-1);margin-bottom:24px;display:inline-block;border:1px solid rgba(196,255,61,.4);padding:8px 16px;border-radius:999px}
+.hero h1{font-family:'Major Mono Display',monospace;font-size:clamp(48px,9vw,140px);line-height:.9;letter-spacing:-.02em;text-transform:lowercase;background:linear-gradient(180deg,#fff 0%,#fff 55%,var(--neon-1) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .tg{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--ink-dim);margin-top:24px}
+.hero .tg span{color:var(--neon-1)}
+
+section{position:relative;padding:80px 32px;z-index:2}
+.sh{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;font-family:'JetBrains Mono',monospace;max-width:1400px;margin-left:auto;margin-right:auto;flex-wrap:wrap}
+.sh .num{color:var(--neon-2);font-size:14px;letter-spacing:.2em}
+.sh h2{font-family:'Major Mono Display',monospace;font-size:clamp(32px,4.5vw,60px);text-transform:lowercase;letter-spacing:-.01em}
+.sh .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--neon-1),transparent);align-self:center;margin-left:16px}
+.sh .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;flex-basis:100%;margin-top:8px}
+.sh .meta b{color:var(--neon-1);font-weight:400}
+
+.intro{max-width:900px;margin:0 auto 60px;font-size:clamp(18px,2vw,24px);line-height:1.55;font-weight:300;color:var(--ink-dim)}
+.intro b{color:var(--neon-1);font-weight:500}
+.intro em{color:var(--neon-2);font-style:normal}
+
+/* full playlist embed */
+.full{max-width:1100px;margin:0 auto 80px}
+.full .frm{position:relative;border:1px solid rgba(255,85,0,.3);background:rgba(13,13,26,.6);padding:24px}
+.full .frm::before{content:"//// ALL EPISODES · 21 ////";position:absolute;top:-10px;left:24px;background:var(--bg);padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--sc)}
+.full .frm iframe{display:block;border:0;width:100%;height:520px;background:#181a1b}
+
+/* episode grid */
+.eps{max-width:1400px;margin:0 auto}
+.eps .gr{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:32px}
+.ep{position:relative;border:1px solid rgba(255,255,255,.08);background:rgba(13,13,26,.6);transition:transform .3s,border-color .3s,box-shadow .3s;overflow:hidden;display:flex;flex-direction:column}
+.ep:hover{transform:translateY(-4px);border-color:var(--neon-1);box-shadow:0 20px 60px -20px rgba(196,255,61,.3)}
+.ep .num-tag{position:absolute;top:14px;right:14px;z-index:2;background:rgba(7,7,16,.85);border:1px solid rgba(196,255,61,.4);padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:var(--neon-1);text-transform:uppercase;font-weight:700}
+.ep .head{padding:24px 22px 18px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ep .head .artist{font-family:'Major Mono Display',monospace;font-size:24px;text-transform:lowercase;letter-spacing:-.01em;color:var(--ink);line-height:1}
+.ep .head .title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;color:var(--ink-dim);text-transform:uppercase;margin-top:8px;line-height:1.4}
+.ep .head .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--neon-2);text-transform:uppercase;margin-top:12px;display:flex;justify-content:space-between}
+.ep .embed{background:#181a1b}
+.ep .embed iframe{display:block;border:0;width:100%;height:166px}
+.ep .ft{padding:14px 22px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-dim);border-top:1px solid rgba(255,255,255,.06)}
+.ep .ft a{color:var(--neon-1);transition:opacity .2s}
+.ep .ft a:hover{opacity:.7}
+.ep.live{border-color:rgba(255,43,214,.3)}
+.ep.live .num-tag{border-color:var(--neon-2);color:var(--neon-2)}
+.ep .live-tag{display:inline-block;background:var(--neon-2);color:var(--bg);padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-top:8px}
+
+.miss{max-width:1400px;margin:60px auto 0;padding:32px;border:1px dashed rgba(255,255,255,.12);background:rgba(13,13,26,.4)}
+.miss h4{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;color:var(--neon-4);text-transform:uppercase;margin-bottom:14px}
+.miss p{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--ink-dim);line-height:1.7}
+.miss p b{color:var(--neon-1)}
+
+footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+footer .so{display:flex;gap:20px;flex-wrap:wrap}
+footer .so a:hover{color:var(--neon-1)}
+footer .mt{margin-top:24px;font-family:'Major Mono Display',monospace;font-size:12px;letter-spacing:.3em;color:var(--neon-1);opacity:.55;text-transform:lowercase;text-align:center}footer .cp{margin-top:32px;font-size:10px;opacity:.5;letter-spacing:.3em}
+
+@media(max-width:720px){nav{padding:14px 20px}nav ul{display:none}section{padding:50px 16px}.eps .gr{grid-template-columns:1fr}}
+
+.lang-switch{display:flex;gap:2px;margin-left:16px;align-items:center}
+.lang-switch button{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--ink-dim);padding:5px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;cursor:pointer;transition:all .15s;line-height:1}
+.lang-switch button:hover{color:var(--ink);border-color:rgba(196,255,61,.4)}
+.lang-switch button.on{background:var(--neon-1);color:var(--bg);border-color:var(--neon-1)}
+@media(max-width:980px){.lang-switch{display:none}}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="./index.html"><img class="lg" src="./img/logo.svg" alt="Padang Records" height="34"></a>
+  <ul>
+    <li><a href="./index.html#m" data-i18n="nav_selo">Label</a></li>
+    <li><a href="./releases.html" data-i18n="nav_releases">Releases</a></li>
+    <li><a href="./roster.html" data-i18n="nav_roster">Roster</a></li>
+    <li><a href="./lab.html" class="on" data-i18n="nav_lab">Lab Series</a></li>
+    <li><a href="./index.html#tv" data-i18n="nav_padangtv">PadangTV</a></li>
+    <li><a href="./about.html" data-i18n="nav_about">About</a></li>
+    <li><a href="./events.html" data-i18n="nav_events">Events</a></li>
+    <li><a href="./demo.html" data-i18n="nav_demo">Demo</a></li>
+    <li><a href="./shop.html" data-i18n="nav_shop">Shop</a></li>
+  </ul>
+  <div class="lang-switch" role="group" aria-label="language">
+    <button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="de">DE</button><button data-lang="fr">FR</button><button data-lang="ja">JA</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="bl"><b></b><b></b><b></b></div>
+  <div class="ct">
+    <span class="lbl" data-i18n="hero_lab_lbl">● official series · since 2019</span>
+    <h1>lab series</h1>
+    <p class="tg" data-i18n="hero_lab_sub">dj sets · live recordings · hypnotic sessions</p>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">01</span><h2 data-i18n="h_signal">signal</h2><div class="rule"></div></div>
+  <p class="intro">The <b>Padang Lab Series</b> is the label's curated DJ-set showcase — a sequence of <em>hypnotic sessions</em> where resident artists and guests guide hour-long-plus journeys through dark progressive, psytech, forest and techno. Each episode is a sonic photograph of the pilot's creative moment. Includes festival live recordings (Earthdance, Syncronic) and studio sets.</p>
+
+  <div class="full">
+    <div class="frm">
+      <iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/816483918&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true" allow="autoplay" loading="lazy" title="Padang Lab Series — full playlist"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="eps">
+  <div class="sh"><span class="num">02</span><h2 data-i18n="h_featured_eps">featured episodes</h2><div class="rule"></div><div class="meta">// 8 featured sessions · <b>21 episodes total</b> · curated by padang records</div></div>
+  <div class="gr">
+
+    <div class="ep live">
+      <span class="num-tag">EP.21</span>
+      <div class="head">
+        <div class="artist">alex alipe</div>
+        <div class="title" data-i18n="ep21_t">Live Recorded at Syncronic — Padang × Blacklite</div>
+        <span class="live-tag" data-i18n="lab_tag_live">● live</span>
+        <div class="meta"><span>21·03·2026</span><span data-i18n="ep21_loc">↳ syncronic</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/alexalipe&color=%23ff2bd6&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep21_ft">Padang × Blacklite</span><a href="https://soundcloud.com/padangrec/alexalipe" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep">
+      <span class="num-tag">EP.20</span>
+      <div class="head">
+        <div class="artist">champirolls</div>
+        <div class="title" data-i18n="ep20_t">Padang Roster · France</div>
+        <div class="meta"><span>19·12·2025</span><span data-i18n="ep20_loc">↳ studio set</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/champirolls&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep20_ft">France</span><a href="https://soundcloud.com/padangrec/champirolls" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep">
+      <span class="num-tag">EP.19</span>
+      <div class="head">
+        <div class="artist">mallki</div>
+        <div class="title" data-i18n="ep19_t">Hypnotic Sessions · Label DJ</div>
+        <div class="meta"><span>24·11·2025</span><span data-i18n="ep19_loc">↳ peru / barcelona</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/mallki&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep19_ft">Arkana Festival founder</span><a href="https://soundcloud.com/padangrec/mallki" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep live">
+      <span class="num-tag">EP.18</span>
+      <div class="head">
+        <div class="artist">dienstmann vs vorg</div>
+        <div class="title" data-i18n="ep18_t">@ Earthdance 2025</div>
+        <span class="live-tag" data-i18n="lab_tag_live_rec">● live recorded</span>
+        <div class="meta"><span>15·10·2025</span><span data-i18n="ep18_loc">↳ earthdance</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/padang-lab-series-ep18-dienstmann-vs-vorg-earthdance-2025-live-recorded&color=%23ff2bd6&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep18_ft">b2b set</span><a href="https://soundcloud.com/padangrec/padang-lab-series-ep18-dienstmann-vs-vorg-earthdance-2025-live-recorded" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep">
+      <span class="num-tag">EP.17</span>
+      <div class="head">
+        <div class="artist">algia</div>
+        <div class="title" data-i18n="ep17_t">Padang Roster · Hungary</div>
+        <div class="meta"><span>09·10·2025</span><span data-i18n="ep17_loc">↳ studio set</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/padang-lab-series-ep-17-algia&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep17_ft">Hungary</span><a href="https://soundcloud.com/padangrec/padang-lab-series-ep-17-algia" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep">
+      <span class="num-tag">EP.11</span>
+      <div class="head">
+        <div class="artist">anaïs-lin</div>
+        <div class="title" data-i18n="ep11_t">Technomad curator · Label DJ</div>
+        <div class="meta"><span>—</span><span data-i18n="ep11_loc">↳ portugal</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/anaislin&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep11_ft">Portugal</span><a href="https://soundcloud.com/padangrec/anaislin" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep live">
+      <span class="num-tag">EP.8</span>
+      <div class="head">
+        <div class="artist">camps elisis</div>
+        <div class="title" data-i18n="ep8_t">Live Set · Mexico</div>
+        <span class="live-tag" data-i18n="lab_tag_live">● live</span>
+        <div class="meta"><span>—</span><span data-i18n="ep8_loc">↳ mexico city</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/campselisis&color=%23ff2bd6&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep8_ft">Mexico</span><a href="https://soundcloud.com/padangrec/campselisis" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+    <div class="ep">
+      <span class="num-tag">EP.1</span>
+      <div class="head">
+        <div class="artist">headweller</div>
+        <div class="title" data-i18n="ep1_t">Padang Lab Series · Premiere</div>
+        <div class="meta"><span>—</span><span data-i18n="ep1_loc">↳ greece · ep.1</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/padangrec/padang-labs-serie-ep1-headweller&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span data-i18n="ep1_ft">Greece · first session</span><a href="https://soundcloud.com/padangrec/padang-labs-serie-ep1-headweller" target="_blank" rel="noopener"> data-i18n="lab_listen_sc">↳ listen on sc</a></div>
+    </div>
+
+  </div>
+
+  <div class="miss">
+    <h4 data-i18n="lab_miss_h">// episodes EP.2 — EP.7 · EP.9 — EP.10 · EP.12 — EP.16</h4>
+    <p data-i18n="lab_miss_p">These 13 Lab Series episodes are available in the full playlist at the top of this page. To see/hear all, use the <b>full player</b> above or open the <b><a href="https://soundcloud.com/padangrec/sets/padang-labs" target="_blank" rel="noopener" style="color:var(--neon-1)">playlist on SoundCloud →</a></b>. As new episodes are mapped artist-by-artist, they\'ll come to this showcase.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="row">
+    <div data-i18n="footer_rights">© padang records · 2026 · all signals reserved</div>
+    <div class="so">
+      <a href="https://padang.bandcamp.com/" target="_blank">Bandcamp</a>
+      <a href="https://soundcloud.com/padangrec" target="_blank">SoundCloud</a>
+      <a href="https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A" target="_blank" data-i18n="nav_padangtv">PadangTV</a>
+      <a href="https://www.instagram.com/padangrecords/" target="_blank">Instagram</a>
+      <a href="https://www.beatport.com/label/padang-records/76105" target="_blank">Beatport</a>
+    </div>
+  </div>
+  <div class="mt" data-i18n="footer_motto">save your ears from sameness</div>
+  <div class="cp" data-i18n="footer_credit">mockup · padang records · concept by carlos eduardo</div>
+</footer>
+
+<script src="./i18n.js" defer></script>
+<script src="./i18n-extra.js" defer></script>
+<script src="./i18n-lab.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" aria-label="Padang Records" role="img">
+  <title>Padang Records</title>
+  <!-- crown/rumah-gadang silhouette · 5 peaks · uses currentColor so it inherits nav text color -->
+  <path fill="currentColor" d="M 6 6
+    L 56 152
+    Q 62 110 72 60
+    L 76 60
+    Q 90 100 104 152
+    Q 110 116 116 70
+    L 124 70
+    Q 130 116 136 152
+    Q 150 100 164 60
+    L 168 60
+    Q 178 110 184 152
+    L 234 6
+    Q 222 80 202 124
+    Q 188 110 178 152
+    Q 162 116 142 158
+    Q 134 132 124 158
+    L 116 158
+    Q 106 132 98 158
+    Q 78 116 62 152
+    Q 52 110 38 124
+    Q 18 80 6 6 Z"/>
+</svg>

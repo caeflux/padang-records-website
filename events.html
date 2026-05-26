@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PADANG RECORDS — events & festivals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0908;--bg-2:#141210;--bg-3:#1d1a16;--ink:#e8e3d6;--ink-dim:#6b665e;--neon-1:#c4ff3d;--neon-2:#3a3633;--neon-3:#7a7569;--neon-4:#8a7a55}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 3px,rgba(0,0,0,.18) 3px,rgba(0,0,0,.18) 4px);mix-blend-mode:multiply}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.08;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 32px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;backdrop-filter:blur(14px);background:rgba(7,7,16,.55);border-bottom:1px solid rgba(196,255,61,.12)}
+nav .lg{height:34px;width:auto;display:block;opacity:.92;transition:opacity .2s,transform .3s;color:var(--ink)}nav .lg:hover{opacity:1;transform:scale(1.05);color:var(--neon-1)}
+nav ul{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
+nav ul a{position:relative;opacity:.75;transition:opacity .2s;cursor:pointer}
+nav ul a:hover{opacity:1;color:var(--neon-1)}
+nav ul a.on{color:var(--neon-1);opacity:1}
+nav ul a::before{content:"//";color:var(--neon-2);margin-right:6px;opacity:.4}
+
+.hero{position:relative;min-height:50vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:120px 32px 60px}
+.hero .bl{position:absolute;inset:-20%;z-index:0;filter:blur(60px);opacity:.55}
+.bl b{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:fl 22s infinite ease-in-out}
+.bl b:nth-child(1){width:55vw;height:55vw;left:-10%;top:-10%;background:radial-gradient(circle,var(--neon-4),transparent 65%)}
+.bl b:nth-child(2){width:50vw;height:50vw;right:-10%;top:10%;background:radial-gradient(circle,var(--neon-2),transparent 65%);animation-delay:-7s}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.1)}66%{transform:translate(-50px,40px) scale(.95)}}
+.hero .ct{position:relative;z-index:2;text-align:center;max-width:1100px}
+.hero h1{font-family:'Major Mono Display',monospace;font-size:clamp(48px,9vw,140px);line-height:.9;letter-spacing:-.02em;text-transform:lowercase;background:linear-gradient(180deg,#fff 0%,#fff 55%,var(--neon-4) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .tg{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--ink-dim);margin-top:24px}
+
+section{position:relative;padding:80px 32px;z-index:2}
+.sh{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;font-family:'JetBrains Mono',monospace;max-width:1400px;margin-left:auto;margin-right:auto;flex-wrap:wrap}
+.sh .num{color:var(--neon-2);font-size:14px;letter-spacing:.2em}
+.sh h2{font-family:'Major Mono Display',monospace;font-size:clamp(28px,3.5vw,52px);text-transform:lowercase;letter-spacing:-.01em}
+.sh .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--neon-1),transparent);align-self:center;margin-left:16px}
+.sh .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--ink-dim);text-transform:uppercase;flex-basis:100%;margin-top:8px}
+
+.evs{max-width:1200px;margin:0 auto}
+.ev{display:grid;grid-template-columns:140px 1fr auto;gap:24px;padding:24px 28px;border:1px solid rgba(255,255,255,.08);background:rgba(13,13,26,.5);margin-bottom:16px;align-items:center;transition:border-color .3s,transform .2s}
+.ev:hover{border-color:var(--neon-1);transform:translateX(4px)}
+.ev.past{opacity:.5}
+.ev .dt{font-family:'Major Mono Display',monospace;text-transform:lowercase;letter-spacing:-.01em;line-height:1}
+.ev .dt .day{font-size:42px;color:var(--neon-1)}
+.ev .dt .mo{font-size:14px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+.ev .body .name{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:500;line-height:1.2}
+.ev .body .lineup{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-dim);margin-top:6px;line-height:1.5}
+.ev .body .lineup b{color:var(--neon-2);font-weight:400}
+.ev .body .loc{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;color:var(--neon-1);text-transform:uppercase;margin-top:10px}
+.ev .body .loc::before{content:"↳ "}
+.ev .arr{font-family:'JetBrains Mono',monospace;font-size:18px;color:var(--ink-dim);transition:color .2s,transform .2s}
+.ev:hover .arr{color:var(--neon-1);transform:translateX(4px)}
+.ev .tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:3px 8px;margin-right:6px}
+.ev .tag.live{background:var(--neon-2);color:var(--bg)}
+.ev .tag.fest{background:var(--neon-1);color:var(--bg)}
+.ev .tag.label{background:rgba(255,255,255,.1);color:var(--ink);border:1px solid rgba(255,255,255,.15)}
+
+.cta-box{max-width:1200px;margin:60px auto 0;padding:40px;border:1px dashed rgba(196,255,61,.3);text-align:center;background:rgba(13,13,26,.4)}
+.cta-box h3{font-family:'Major Mono Display',monospace;font-size:32px;text-transform:lowercase;letter-spacing:-.01em;margin-bottom:14px;color:var(--neon-1)}
+.cta-box p{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.15em;color:var(--ink-dim);line-height:1.7;max-width:600px;margin:0 auto 28px;text-transform:uppercase}
+.cta-box .btn{display:inline-block;padding:16px 32px;background:var(--neon-1);color:var(--bg);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:12px;letter-spacing:.25em;text-transform:uppercase;transition:transform .2s,box-shadow .3s}
+.cta-box .btn:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--neon-1)}
+
+footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+footer .so{display:flex;gap:20px;flex-wrap:wrap}
+footer .so a:hover{color:var(--neon-1)}
+footer .mt{margin-top:24px;font-family:'Major Mono Display',monospace;font-size:12px;letter-spacing:.3em;color:var(--neon-1);opacity:.55;text-transform:lowercase;text-align:center}footer .cp{margin-top:32px;font-size:10px;opacity:.5;letter-spacing:.3em}
+
+@media(max-width:720px){nav{padding:14px 20px}nav ul{display:none}section{padding:50px 16px}.ev{grid-template-columns:1fr;gap:16px}.ev .arr{display:none}}
+
+.lang-switch{display:flex;gap:2px;margin-left:16px;align-items:center}
+.lang-switch button{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--ink-dim);padding:5px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;cursor:pointer;transition:all .15s;line-height:1}
+.lang-switch button:hover{color:var(--ink);border-color:rgba(196,255,61,.4)}
+.lang-switch button.on{background:var(--neon-1);color:var(--bg);border-color:var(--neon-1)}
+@media(max-width:980px){.lang-switch{display:none}}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="./index.html"><img class="lg" src="./img/logo.svg" alt="Padang Records" height="34"></a>
+  <ul>
+    <li><a href="./index.html#m" data-i18n="nav_selo">Label</a></li>
+    <li><a href="./releases.html" data-i18n="nav_releases">Releases</a></li>
+    <li><a href="./roster.html" data-i18n="nav_roster">Roster</a></li>
+    <li><a href="./lab.html" data-i18n="nav_lab">Lab Series</a></li>
+    <li><a href="./index.html#tv" data-i18n="nav_padangtv">PadangTV</a></li>
+    <li><a href="./about.html" data-i18n="nav_about">About</a></li>
+    <li><a href="./events.html" class="on" data-i18n="nav_events">Events</a></li>
+    <li><a href="./demo.html" data-i18n="nav_demo">Demo</a></li>
+    <li><a href="./shop.html" data-i18n="nav_shop">Shop</a></li>
+  </ul>
+  <div class="lang-switch" role="group" aria-label="language">
+    <button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="de">DE</button><button data-lang="fr">FR</button><button data-lang="ja">JA</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="bl"><b></b><b></b></div>
+  <div class="ct">
+    <h1>events</h1>
+    <p class="tg" data-i18n="hero_events_sub">festivals <span>·</span> showcases <span>·</span> lineups</p>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">01</span><h2 data-i18n="h_next_2026">upcoming · 2026</h2><div class="rule"></div><div class="meta" data-i18n="events_next_meta">// agenda in progress · dates to confirm directly with the label</div></div>
+  <div class="evs">
+
+    <div class="ev">
+      <div class="dt"><div class="day">03</div><div class="mo">ago/26</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <span class="tag label">padang artists</span>
+        <div class="name" data-i18n="ev_modem_n">Mo:Dem Festival · Momento Demento 2026</div>
+        <div class="lineup" data-i18n="ev_modem_lu"><b>Dates:</b> 03 — 09 Aug · gates 01 Aug · <b>Likely Padang stages:</b> The Swamp · <b>Full lineup:</b> TBA · Padang artists confirmed to attend</div>
+        <div class="loc" data-i18n="ev_modem_loc">croatia · donje primišlje · robinzon kamp</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+    <div class="ev">
+      <div class="dt"><div class="day">31</div><div class="mo">dez</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <span class="tag label">padang sequence</span>
+        <div class="name" data-i18n="ev_up_n">Padang Sequence · Universo Paralello</div>
+        <div class="lineup" data-i18n="ev_up_lu"><b>Stage:</b> Tropikalien · <b>Lineup:</b> TBA</div>
+        <div class="loc" data-i18n="ev_up_loc">brazil · universo paralello · new year's eve</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+    <div class="ev">
+      <div class="dt"><div class="day">⊘</div><div class="mo">tba/27</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <span class="tag label">padang showcase</span>
+        <div class="name" data-i18n="ev_arkana17_n">Arkana Festival · 17th edition (2027)</div>
+        <div class="lineup" data-i18n="ev_arkana17_lu"><b>Curator:</b> Mallki (Padang label DJ) · <b>Sacred Valley of the Incas</b> · 13+ years of the festival · exact date TBC</div>
+        <div class="loc" data-i18n="ev_arkana17_loc">peru · sacred valley of the incas</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+    <div class="ev">
+      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <span class="tag label">padang showcase</span>
+        <div class="name" data-i18n="ev_arkana_n">Arkana Festival · 16th edition</div>
+        <div class="lineup" data-i18n="ev_arkana_lu"><b>Confirmed lineup:</b> Mallki · Tekmall · Padang guests · Sacred Valley of the Incas</div>
+        <div class="loc" data-i18n="ev_arkana_loc">Peru · sacred valley of the incas</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+    <div class="ev">
+      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="body">
+        <span class="tag live">live recorded</span>
+        <span class="tag label">syncronic series</span>
+        <div class="name" data-i18n="ev_blacklite_n">Padang × Blacklite · next edition</div>
+        <div class="lineup" data-i18n="ev_blacklite_lu"><b>To be confirmed:</b> Alex Alipe (Lab EP.21) recorded at the previous edition · more house artists</div>
+        <div class="loc" data-i18n="ev_blacklite_loc">to be confirmed</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+    <div class="ev">
+      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_earth_n">Earthdance · Padang showcase</div>
+        <div class="lineup" data-i18n="ev_earth_lu"><b>Recent history:</b> Dienstmann b2b Vorg (Lab Series EP.18, 2025) · Tekmall (2025 set)</div>
+        <div class="loc" data-i18n="ev_earth_loc">brazil · next edition tba</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">02</span><h2 data-i18n="h_history_2025">history · 2025</h2><div class="rule"></div><div class="meta" data-i18n="events_hist_meta">// sets/lives already recorded — available on lab series and padangtv</div></div>
+  <div class="evs">
+
+    <div class="ev past">
+      <div class="dt"><div class="day">21</div><div class="mo">mar/26</div></div>
+      <div class="body">
+        <span class="tag live">live recorded</span>
+        <div class="name" data-i18n="ev_sync_n">Syncronic · Padang × Blacklite</div>
+        <div class="lineup" data-i18n="ev_sync_lu"><b>Set:</b> Alex Alipe — recorded and released as Lab Series EP.21</div>
+        <div class="loc" data-i18n="ev_sync_loc">collab pad×blkl</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+    <div class="ev past">
+      <div class="dt"><div class="day">15</div><div class="mo">out/25</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_earth25_n">Earthdance 2025</div>
+        <div class="lineup" data-i18n="ev_earth25_lu"><b>Sets:</b> Dienstmann vs Vorg (b2b, recorded as EP.18) · Tekmall (full set, recorded)</div>
+        <div class="loc" data-i18n="ev_earth25_loc">earthdance brazil</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+    <div class="ev past">
+      <div class="dt"><div class="day">17</div><div class="mo">set/25</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_arkana25_n">Arkana Festival · 15 years</div>
+        <div class="lineup" data-i18n="ev_arkana25_lu"><b>Set:</b> Tekmall @ Sacred Valley of the Incas · curated by Mallki</div>
+        <div class="loc" data-i18n="ev_arkana25_loc">peru · arkana anniversary edition</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+    <div class="ev past">
+      <div class="dt"><div class="day">⊘</div><div class="mo">2025</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_bdt_n">Bucht der Träumer · Waldtraut Stage</div>
+        <div class="lineup" data-i18n="ev_bdt_lu"><b>Set:</b> Anaïs Lin (Padang Label DJ)</div>
+        <div class="loc" data-i18n="ev_bdt_loc">germany</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+    <div class="ev past">
+      <div class="dt"><div class="day">⊘</div><div class="mo">2025</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_own_n">Own Spirit Festival 2024 · Aoos</div>
+        <div class="lineup" data-i18n="ev_own_lu"><b>Live set:</b> Aoos (Padang) · available on the artist's SoundCloud</div>
+        <div class="loc" data-i18n="ev_own_loc">spain</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+    <div class="ev past">
+      <div class="dt"><div class="day">⊘</div><div class="mo">2025</div></div>
+      <div class="body">
+        <span class="tag live">showcase</span>
+        <div class="name" data-i18n="ev_sanc_n">Sanctuary 2025 · Halloween @ Bain Mathieu</div>
+        <div class="lineup" data-i18n="ev_sanc_lu"><b>Set:</b> DJ Nuit Noire (Padang Label DJ) · VA The Nightmare curator</div>
+        <div class="loc" data-i18n="ev_sanc_loc">montreal · canada</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+    <div class="ev past">
+      <div class="dt"><div class="day">⊘</div><div class="mo">22</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_boom_n">Boom Festival · MNGRM</div>
+        <div class="lineup" data-i18n="ev_boom_lu"><b>Set:</b> MNGRM (Padang) — Boom Festival, Portugal</div>
+        <div class="loc" data-i18n="ev_boom_loc">portugal · 24/07/2022</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+  </div>
+
+  <div class="cta-box">
+    <h3 data-i18n="events_cta_h">playing padang live?</h3>
+    <p data-i18n="events_cta_p">If you are a roster artist or organize a showcase / festival with Padang Records names and want to appear here, send the data to demos@padangrecords.net with subject "EVENT" — including event name, date, venue, lineup and promo link.</p>
+    <a class="btn" href="mailto:demos@padangrecords.net?subject=EVENT%20%E2%80%94%20[nome%20do%20evento]&body=Nome%20do%20evento%3A%0AData%3A%0ALocal%3A%0ALineup%3A%0ALink%20de%20divulga%C3%A7%C3%A3o%3A" data-i18n="events_cta_btn">send event →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="row">
+    <div data-i18n="footer_rights">© padang records · 2026 · all signals reserved</div>
+    <div class="so">
+      <a href="https://padang.bandcamp.com/" target="_blank">Bandcamp</a>
+      <a href="https://soundcloud.com/padangrec" target="_blank">SoundCloud</a>
+      <a href="https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A" target="_blank" data-i18n="nav_padangtv">PadangTV</a>
+      <a href="https://www.instagram.com/padangrecords/" target="_blank">Instagram</a>
+      <a href="https://www.beatport.com/label/padang-records/76105" target="_blank">Beatport</a>
+      <a href="https://www.discogs.com/label/892420-Padang-Records" target="_blank">Discogs</a>
+    </div>
+  </div>
+  <div class="mt" data-i18n="footer_motto">save your ears from sameness</div>
+  <div class="cp" data-i18n="footer_credit">mockup · padang records · concept by carlos eduardo</div>
+</footer>
+
+<script src="./i18n.js" defer></script>
+<script src="./i18n-extra.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PADANG RECORDS — about the label</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0908;--bg-2:#141210;--bg-3:#1d1a16;--ink:#e8e3d6;--ink-dim:#6b665e;--neon-1:#c4ff3d;--neon-2:#3a3633;--neon-3:#7a7569;--neon-4:#8a7a55}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:999;background:repeating-linear-gradient(180deg,rgba(255,255,255,0) 0,rgba(255,255,255,0) 3px,rgba(0,0,0,.18) 3px,rgba(0,0,0,.18) 4px);mix-blend-mode:multiply}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:998;opacity:.08;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 32px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;backdrop-filter:blur(14px);background:rgba(7,7,16,.55);border-bottom:1px solid rgba(196,255,61,.12)}
+nav .lg{height:34px;width:auto;display:block;opacity:.92;transition:opacity .2s,transform .3s;color:var(--ink)}nav .lg:hover{opacity:1;transform:scale(1.05);color:var(--neon-1)}
+nav ul{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
+nav ul a{position:relative;opacity:.75;transition:opacity .2s;cursor:pointer}
+nav ul a:hover{opacity:1;color:var(--neon-1)}
+nav ul a.on{color:var(--neon-1);opacity:1}
+nav ul a::before{content:"//";color:var(--neon-2);margin-right:6px;opacity:.4}
+
+.hero{position:relative;min-height:55vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:120px 32px 60px}
+.hero .bl{position:absolute;inset:-20%;z-index:0;filter:blur(60px);opacity:.55}
+.bl b{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:fl 22s infinite ease-in-out}
+.bl b:nth-child(1){width:55vw;height:55vw;left:-10%;top:-10%;background:radial-gradient(circle,var(--neon-2),transparent 65%)}
+.bl b:nth-child(2){width:50vw;height:50vw;right:-10%;top:10%;background:radial-gradient(circle,var(--neon-3),transparent 65%);animation-delay:-7s}
+.bl b:nth-child(3){width:60vw;height:60vw;left:20%;bottom:-25%;background:radial-gradient(circle,var(--neon-1),transparent 65%);animation-delay:-14s}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,-40px) scale(1.1)}66%{transform:translate(-50px,40px) scale(.95)}}
+.hero .ct{position:relative;z-index:2;text-align:center;max-width:1100px}
+.hero h1{font-family:'Major Mono Display',monospace;font-size:clamp(48px,9vw,140px);line-height:.9;letter-spacing:-.02em;text-transform:lowercase;background:linear-gradient(180deg,#fff 0%,#fff 55%,var(--neon-1) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .tg{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:var(--ink-dim);margin-top:24px}
+
+section{position:relative;padding:80px 32px;z-index:2}
+.sh{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;font-family:'JetBrains Mono',monospace;max-width:900px;margin-left:auto;margin-right:auto}
+.sh .num{color:var(--neon-2);font-size:14px;letter-spacing:.2em}
+.sh h2{font-family:'Major Mono Display',monospace;font-size:clamp(28px,3.5vw,52px);text-transform:lowercase;letter-spacing:-.01em}
+.sh .rule{flex:1;height:1px;background:linear-gradient(90deg,var(--neon-1),transparent);align-self:center;margin-left:16px}
+
+.txt{max-width:900px;margin:0 auto;font-size:18px;line-height:1.7;color:var(--ink);font-weight:300}
+.txt p{margin-bottom:24px}
+.txt p b{color:var(--neon-1);font-weight:500}
+.txt p em{font-style:normal;color:var(--neon-2)}
+.txt blockquote{border-left:2px solid var(--neon-1);padding:8px 0 8px 24px;margin:32px 0;font-family:'Major Mono Display',monospace;font-size:22px;text-transform:lowercase;line-height:1.3;color:var(--ink-dim)}
+
+.timeline{max-width:900px;margin:0 auto}
+.tl{position:relative;padding-left:32px;border-left:1px solid rgba(196,255,61,.2)}
+.tl .item{position:relative;margin-bottom:40px}
+.tl .item::before{content:"";position:absolute;left:-40px;top:8px;width:10px;height:10px;border-radius:50%;background:var(--neon-1);box-shadow:0 0 10px var(--neon-1)}
+.tl .yr{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.25em;color:var(--neon-2);text-transform:uppercase;margin-bottom:6px}
+.tl .title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:500;line-height:1.3;color:var(--ink)}
+.tl .desc{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.05em;color:var(--ink-dim);margin-top:8px;line-height:1.6}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;max-width:1100px;margin:0 auto;border-top:1px solid rgba(255,255,255,.08);padding-top:32px}
+.stats div{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+.stats div small{display:block;color:var(--ink-dim);margin-bottom:6px;font-size:10px}
+.stats div b{color:var(--neon-1);font-weight:400;font-size:32px;letter-spacing:-.02em;font-family:'Major Mono Display',monospace;display:block;line-height:1}
+
+footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
+footer .so{display:flex;gap:20px;flex-wrap:wrap}
+footer .so a:hover{color:var(--neon-1)}
+footer .mt{margin-top:24px;font-family:'Major Mono Display',monospace;font-size:12px;letter-spacing:.3em;color:var(--neon-1);opacity:.55;text-transform:lowercase;text-align:center}footer .cp{margin-top:32px;font-size:10px;opacity:.5;letter-spacing:.3em}
+
+@media(max-width:720px){nav{padding:14px 20px}nav ul{display:none}section{padding:50px 16px}.txt{font-size:16px}}
+
+.lang-switch{display:flex;gap:2px;margin-left:16px;align-items:center}
+.lang-switch button{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--ink-dim);padding:5px 8px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.15em;cursor:pointer;transition:all .15s;line-height:1}
+.lang-switch button:hover{color:var(--ink);border-color:rgba(196,255,61,.4)}
+.lang-switch button.on{background:var(--neon-1);color:var(--bg);border-color:var(--neon-1)}
+@media(max-width:980px){.lang-switch{display:none}}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="./index.html"><img class="lg" src="./img/logo.svg" alt="Padang Records" height="34"></a>
+  <ul>
+    <li><a href="./index.html#m" data-i18n="nav_selo">Label</a></li>
+    <li><a href="./releases.html" data-i18n="nav_releases">Releases</a></li>
+    <li><a href="./roster.html" data-i18n="nav_roster">Roster</a></li>
+    <li><a href="./lab.html" data-i18n="nav_lab">Lab Series</a></li>
+    <li><a href="./index.html#tv" data-i18n="nav_padangtv">PadangTV</a></li>
+    <li><a href="./about.html" class="on" data-i18n="nav_about">About</a></li>
+    <li><a href="./events.html" data-i18n="nav_events">Events</a></li>
+    <li><a href="./demo.html" data-i18n="nav_demo">Demo</a></li>
+    <li><a href="./shop.html" data-i18n="nav_shop">Shop</a></li>
+  </ul>
+  <div class="lang-switch" role="group" aria-label="language">
+    <button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="de">DE</button><button data-lang="fr">FR</button><button data-lang="ja">JA</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="bl"><b></b><b></b><b></b></div>
+  <div class="ct">
+    <h1>about</h1>
+    <p class="tg" data-i18n="hero_about_sub">the label · the history · the sound</p>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">01</span><h2 data-i18n="h_manifesto">manifesto</h2><div class="rule"></div></div>
+  <div class="txt">
+    <p><b>Padang Records</b> is a port for <em>spiritual beat seekers</em> — <em>world wild artists</em> sculpting bass, frequency and ritual across continents. Pirates, nomads, adventurers. The label was born in <b>2013</b> with VA <em>Barong &amp; Garuda</em>, released through Ektoplazm under a Creative Commons license, and by the end of the same year sealed its nocturnal vocation with VA <em>Nibiru</em> — where the duo Alchemy Circle premiered their first released track.</p>
+
+    <p>Founded in <b>Novo Hamburgo (RS, Brazil)</b> by <em>Carlos Dienstmann</em>, the project grew far beyond Brazilian borders and today gathers <b>+ 50 artists worldwide</b> — Chile, Argentina, Mexico, Peru, Portugal, France, Switzerland, Greece, Germany, Australia, Canada, Sweden, Ireland, India, Iran, South Africa. The catalog passes <b>+ 100 releases</b> — EPs, LPs, and curated compilations (VAs).</p>
+
+    <blockquote>
+      "receiving data from random creative psychedelic neuro connections · digital and analog soundscapes not yet explored by mankind"
+    </blockquote>
+
+    <p>Padang's identity is <b>curation as ritual</b>. Each VA has a resident curator — <em>Tekmall</em> (Reborn: Echoes of the Forest), <em>Mallki</em> (Nukaya), <em>Anaïs Lin</em> (Technomad I/II), <em>Nuit Noire</em> (The Nightmare), <em>Rhabia</em> (Nyctophilia), <em>Noctusense</em> (Haunted Spectre), <em>Stix</em> (Yin and Yang Studio Gang) — and each of these works is its own map: Inca rhythms reborn in Nukaya, festive shadows in The Nightmare, forest echoes in Reborn. Not a flat catalog — a network.</p>
+
+    <p>Padang is also a <b>living platform</b>: the <b>Padang Lab Series</b> (DJ-set series since 2019, now at <em>EP.21</em>), the <b>PadangTV</b> YouTube channel with previews and live sets, presence on Bandcamp, SoundCloud, Beatport, Traxsource, Discogs and Proton Radio. The label operates as an ecosystem, not a shopfront.</p>
+
+    <blockquote>
+      "with underground as our target and with creativity for strength, we emerge to save your ears from sameness"
+    </blockquote>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">02</span><h2 data-i18n="h_timeline">timeline</h2><div class="rule"></div></div>
+  <div class="timeline">
+    <div class="tl">
+      <div class="item">
+        <div class="yr" data-i18n="tl_2013a_y">2013 · jun</div>
+        <div class="title" data-i18n="tl_2013a_t">VA Barong & Garuda · debut</div>
+        <div class="desc" data-i18n="tl_2013a_d">06/06/2013 — Padang Records' first official release. 11 tracks: Yildun Theory, Greenchild, Silvio Lucena, Diego Fantini, Pampatek, <b>Dienstmann</b> (Arkana), Naga Baba, Tarta, Lactic Phylaxis, Mok, Vurdel. Mastered by Pampatek, artwork by Vurdel. Distributed via Ektoplazm under a CC license. The label is born as a port for \"spiritual beat seekers\".</div>
+      </div>
+      <div class="item">
+        <div class="yr" data-i18n="tl_2013b_y">2013 · dec</div>
+        <div class="title" data-i18n="tl_2013b_t">VA Nibiru · the dark turn</div>
+        <div class="desc" data-i18n="tl_2013b_d">03/12/2013 — the second VA, denser and more nocturnal. 10 tracks that consolidate the label's dark prog vocation: Gargolium, Mental Attack, Zahnstein, Naga Baba, Train Wreck, Gas Mask, <b>Alchemy Circle</b> (The Occult Science — the duo's first released track), Dohak, The Mok, Insider. Names that would later become references in the genre debut here.</div>
+      </div>
+      <div class="item">
+        <div class="yr" data-i18n="tl_2017_y">2017</div>
+        <div class="title" data-i18n="tl_2017_t">VA Exogenesis · international expansion</div>
+        <div class="desc" data-i18n="tl_2017_d">Compilation curated by Greenchild with 21 tracks — Samway, Bensaid, Fevered Shiva, Genetica, Colt, Smokcid, Niobiun, Mushroom Head, Ritalin Child, Qawa Beat and more. Marks the label opening up to artists from outside Brazil.</div>
+      </div>
+      <div class="item">
+        <div class="yr">2018 — 2019</div>
+        <div class="title" data-i18n="tl_2018_t">Padang Lab Series ▶ launch</div>
+        <div class="desc" data-i18n="tl_2018_d">Launch of the DJ-set series with Headweller (EP.1). Solo releases from Colt (Unknown Roots), Headweller (Unexpected Shades), Jungle Haze (Xaman), Camps Elisis (Quantum Waves).</div>
+      </div>
+      <div class="item">
+        <div class="yr" data-i18n="tl_2019_y">2019</div>
+        <div class="title" data-i18n="tl_2019_t">Anaïs Lin signs · Paracozm Packet Loss</div>
+        <div class="desc" data-i18n="tl_2019_d">Padang signs Anaïs Lin (PT) — who would later curate Technomad. Paracozm releases Packet Loss, expanding the label's dark-progressive vocabulary.</div>
+      </div>
+      <div class="item">
+        <div class="yr">2022 — 2023</div>
+        <div class="title" data-i18n="tl_2022_t">24-bit catalog · new territories</div>
+        <div class="desc" data-i18n="tl_2022_d">24-bit releases (Runehk, RNDM., Bensaid Virtuous Spiral). Green Waves joins with Surfing in Oscillations. Label DJ Nuit Noire debuts in Montreal.</div>
+      </div>
+      <div class="item">
+        <div class="yr" data-i18n="tl_2024_y">2024</div>
+        <div class="title" data-i18n="tl_2024_t">Cosmic Visitors · VA Nukaya</div>
+        <div class="desc" data-i18n="tl_2024_d">Aoos's LP opens a more cosmic phase. VA Nukaya, curated by Mallki, brings 19 producers in reborn Inca rhythms. Rollercoaster releases Brake the Chains.</div>
+      </div>
+      <div class="item">
+        <div class="yr" data-i18n="tl_2025_y">2025</div>
+        <div class="title" data-i18n="tl_2025_t">Year of collectives · Technomad II · Reborn</div>
+        <div class="desc" data-i18n="tl_2025_d">Technomad II (Anaïs Lin) · The Weight of Thought (Headweller) · Chronicles (Green Waves) · Cosmic Visitors · Õtoto (Falzar) · VA The Nightmare (Nuit Noire) · Reborn: Echoes of the Forest (Tekmall) · Tekra (MNGRM). Label passes 100 releases.</div>
+      </div>
+      <div class="item">
+        <div class="yr" data-i18n="tl_2026_y">2026</div>
+        <div class="title" data-i18n="tl_2026_t">Nyctophilia II · Self Inflicted · Isolation Protocol</div>
+        <div class="desc" data-i18n="tl_2026_d">Nyctophilia II (Rhabia, Jan) · Self Inflicted EP (Anadrome, Feb) · Isolation Protocol (DMnT, April) — ★ latest release. Lab Series hits EP.21 (Alex Alipe @ Syncronic · Padang × Blacklite).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">03</span><h2 data-i18n="h_numbers">numbers</h2><div class="rule"></div></div>
+  <div class="stats">
+    <div><small data-i18n="s_origin">// origin</small><b>BR</b><span style="color:var(--ink-dim);font-size:10px;display:block;margin-top:6px">Novo Hamburgo, RS</span></div>
+    <div><small data-i18n="s_founded">// founded</small><b>2013</b><span style="color:var(--ink-dim);font-size:10px;display:block;margin-top:6px">VA Barong &amp; Garuda</span></div>
+    <div><small data-i18n="s_catalog">// catalog</small><b>121</b><span style="color:var(--ink-dim);font-size:10px;display:block;margin-top:6px" data-i18n="sv_releases_label">releases</span></div>
+    <div><small data-i18n="s_roster">// roster</small><b>56</b><span style="color:var(--ink-dim);font-size:10px;display:block;margin-top:6px" data-i18n="sv_artists_label">artists</span></div>
+    <div><small data-i18n="s_lab">// lab series</small><b>21</b><span style="color:var(--ink-dim);font-size:10px;display:block;margin-top:6px" data-i18n="sv_dj_sets">DJ sets</span></div>
+    <div><small data-i18n="s_countries">// countries</small><b>20+</b><span style="color:var(--ink-dim);font-size:10px;display:block;margin-top:6px" data-i18n="sv_countries">in roster</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="row">
+    <div data-i18n="footer_rights">© padang records · 2026 · all signals reserved</div>
+    <div class="so">
+      <a href="https://padang.bandcamp.com/" target="_blank">Bandcamp</a>
+      <a href="https://soundcloud.com/padangrec" target="_blank">SoundCloud</a>
+      <a href="https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A" target="_blank" data-i18n="nav_padangtv">PadangTV</a>
+      <a href="https://www.instagram.com/padangrecords/" target="_blank">Instagram</a>
+      <a href="https://www.beatport.com/label/padang-records/76105" target="_blank">Beatport</a>
+    </div>
+  </div>
+  <div class="mt" data-i18n="footer_motto">save your ears from sameness</div>
+  <div class="cp" data-i18n="footer_credit">mockup · padang records · concept by carlos eduardo</div>
+</footer>
+
+<script src="./i18n.js" defer></script>
+<script src="./i18n-extra.js" defer></script>
+</body>
+</html>
