@@ -5,5 +5,7 @@ deployment:
     - /bin/cp -R about.html demo.html events.html index.html lab.html releases.html roster.html shop.html $DEPLOYPATH
     - /bin/cp -R i18n.js i18n-bios.js i18n-extra.js i18n-lab.js $DEPLOYPATH
     - /bin/cp -R img data $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH
     - /bin/find $DEPLOYPATH -maxdepth 3 -type f \( -name "*.html" -o -name "*.js" -o -name "*.json" -o -name "*.svg" -o -name "*.txt" \) -exec chmod 644 {} \;
     - /bin/find $DEPLOYPATH -maxdepth 2 -type d -name img -o -type d -name data -exec chmod 755 {} \;
+    - /bin/chmod 644 $DEPLOYPATH/.htaccess
