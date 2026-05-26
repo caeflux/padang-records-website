@@ -144,6 +144,12 @@ body.nav-open{overflow:hidden}
   .decl label{padding:10px 0;min-height:44px;display:flex;align-items:center}
   .form .submit-row button{padding:14px 24px;font-size:12px;min-height:48px;width:100%}
 }
+
+/* CRITICAL FIX: backdrop-filter on nav creates containing block for fixed descendants,
+   trapping the mobile menu inside nav's height. Remove when open. */
+@media(max-width:720px){
+  nav.open{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
 </style>
 </head>
 <body>

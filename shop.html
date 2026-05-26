@@ -164,6 +164,12 @@ body.nav-open{overflow:hidden}
   .cat,.chan{padding:16px}
   .cat .stats,.cat-icon{font-size:11px}
 }
+
+/* CRITICAL FIX: backdrop-filter on nav creates containing block for fixed descendants,
+   trapping the mobile menu inside nav's height. Remove when open. */
+@media(max-width:720px){
+  nav.open{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+}
 </style>
 </head>
 <body>
