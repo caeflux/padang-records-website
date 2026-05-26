@@ -1,0 +1,222 @@
+[
+  {
+    "ep": 21,
+    "title": "Alex Alipe",
+    "subtitle": "Live Recorded at Syncronic - Padang x Blacklite",
+    "sc_url": "https://soundcloud.com/padangrec/alexalipe",
+    "track_id": "soundcloud:tracks:2288049137",
+    "date": "2026-03-21",
+    "duration_sec": 3847,
+    "artwork": "https://i1.sndcdn.com/artworks-8B0C87vlgwURV2Rp-3ZY04A-large.png",
+    "tags": ["live", "syncronic", "padang-x-blacklite"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 20,
+    "title": "Champirolls",
+    "subtitle": "Roster Padang · France",
+    "sc_url": "https://soundcloud.com/padangrec/champirolls",
+    "track_id": "soundcloud:tracks:2232881414",
+    "date": "2025-12-19",
+    "duration_sec": 3797,
+    "artwork": "https://i1.sndcdn.com/artworks-d3WTMpUukDZF6IFM-RGBSWw-large.png",
+    "tags": ["france", "studio"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 19,
+    "title": "Mallki",
+    "subtitle": "Hypnotic Sessions",
+    "sc_url": "https://soundcloud.com/padangrec/mallki",
+    "track_id": "soundcloud:tracks:2218342538",
+    "date": "2025-11-24",
+    "tags": ["hypnotic", "label-dj", "peru", "barcelona"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 18,
+    "title": "Dienstmann vs Vorg",
+    "subtitle": "@ Earthdance 2025 (Live Recorded)",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep18-dienstmann-vs-vorg-earthdance-2025-live-recorded",
+    "track_id": "soundcloud:tracks:2190696239",
+    "date": "2025-10-15",
+    "tags": ["live", "earthdance", "b2b"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 17,
+    "title": "Algia",
+    "subtitle": "Roster Padang",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep-17-algia",
+    "track_id": "soundcloud:tracks:2186285443",
+    "date": "2025-10-09",
+    "tags": ["studio", "hungary"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 16,
+    "title": "Naias",
+    "subtitle": "@ Omtara Festival",
+    "sc_url": "https://soundcloud.com/djnaias/hypnotic-psytech-dark-prog-omtara-festival",
+    "track_id": "soundcloud:tracks:2148743295",
+    "date": "2025-08-06",
+    "tags": ["live", "omtara", "psytech", "dark-prog"],
+    "on_padangrec": false,
+    "note": "Hosted on artist's own SoundCloud (djnaias) but included in padangrec/sets/padang-labs"
+  },
+  {
+    "ep": 15,
+    "title": "Fabinho",
+    "subtitle": "Set exclusivo Padang Records",
+    "sc_url": "https://soundcloud.com/fabio-rodrigo-kirch/set-exclusivo-padang-records",
+    "track_id": "soundcloud:tracks:2005324211",
+    "date": "2025-01-09",
+    "tags": ["studio", "exclusivo"],
+    "on_padangrec": false,
+    "note": "Hosted on artist's own SoundCloud (fabio-rodrigo-kirch) but included in padangrec/sets/padang-labs"
+  },
+  {
+    "ep": 14,
+    "title": "Yazata",
+    "subtitle": "New Year Mix",
+    "sc_url": "https://soundcloud.com/yazata-official/yazata-padang-lab-new-year-mix",
+    "track_id": "soundcloud:tracks:1998095903",
+    "date": "2024-12-31",
+    "tags": ["new-year", "mix"],
+    "on_padangrec": false,
+    "note": "Hosted on artist's own SoundCloud (yazata-official) but included in padangrec/sets/padang-labs"
+  },
+  {
+    "ep": 13,
+    "title": "Dienstmann vs Vorg",
+    "subtitle": "@ Earthdance 2024 (Extended Version)",
+    "sc_url": "https://soundcloud.com/padangrec/dienstmann-vs-vorg",
+    "track_id": "soundcloud:tracks:1960653539",
+    "date": "2024-11-17",
+    "duration_sec": 6518,
+    "artwork": "https://i1.sndcdn.com/artworks-s2oWuOUjjZnPtYtG-KFObug-large.png",
+    "tags": ["live", "earthdance", "b2b", "padang-11y", "extended"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 12,
+    "title": "Macedo",
+    "subtitle": "Free Download",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep12-macedo-free-download",
+    "track_id": "soundcloud:tracks:1551426640",
+    "date": "2023-06-27",
+    "tags": ["free-download", "techno", "dark-prog"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 11,
+    "title": "Anaïs-Lin",
+    "subtitle": "Curadora Technomad · Label DJ",
+    "sc_url": "https://soundcloud.com/padangrec/anaislin",
+    "track_id": "soundcloud:tracks:1406205682",
+    "date": "2022-12-20",
+    "tags": ["djane", "techno", "psytech", "portugal"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 10,
+    "title": "Dienstmann",
+    "subtitle": "Live Set",
+    "sc_url": "https://soundcloud.com/padangrec/dienstmann",
+    "track_id": "soundcloud:tracks:1375264411",
+    "date": "2022-11-02",
+    "tags": ["live", "founder"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 9,
+    "title": "Papi Gonzo",
+    "subtitle": "UppsalaDarkness Live Recorded",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep7-papi-gonzo",
+    "track_id": "soundcloud:tracks:1350235564",
+    "date": "2022-09-24",
+    "tags": ["live", "uppsala"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 8,
+    "title": "Camps Elisis",
+    "subtitle": "Live Set · México",
+    "sc_url": "https://soundcloud.com/padangrec/campselisis",
+    "track_id": "soundcloud:tracks:1318536328",
+    "date": "2022-08-05",
+    "duration_sec": 3527,
+    "tags": ["live", "mexico", "dark-progressive"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 7,
+    "title": "ST ï X",
+    "subtitle": "Padang Set · Djane",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep7-st-i-x",
+    "track_id": "soundcloud:tracks:1282028983",
+    "date": "2022-06-06",
+    "tags": ["djane", "progressive"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 6,
+    "title": "Patterns",
+    "subtitle": "UK",
+    "sc_url": "https://soundcloud.com/padangrec/patternsuk",
+    "track_id": "soundcloud:tracks:1129327969",
+    "date": "2021-09-22",
+    "tags": ["uk", "progressive"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 5,
+    "title": "Noctusense",
+    "subtitle": "Dark Prog / Forest Prog · 139–141 BPM",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep5-noctusense",
+    "track_id": "soundcloud:tracks:849893839",
+    "date": "2020-06-30",
+    "tags": ["dark-progressive", "forest-progressive", "psychedelic"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 4,
+    "title": "Symetric",
+    "subtitle": "Quarantine Set",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep4-symetric",
+    "track_id": "soundcloud:tracks:804542791",
+    "date": "2020-04-22",
+    "tags": ["quarantine", "studio"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 3,
+    "title": "CAUS",
+    "subtitle": "Padang DJ Set",
+    "sc_url": "https://soundcloud.com/padangrec/padang-labs-series-ep-3-caus",
+    "track_id": "soundcloud:tracks:758572087",
+    "date": "2020-02-11",
+    "tags": ["dj-set"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 2,
+    "title": "Ritalin Child",
+    "subtitle": "Live @ Pulsar Festival V 2019",
+    "sc_url": "https://soundcloud.com/padangrec/padang-labs-series-ep2",
+    "track_id": "soundcloud:tracks:648582290",
+    "date": "2019-07-09",
+    "tags": ["live", "pulsar", "darkprog"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 1,
+    "title": "Headweller",
+    "subtitle": "Padang Lab Series · Premiere",
+    "sc_url": "https://soundcloud.com/padangrec/padang-labs-serie-ep1-headweller",
+    "track_id": "soundcloud:tracks:644745492",
+    "date": "2019-07-01",
+    "tags": ["live", "premiere", "greece"],
+    "on_padangrec": true
+  }
+]
