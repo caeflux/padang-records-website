@@ -1,6 +1,7 @@
-.DS_Store
-Thumbs.db
+*.backup
 *.bak
 *.swp
+.DS_Store
+Logo + Written Logo for Front.png
+Thumbs.db
 servidor-local.bat
-*.backup
