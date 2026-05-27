@@ -107,8 +107,9 @@
 
     /* ─ padangtv section ─ */
     tv_caption: { pt:"// canal oficial · live sets · previews · DJ series", en:"// official channel · live sets · previews · DJ series", es:"// canal oficial · live sets · previews · serie DJ", de:"// offizieller kanal · live-sets · previews · DJ-serie", fr:"// chaîne officielle · live sets · previews · série DJ", ja:"// 公式チャンネル · ライブセット · プレビュー · DJシリーズ" },
-    tv_streaming: { pt:"// streaming uploads · <b>@padangrecords</b> · live sets · previews · lab series", en:"// streaming uploads · <b>@padangrecords</b> · live sets · previews · lab series", es:"// uploads en streaming · <b>@padangrecords</b> · live sets · previews · lab series", de:"// streaming uploads · <b>@padangrecords</b> · live-sets · previews · lab series", fr:"// uploads en streaming · <b>@padangrecords</b> · live sets · previews · lab series", ja:"// ストリーミング配信中 · <b>@padangrecords</b> · ライブセット · プレビュー · ラボシリーズ" },
+    tv_streaming: { pt:"// live sets · previews · lab series · <b>@padangrecords</b>", en:"// live sets · previews · lab series · <b>@padangrecords</b>", es:"// live sets · previews · lab series · <b>@padangrecords</b>", de:"// live-sets · previews · lab series · <b>@padangrecords</b>", fr:"// live sets · previews · lab series · <b>@padangrecords</b>", ja:"// ライブセット · プレビュー · ラボシリーズ · <b>@padangrecords</b>" },
     tv_subscribe: { pt:"▶ inscrever-se →", en:"▶ subscribe →", es:"▶ suscribirse →", de:"▶ abonnieren →", fr:"▶ s'abonner →", ja:"▶ チャンネル登録 →" },
+    tv_now: { pt:"// tocando agora //", en:"// now playing //", es:"// reproduciendo //", de:"// jetzt //", fr:"// en cours //", ja:"// 再生中 //" },
 
     /* ─ roster page UI ─ */
     roster_meta_label: { pt:"artists", en:"artists", es:"artistas", de:"Künstler", fr:"artistes", ja:"アーティスト" },

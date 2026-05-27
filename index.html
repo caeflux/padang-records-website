@@ -108,11 +108,26 @@ section{position:relative;padding:120px 32px;z-index:2}
 .tv .frm::before{content:"//// PADANGTV · LIVE ////";position:absolute;top:-10px;left:24px;background:var(--bg);padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--yt)}
 .tv .player{border:1px solid rgba(255,255,255,.08);background:#000;aspect-ratio:16/9;position:relative}
 .tv .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
-.tv .info{margin-top:24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.tv .now{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim)}
+.tv .now b{color:var(--neon-1);font-weight:400}
+.tv .grid{margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.tv .card{position:relative;border:1px solid rgba(255,255,255,.08);background:#0a0a14;cursor:pointer;overflow:hidden;transition:border-color .25s,transform .2s}
+.tv .card:hover{border-color:var(--yt);transform:translateY(-2px)}
+.tv .card.active{border-color:var(--yt);box-shadow:0 0 24px rgba(255,0,51,.25)}
+.tv .card .thumb{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.tv .card .thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.85;transition:opacity .25s,transform .4s}
+.tv .card:hover .thumb img{opacity:1;transform:scale(1.04)}
+.tv .card .thumb::after{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,.7);opacity:.6;transition:opacity .25s}
+.tv .card:hover .thumb::after{opacity:1}
+.tv .card .ttl{padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;line-height:1.4;color:#e6e6e6;text-transform:uppercase;min-height:54px}
+.tv .info{margin-top:28px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
 .tv .info .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 .tv .info .lbl b{color:var(--yt);font-weight:400}
 .tv .info .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;background:var(--yt);color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;transition:transform .2s,box-shadow .3s}
 .tv .info .btn:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(255,0,51,.5)}
+@media(max-width:980px){.tv .grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){.tv .grid{grid-template-columns:repeat(2,1fr);gap:10px}.tv .card .ttl{font-size:9px;padding:8px 10px;min-height:46px}}
+@media(max-width:480px){.tv .grid{grid-template-columns:1fr 1fr;gap:8px}.tv .info{grid-template-columns:1fr;text-align:center}}
 
 .cta{text-align:center;padding:160px 32px}
 .cta h3{font-family:'Major Mono Display',monospace;font-size:clamp(40px,7vw,96px);text-transform:lowercase;letter-spacing:-.02em;line-height:.95;background:linear-gradient(180deg,#fff,var(--neon-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -328,9 +343,9 @@ body.nav-open{overflow:hidden}
     <div class="tk"><span class="nw" data-i18n="now_playing">now playing //</span><span class="nm">DMnT — Isolation Protocol</span></div>
     <div class="fe"><iframe style="border:0;width:100%;height:600px" src="https://bandcamp.com/EmbeddedPlayer/album=1237100577/size=large/bgcol=181a1b/linkcol=c4ff3d/tracklist=true/artwork=small/transparent=true/" seamless><a href="https://padang.bandcamp.com/album/isolation-protocol">Isolation Protocol</a></iframe></div>
     <div class="er">
-      <a href="https://padang.bandcamp.com/" target="_blank"> data-i18n="bc_catalog_link">↳ bandcamp catalog</a>
-      <a href="https://soundcloud.com/padangrec" target="_blank"> data-i18n="sc_listen_link">↳ soundcloud</a>
-      <a href="#tv"> data-i18n="yt_padangtv_link">↳ padangtv</a>
+      <a href="https://padang.bandcamp.com/" target="_blank" data-i18n="bc_catalog_link">↳ bandcamp catalog</a>
+      <a href="https://soundcloud.com/padangrec" target="_blank" data-i18n="sc_listen_link">↳ soundcloud</a>
+      <a href="#tv" data-i18n="yt_padangtv_link">↳ padangtv</a>
     </div>
   </div>
 </section>
@@ -339,14 +354,48 @@ body.nav-open{overflow:hidden}
   <div class="sh"><span class="num">05</span><h2 data-i18n="h_padangtv">padangtv</h2><div class="rule"></div><div class="meta">// official channel · live sets · previews · padang lab series · DJ recordings</div></div>
   <div class="frm">
     <div class="player">
-      <iframe src="https://www.youtube.com/embed/videoseries?list=UUOFQWuWtL1njucmHIXf0R3A&modestbranding=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      <iframe id="tvFrame" src="https://www.youtube.com/embed/TWDsqVog2Ho?modestbranding=1&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
+    <div class="now"><span data-i18n="tv_now">// now playing //</span> <b id="tvNow">Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years</b></div>
+    <div class="grid" id="tvGrid"></div>
     <div class="info">
-      <span class="lbl" data-i18n="tv_streaming">// streaming uploads · <b>@padangrecords</b> · live sets · previews · lab series</span>
+      <span class="lbl" data-i18n="tv_streaming">// live sets · previews · lab series · <b>@padangrecords</b></span>
       <a class="btn" href="https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A" target="_blank" rel="noopener" data-i18n="tv_subscribe">▶ subscribe →</a>
     </div>
   </div>
 </section>
+<script>
+(function(){
+  const VIDS=[
+    {id:"TWDsqVog2Ho",t:"Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years"},
+    {id:"JdxCTVidefc",t:"Tekmall @ Earthdance Festival 2025"},
+    {id:"YJtpETA8jFg",t:"Dienstmann LIVE @ Earthdance Festival RS 2023"},
+    {id:"cZeXR5mxVpY",t:"Anaïs Lin @ Modem Festival 2023"},
+    {id:"R3ZYqq6T3wQ",t:"Tekmall @ Arkana Festival 2025 · Peru"},
+    {id:"B1U4Qvxn-AI",t:"Sumerian Droids · Dark Prog Live @ 3 Dimensions 2022"},
+    {id:"CL25Rrxc4rE",t:"Vorg · Live Stream for Ecotribe Festival"},
+    {id:"KQ4z1hBSMRE",t:"Paracozm Live · Flux Indoor Edition PT.1"}
+  ];
+  const grid=document.getElementById('tvGrid');
+  const frame=document.getElementById('tvFrame');
+  const now=document.getElementById('tvNow');
+  if(!grid||!frame) return;
+  VIDS.forEach((v,i)=>{
+    const c=document.createElement('div');
+    c.className='card'+(i===0?' active':'');
+    c.dataset.id=v.id;
+    c.innerHTML='<div class="thumb"><img loading="lazy" src="https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg" alt=""></div><div class="ttl">'+v.t+'</div>';
+    c.addEventListener('click',function(){
+      frame.src='https://www.youtube.com/embed/'+v.id+'?autoplay=1&modestbranding=1&rel=0&playsinline=1';
+      now.textContent=v.t;
+      grid.querySelectorAll('.card').forEach(x=>x.classList.remove('active'));
+      c.classList.add('active');
+      document.querySelector('.tv .player').scrollIntoView({behavior:'smooth',block:'center'});
+    });
+    grid.appendChild(c);
+  });
+})();
+</script>
 
 <section id="c" class="cta">
   <h3 data-i18n="cta_demo_h">send your<br/>demo.</h3>
@@ -424,7 +473,7 @@ if(ag && HA.length){
     if(document.hidden) return;
     // pega os próximos N da queue (recicla se acabar)
     if(queue.length < SLOTS){ queue = queue.concat(shuffle(HA)); }
-    const nextBatch = queue.slice(0, SLOTS);
+        const nextBatch = queue.slice(0, SLOTS);
     queue = queue.slice(SLOTS);
 
     ag.querySelectorAll('.ap:not(.cta)').forEach((el, idx)=>{
