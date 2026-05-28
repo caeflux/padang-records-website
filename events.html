@@ -53,6 +53,14 @@ section{position:relative;padding:80px 32px;z-index:2}
 .ev:hover{border-color:var(--neon-1);transform:translateX(4px)}
 .ev.past{opacity:.55}
 .ev.featured{border-color:rgba(196,255,61,.35);background:rgba(13,13,26,.7)}
+/* notice banner: section under construction */
+.notice{max-width:1200px;margin:0 auto;padding:32px 24px 0}
+.notice .nb{display:flex;gap:14px;align-items:flex-start;border:1px dashed rgba(196,255,61,.3);background:rgba(13,13,26,.4);padding:18px 22px}
+.notice .nb .dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--neon-1);box-shadow:0 0 12px var(--neon-1);margin-top:6px;animation:ps 1.6s infinite}
+.notice .nb .msg{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-dim);line-height:1.6}
+.notice .nb .msg b{display:block;color:var(--neon-1);font-weight:400;text-transform:uppercase;letter-spacing:.2em;margin-bottom:6px}
+.notice .nb .msg a{color:var(--neon-1);border-bottom:1px dotted rgba(196,255,61,.4)}
+.notice .nb .msg a:hover{border-bottom-color:var(--neon-1)}
 .ev .dt{font-family:'Major Mono Display',monospace;text-transform:lowercase;letter-spacing:-.01em;line-height:1}
 .ev .dt .day{font-size:42px;color:var(--neon-1)}
 .ev .dt .mo{font-size:14px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
@@ -208,8 +216,37 @@ body.nav-open{overflow:hidden}
   </div>
 </section>
 
+<section class="notice">
+  <div class="nb">
+    <span class="dot"></span>
+    <div class="msg">
+      <b data-i18n="ev_notice_h">// section in construction · continuously updated</b>
+      <span data-i18n="ev_notice_p">we are continuously gathering new dates, festival confirmations and historical records for padang roster artists. if you are a roster artist or organize a showcase / festival with padang names, send the event details to <a href="mailto:demos@padangrecords.net?subject=EVENT">demos@padangrecords.net</a>.</span>
+    </div>
+  </div>
+</section>
+
 <section>
-  <div class="sh"><span class="num">01</span><h2 data-i18n="h_next_2026">upcoming · 2026</h2><div class="rule"></div><div class="meta" data-i18n="events_next_meta">// agenda in progress · dates to confirm directly with the label</div></div>
+  <div class="sh"><span class="num">01</span><h2 data-i18n="h_year_2027">2027 · upcoming</h2><div class="rule"></div><div class="meta" data-i18n="events_year_2027_meta">// next-year confirmations · long-lead bookings</div></div>
+  <div class="evs">
+
+    <div class="ev">
+      <div class="dt"><div class="day">⊘</div><div class="mo">tba/27</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <span class="tag label">padang showcase</span>
+        <div class="name" data-i18n="ev_arkana17_n">Arkana Festival · 17th edition (2027)</div>
+        <div class="lineup" data-i18n="ev_arkana17_lu"><b>Curator:</b> Mallki (Padang label DJ) · <b>Sacred Valley of the Incas</b> · 13+ years of the festival · exact date TBC</div>
+        <div class="loc" data-i18n="ev_arkana17_loc">peru · sacred valley of the incas</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">02</span><h2 data-i18n="h_year_2026">2026 · the year</h2><div class="rule"></div><div class="meta" data-i18n="events_year_2026_meta">// upcoming festivals + past 2026 events (latest first)</div></div>
   <div class="evs">
 
     <div class="ev">
@@ -249,37 +286,25 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">31</div><div class="mo">dez</div></div>
-      <div class="body">
-        <span class="tag fest">festival</span>
-        <span class="tag label">padang sequence</span>
-        <div class="name" data-i18n="ev_up_n">Padang Sequence · Universo Paralello</div>
-        <div class="lineup" data-i18n="ev_up_lu"><b>Stage:</b> Tropikalien · <b>Lineup:</b> TBA</div>
-        <div class="loc" data-i18n="ev_up_loc">brazil · universo paralello · new year's eve</div>
-      </div>
-      <span class="arr">→</span>
-    </div>
-
-    <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba/27</div></div>
-      <div class="body">
-        <span class="tag fest">festival</span>
-        <span class="tag label">padang showcase</span>
-        <div class="name" data-i18n="ev_arkana17_n">Arkana Festival · 17th edition (2027)</div>
-        <div class="lineup" data-i18n="ev_arkana17_lu"><b>Curator:</b> Mallki (Padang label DJ) · <b>Sacred Valley of the Incas</b> · 13+ years of the festival · exact date TBC</div>
-        <div class="loc" data-i18n="ev_arkana17_loc">peru · sacred valley of the incas</div>
-      </div>
-      <span class="arr">→</span>
-    </div>
-
-    <div class="ev">
       <div class="dt"><div class="day">⊘</div><div class="mo">tba/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang showcase</span>
         <div class="name" data-i18n="ev_arkana_n">Arkana Festival · 16th edition (2026)</div>
         <div class="lineup" data-i18n="ev_arkana_lu"><b>Confirmed lineup:</b> Niobiun · Kilbee · Rollercoaster · Mallki · Aru · Dienstmann · Vorg · Tenebra · <b>curator:</b> Mallki</div>
-        <div class="loc" data-i18n="ev_arkana_loc">Peru · sacred valley of the incas</div>
+        <div class="loc" data-i18n="ev_arkana_loc">peru · sacred valley of the incas</div>
+      </div>
+      <span class="arr">→</span>
+    </div>
+
+    <div class="ev">
+      <div class="dt"><div class="day">31</div><div class="mo">dez/26</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <span class="tag label">padang sequence</span>
+        <div class="name" data-i18n="ev_up_n">Padang Sequence · Universo Paralello</div>
+        <div class="lineup" data-i18n="ev_up_lu"><b>Stage:</b> Tropikalien · <b>Lineup:</b> TBA</div>
+        <div class="loc" data-i18n="ev_up_loc">brazil · universo paralello · new year's eve</div>
       </div>
       <span class="arr">→</span>
     </div>
@@ -320,24 +345,6 @@ body.nav-open{overflow:hidden}
       <span class="arr">→</span>
     </div>
 
-    <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
-      <div class="body">
-        <span class="tag fest">festival</span>
-        <div class="name" data-i18n="ev_earth_n">Earthdance · Padang showcase</div>
-        <div class="lineup" data-i18n="ev_earth_lu"><b>Recent history:</b> Dienstmann b2b Vorg (Lab Series EP.18, 2025) · Tekmall (2025 set)</div>
-        <div class="loc" data-i18n="ev_earth_loc">brazil · next edition tba</div>
-      </div>
-      <span class="arr">→</span>
-    </div>
-
-  </div>
-</section>
-
-<section>
-  <div class="sh"><span class="num">02</span><h2 data-i18n="h_history_2025">history · 2025</h2><div class="rule"></div><div class="meta" data-i18n="events_hist_meta">// sets/lives already recorded — available on lab series and padangtv</div></div>
-  <div class="evs">
-
     <div class="ev featured">
       <div class="dt"><div class="day">06</div><div class="mo">mar/26</div></div>
       <div class="body">
@@ -359,6 +366,24 @@ body.nav-open{overflow:hidden}
         </div>
         <a class="ticket-btn" href="https://shotgun.live/pt-br/events/syncronic-padang-x-blacklite-poa-edition" target="_blank" rel="noopener">↗ shotgun event page</a>
         <div class="loc" data-i18n="ev_sync_loc">brazil · porto alegre · centro histórico</div>
+      </div>
+      <span class="arr">↳</span>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="sh"><span class="num">03</span><h2 data-i18n="h_year_2025">2025 · history</h2><div class="rule"></div><div class="meta" data-i18n="events_year_2025_meta">// recorded sets · lab series captures · festivals</div></div>
+  <div class="evs">
+
+    <div class="ev past">
+      <div class="dt"><div class="day">31</div><div class="mo">out/25</div></div>
+      <div class="body">
+        <span class="tag fest">festival</span>
+        <div class="name" data-i18n="ev_sanc_n">Sanctuary 2025 · Halloween @ Bain Mathieu</div>
+        <div class="lineup" data-i18n="ev_sanc_lu"><b>Set:</b> DJ Nuit Noire (Padang Label DJ) · VA The Nightmare curator</div>
+        <div class="loc" data-i18n="ev_sanc_loc">montreal · canada</div>
       </div>
       <span class="arr">↳</span>
     </div>
@@ -396,27 +421,12 @@ body.nav-open{overflow:hidden}
       <span class="arr">↳</span>
     </div>
 
-    <div class="ev past">
-      <div class="dt"><div class="day">⊘</div><div class="mo">2025</div></div>
-      <div class="body">
-        <span class="tag fest">festival</span>
-        <div class="name" data-i18n="ev_own_n">Own Spirit Festival 2024 · Aoos</div>
-        <div class="lineup" data-i18n="ev_own_lu"><b>Live set:</b> Aoos (Padang) · available on the artist's SoundCloud</div>
-        <div class="loc" data-i18n="ev_own_loc">spain</div>
-      </div>
-      <span class="arr">↳</span>
-    </div>
+  </div>
+</section>
 
-    <div class="ev past">
-      <div class="dt"><div class="day">⊘</div><div class="mo">2025</div></div>
-      <div class="body">
-        <span class="tag live">showcase</span>
-        <div class="name" data-i18n="ev_sanc_n">Sanctuary 2025 · Halloween @ Bain Mathieu</div>
-        <div class="lineup" data-i18n="ev_sanc_lu"><b>Set:</b> DJ Nuit Noire (Padang Label DJ) · VA The Nightmare curator</div>
-        <div class="loc" data-i18n="ev_sanc_loc">montreal · canada</div>
-      </div>
-      <span class="arr">↳</span>
-    </div>
+<section>
+  <div class="sh"><span class="num">04</span><h2 data-i18n="h_year_2024">2024 · history</h2><div class="rule"></div><div class="meta" data-i18n="events_year_2024_meta">// earlier confirmations from roster artists</div></div>
+  <div class="evs">
 
     <div class="ev past">
       <div class="dt"><div class="day">22</div><div class="mo">ago/24</div></div>
@@ -430,12 +440,12 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev past">
-      <div class="dt"><div class="day">⊘</div><div class="mo">22</div></div>
+      <div class="dt"><div class="day">⊘</div><div class="mo">2024</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
-        <div class="name" data-i18n="ev_boom_n">Boom Festival · MNGRM</div>
-        <div class="lineup" data-i18n="ev_boom_lu"><b>Set:</b> MNGRM (Padang) — Boom Festival, Portugal</div>
-        <div class="loc" data-i18n="ev_boom_loc">portugal · 24/07/2022</div>
+        <div class="name" data-i18n="ev_own_n">Own Spirit Festival 2024 · Aoos</div>
+        <div class="lineup" data-i18n="ev_own_lu"><b>Live set:</b> Aoos (Padang) · available on the artist's SoundCloud</div>
+        <div class="loc" data-i18n="ev_own_loc">spain</div>
       </div>
       <span class="arr">↳</span>
     </div>
