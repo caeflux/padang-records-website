@@ -64,6 +64,17 @@ section{position:relative;padding:80px 32px;z-index:2}
 .ev .dt{font-family:'Major Mono Display',monospace;text-transform:lowercase;letter-spacing:-.01em;line-height:1}
 .ev .dt .day{font-size:42px;color:var(--neon-1)}
 .ev .dt .mo{font-size:14px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
+.ev .dt{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.ev .fest-logo{width:60px;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:14px;border:1px solid rgba(255,255,255,.1);overflow:hidden}
+.ev .fest-logo img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;z-index:2}
+.ev .fest-logo span{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.1em;color:var(--ink);opacity:.85;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+@media(max-width:560px){.ev .fest-logo{width:46px;height:46px;margin-bottom:10px}.ev .fest-logo span{font-size:11px}}
+/* enhanced lineup-avs: makes thumbs slightly larger and friendlier */
+.ev .body .lineup-avs a.av{display:flex;align-items:center;gap:6px;padding:3px 10px 3px 3px;border:1px solid rgba(255,255,255,.08);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);background:rgba(0,0,0,.35);transition:border-color .25s,color .25s,transform .15s;cursor:default}
+.ev .body .lineup-avs a.av:hover{border-color:var(--neon-1);color:var(--ink)}
+.ev .body .lineup-avs a.av img{width:26px;height:26px;border-radius:50%;object-fit:cover;filter:grayscale(.85) contrast(1.05);background:#222;flex-shrink:0}
+.ev .body .lineup-avs a.av.placeholder{padding:3px 12px}
+
 .ev .body .name{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:500;line-height:1.2}
 .ev .body .lineup{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-dim);margin-top:6px;line-height:1.5}
 .ev .body .lineup b{color:var(--neon-2);font-weight:400}
@@ -231,7 +242,8 @@ body.nav-open{overflow:hidden}
   <div class="evs">
 
     <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba/27</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#b0885044,#b0885088)"><span>AF</span></div><div class="day">⊘</div><div class="mo">tba/27</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang showcase</span>
@@ -250,55 +262,64 @@ body.nav-open{overflow:hidden}
   <div class="evs">
 
     <div class="ev">
-      <div class="dt"><div class="day">03</div><div class="mo">ago/26</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#3a5fff44,#3a5fff88)"><img loading="lazy" src="https://modemfestival.com/wp-content/uploads/2024/11/cropped-Modem24_favicon2-270x270.png" alt="" onerror="this.remove();"><span>MD</span></div><div class="day">03</div><div class="mo">ago/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang artists</span>
         <div class="name" data-i18n="ev_modem_n">Mo:Dem Festival · Momento Demento 2026</div>
         <div class="lineup" data-i18n="ev_modem_lu"><b>Dates:</b> 03 — 09 Aug · gates 01 Aug · <b>Padang confirmed:</b> Anaïs Lin @ The Swamp stage · <b>Full lineup:</b> TBA</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Anaïs Lin"><img loading="lazy" src="https://i1.sndcdn.com/avatars-62iIzVZz1xtiY0xJ-QDzuYQ-t500x500.jpg" alt=""><span>Anaïs Lin</span></a></div>
         <div class="loc" data-i18n="ev_modem_loc">croatia · donje primišlje · robinzon kamp</div>
       </div>
       <span class="arr">→</span>
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">11</div><div class="mo">ago/26</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#ff550044,#ff550088)"><img loading="lazy" src="https://drops-festival.com/wp-content/uploads/2023/04/Layer-29.png" alt="" onerror="this.remove();"><span>DF</span></div><div class="day">11</div><div class="mo">ago/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang artists</span>
         <div class="name" data-i18n="ev_drops_n">Drops Festival 2026 · Slovenia</div>
         <div class="lineup" data-i18n="ev_drops_lu"><b>Dates:</b> 11 — 16 Aug · <b>Padang confirmed:</b> Soulid · Mallki · <b>Stages:</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station</div>
+        <div class="lineup-avs"><a href="#" class="av placeholder" title="Soulid"><span>Soulid</span></a><a href="#" class="av" title="Mallki"><img loading="lazy" src="https://i1.sndcdn.com/avatars-3tKKLKAGni6zkHlp-vx7vuw-t500x500.jpg" alt=""><span>Mallki</span></a></div>
         <div class="loc" data-i18n="ev_drops_loc">slovenia · kranj · paintball club naklo · udinborst forest</div>
       </div>
       <span class="arr">→</span>
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">20</div><div class="mo">ago/26</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#2a8a4f44,#2a8a4f88)"><span>FF</span></div><div class="day">20</div><div class="mo">ago/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang artists</span>
         <div class="name" data-i18n="ev_foresterra_n">Foresterra Festival 2026 · Croatia</div>
         <div class="lineup" data-i18n="ev_foresterra_lu"><b>Dates:</b> 20 — 23 Aug · <b>Padang confirmed:</b> Mallki b2b Aru @ Foresterra Stage (forest/darkpsy) · Mallki solo @ Windmill Stage (dark prog/psytech) · <b>2 stages</b> · hosted by Forestation & Egzoterra Kolektiv</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Mallki"><img loading="lazy" src="https://i1.sndcdn.com/avatars-3tKKLKAGni6zkHlp-vx7vuw-t500x500.jpg" alt=""><span>Mallki</span></a><a href="#" class="av" title="Aru"><img loading="lazy" src="https://i1.sndcdn.com/avatars-3WlnybyU88DMxjjE-v8QqYg-t500x500.jpg" alt=""><span>Aru</span></a></div>
         <div class="loc" data-i18n="ev_foresterra_loc">croatia · fužine · kaubojsko selo roswell-fužine</div>
       </div>
       <span class="arr">→</span>
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba/26</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#b0885044,#b0885088)"><span>AF</span></div><div class="day">⊘</div><div class="mo">tba/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang showcase</span>
         <div class="name" data-i18n="ev_arkana_n">Arkana Festival · 16th edition (2026)</div>
         <div class="lineup" data-i18n="ev_arkana_lu"><b>Confirmed lineup:</b> Niobiun · Kilbee · Rollercoaster · Mallki · Aru · Dienstmann · Vorg · Tenebra · <b>curator:</b> Mallki</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Niobiun"><img loading="lazy" src="https://i1.sndcdn.com/avatars-000006234998-1f460v-t500x500.jpg" alt=""><span>Niobiun</span></a><a href="#" class="av" title="Kilbee"><img loading="lazy" src="https://i1.sndcdn.com/avatars-Rhs7C6KX7HzGBsuz-PlXsuA-t500x500.jpg" alt=""><span>Kilbee</span></a><a href="#" class="av" title="Rollercoaster"><img loading="lazy" src="https://i1.sndcdn.com/avatars-Rhs7C6KX7HzGBsuz-PlXsuA-t500x500.jpg" alt=""><span>Rollercoaster</span></a><a href="#" class="av" title="Mallki"><img loading="lazy" src="https://i1.sndcdn.com/avatars-3tKKLKAGni6zkHlp-vx7vuw-t500x500.jpg" alt=""><span>Mallki</span></a><a href="#" class="av" title="Aru"><img loading="lazy" src="https://i1.sndcdn.com/avatars-3WlnybyU88DMxjjE-v8QqYg-t500x500.jpg" alt=""><span>Aru</span></a><a href="#" class="av" title="Dienstmann"><img loading="lazy" src="https://i1.sndcdn.com/avatars-M6RzKB42I3Uc9mJl-dJsqcA-t500x500.jpg" alt=""><span>Dienstmann</span></a><a href="#" class="av" title="Vorg"><img loading="lazy" src="https://i1.sndcdn.com/avatars-jB2JbnYKO1TXmSyF-bf7VSg-t500x500.jpg" alt=""><span>Vorg</span></a><a href="#" class="av" title="Tenebra"><img loading="lazy" src="https://i1.sndcdn.com/avatars-4QG6xPhQXqt0bQSo-Cj6rng-t500x500.jpg" alt=""><span>Tenebra</span></a></div>
         <div class="loc" data-i18n="ev_arkana_loc">peru · sacred valley of the incas</div>
       </div>
       <span class="arr">→</span>
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">31</div><div class="mo">dez/26</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#00aaff44,#00aaff88)"><span>UP</span></div><div class="day">31</div><div class="mo">dez/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang sequence</span>
@@ -310,7 +331,8 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#c4ff3d44,#c4ff3d88)"><img loading="lazy" src="./img/logo.svg" alt="" onerror="this.remove();"><span>PR</span></div><div class="day">⊘</div><div class="mo">tba</div></div>
       <div class="body">
         <span class="tag fest">showcase</span>
         <span class="tag label">padang</span>
@@ -322,7 +344,8 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#c4ff3d44,#c4ff3d88)"><img loading="lazy" src="./img/logo.svg" alt="" onerror="this.remove();"><span>PR</span></div><div class="day">⊘</div><div class="mo">tba</div></div>
       <div class="body">
         <span class="tag fest">showcase</span>
         <span class="tag label">padang</span>
@@ -334,7 +357,8 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#c4ff3d44,#c4ff3d88)"><img loading="lazy" src="./img/logo.svg" alt="" onerror="this.remove();"><span>PR</span></div><div class="day">⊘</div><div class="mo">tba</div></div>
       <div class="body">
         <span class="tag fest">showcase</span>
         <span class="tag label">padang</span>
@@ -346,7 +370,8 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev featured">
-      <div class="dt"><div class="day">06</div><div class="mo">mar/26</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#c4ff3d44,#c4ff3d88)"><img loading="lazy" src="./img/logo.svg" alt="" onerror="this.remove();"><span>SY</span></div><div class="day">06</div><div class="mo">mar/26</div></div>
       <div class="body">
         <span class="tag live">live recorded</span>
         <span class="tag label">padang × blacklite</span>
@@ -378,29 +403,34 @@ body.nav-open{overflow:hidden}
   <div class="evs">
 
     <div class="ev past">
-      <div class="dt"><div class="day">31</div><div class="mo">out/25</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#7a2a8a44,#7a2a8a88)"><span>SH</span></div><div class="day">31</div><div class="mo">out/25</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <div class="name" data-i18n="ev_sanc_n">Sanctuary 2025 · Halloween @ Bain Mathieu</div>
         <div class="lineup" data-i18n="ev_sanc_lu"><b>Set:</b> DJ Nuit Noire (Padang Label DJ) · VA The Nightmare curator</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Nuit Noire"><img loading="lazy" src="https://i1.sndcdn.com/avatars-RQrS6CmMiFy7pmwk-ygYtJg-t500x500.jpg" alt=""><span>Nuit Noire</span></a></div>
         <div class="loc" data-i18n="ev_sanc_loc">montreal · canada</div>
       </div>
       <span class="arr">↳</span>
     </div>
 
     <div class="ev past">
-      <div class="dt"><div class="day">15</div><div class="mo">out/25</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#5fa85044,#5fa85088)"><span>ED</span></div><div class="day">15</div><div class="mo">out/25</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <div class="name" data-i18n="ev_earth25_n">Earthdance RS 2025 · Padang showcase</div>
         <div class="lineup" data-i18n="ev_earth25_lu"><b>Padang sets:</b> Dienstmann vs Vorg (b2b, recorded as Lab EP.18) · Tekmall (full set) · Tenebra · Fabinho</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Dienstmann"><img loading="lazy" src="https://i1.sndcdn.com/avatars-M6RzKB42I3Uc9mJl-dJsqcA-t500x500.jpg" alt=""><span>Dienstmann</span></a><a href="#" class="av" title="Vorg"><img loading="lazy" src="https://i1.sndcdn.com/avatars-jB2JbnYKO1TXmSyF-bf7VSg-t500x500.jpg" alt=""><span>Vorg</span></a><a href="#" class="av" title="Tekmall"><img loading="lazy" src="https://i1.sndcdn.com/avatars-UbnaR8SAlOF7x3tr-vc13xg-t500x500.jpg" alt=""><span>Tekmall</span></a><a href="#" class="av" title="Tenebra"><img loading="lazy" src="https://i1.sndcdn.com/avatars-4QG6xPhQXqt0bQSo-Cj6rng-t500x500.jpg" alt=""><span>Tenebra</span></a><a href="#" class="av" title="Fabinho"><img loading="lazy" src="https://i1.sndcdn.com/avatars-r2bfMQ21RVzXVx5F-yZRzYA-t500x500.jpg" alt=""><span>Fabinho</span></a></div>
         <div class="loc" data-i18n="ev_earth25_loc">brazil · rio grande do sul</div>
       </div>
       <span class="arr">↳</span>
     </div>
 
     <div class="ev past">
-      <div class="dt"><div class="day">17</div><div class="mo">set/25</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#b0885044,#b0885088)"><span>AF</span></div><div class="day">17</div><div class="mo">set/25</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <div class="name" data-i18n="ev_arkana25_n">Arkana Festival · 15 years</div>
@@ -411,11 +441,13 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev past">
-      <div class="dt"><div class="day">⊘</div><div class="mo">2025</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#2a4a7a44,#2a4a7a88)"><span>BT</span></div><div class="day">⊘</div><div class="mo">2025</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <div class="name" data-i18n="ev_bdt_n">Bucht der Träumer · Waldtraut Stage</div>
         <div class="lineup" data-i18n="ev_bdt_lu"><b>Set:</b> Anaïs Lin (Padang Label DJ)</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Anaïs Lin"><img loading="lazy" src="https://i1.sndcdn.com/avatars-62iIzVZz1xtiY0xJ-QDzuYQ-t500x500.jpg" alt=""><span>Anaïs Lin</span></a></div>
         <div class="loc" data-i18n="ev_bdt_loc">germany</div>
       </div>
       <span class="arr">↳</span>
@@ -429,22 +461,26 @@ body.nav-open{overflow:hidden}
   <div class="evs">
 
     <div class="ev past">
-      <div class="dt"><div class="day">22</div><div class="mo">ago/24</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#9a3a3a44,#9a3a3a88)"><span>HT</span></div><div class="day">22</div><div class="mo">ago/24</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <div class="name" data-i18n="ev_hadra24_n">Hadra Trance Festival 2024 · 15th edition</div>
         <div class="lineup" data-i18n="ev_hadra24_lu"><b>Padang set:</b> Rhabia · <b>4 stages:</b> Main · Alternative · Live · Dôme · 10,000 attendees · plan d'eau de vieure</div>
+        <div class="lineup-avs"><a href="#" class="av" title="Rhabia"><img loading="lazy" src="https://i1.sndcdn.com/avatars-WPVyP0mmuVfuQnch-yEL3Yw-t500x500.jpg" alt=""><span>Rhabia</span></a></div>
         <div class="loc" data-i18n="ev_hadra24_loc">france · vieure · allier</div>
       </div>
       <span class="arr">↳</span>
     </div>
 
     <div class="ev past">
-      <div class="dt"><div class="day">⊘</div><div class="mo">2024</div></div>
+      <div class="dt">
+        <div class="fest-logo" style="background:linear-gradient(135deg,#d0405044,#d0405088)"><span>OS</span></div><div class="day">⊘</div><div class="mo">2024</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <div class="name" data-i18n="ev_own_n">Own Spirit Festival 2024 · Aoos</div>
         <div class="lineup" data-i18n="ev_own_lu"><b>Live set:</b> Aoos (Padang) · available on the artist's SoundCloud</div>
+        <div class="lineup-avs"><a href="#" class="av" title="AOOS"><img loading="lazy" src="https://i1.sndcdn.com/avatars-BSyZHOqM1EQbkEGU-wNz5wA-t500x500.jpg" alt=""><span>AOOS</span></a></div>
         <div class="loc" data-i18n="ev_own_loc">spain</div>
       </div>
       <span class="arr">↳</span>
