@@ -51,7 +51,8 @@ section{position:relative;padding:80px 32px;z-index:2}
 .evs{max-width:1200px;margin:0 auto}
 .ev{display:grid;grid-template-columns:140px 1fr auto;gap:24px;padding:24px 28px;border:1px solid rgba(255,255,255,.08);background:rgba(13,13,26,.5);margin-bottom:16px;align-items:center;transition:border-color .3s,transform .2s}
 .ev:hover{border-color:var(--neon-1);transform:translateX(4px)}
-.ev.past{opacity:.5}
+.ev.past{opacity:.55}
+.ev.featured{border-color:rgba(196,255,61,.35);background:rgba(13,13,26,.7)}
 .ev .dt{font-family:'Major Mono Display',monospace;text-transform:lowercase;letter-spacing:-.01em;line-height:1}
 .ev .dt .day{font-size:42px;color:var(--neon-1)}
 .ev .dt .mo{font-size:14px;color:var(--ink-dim);font-family:'JetBrains Mono',monospace;letter-spacing:.2em;text-transform:uppercase;margin-top:4px}
@@ -66,6 +67,14 @@ section{position:relative;padding:80px 32px;z-index:2}
 .ev .tag.live{background:var(--neon-2);color:var(--bg)}
 .ev .tag.fest{background:var(--neon-1);color:var(--bg)}
 .ev .tag.label{background:rgba(255,255,255,.1);color:var(--ink);border:1px solid rgba(255,255,255,.15)}
+/* lineup avatars row — small B&W round photos for lineup artists */
+.ev .lineup-avs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.ev .lineup-avs a{display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border:1px solid rgba(255,255,255,.08);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);background:rgba(0,0,0,.35);transition:border-color .25s,color .25s,transform .15s}
+.ev .lineup-avs a:hover{border-color:var(--neon-1);color:var(--ink);transform:translateY(-1px)}
+.ev .lineup-avs a img{width:28px;height:28px;border-radius:50%;object-fit:cover;filter:grayscale(.85) contrast(1.05);background:#222;flex-shrink:0}
+.ev .lineup-avs a.placeholder{padding-left:10px}
+.ev .ticket-btn{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 14px;border:1px solid var(--neon-1);color:var(--neon-1);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;transition:background .2s,color .2s}
+.ev .ticket-btn:hover{background:var(--neon-1);color:var(--bg)}
 
 .cta-box{max-width:1200px;margin:60px auto 0;padding:40px;border:1px dashed rgba(196,255,61,.3);text-align:center;background:rgba(13,13,26,.4)}
 .cta-box h3{font-family:'Major Mono Display',monospace;font-size:32px;text-transform:lowercase;letter-spacing:-.01em;margin-bottom:14px;color:var(--neon-1)}
@@ -209,7 +218,7 @@ body.nav-open{overflow:hidden}
         <span class="tag fest">festival</span>
         <span class="tag label">padang artists</span>
         <div class="name" data-i18n="ev_modem_n">Mo:Dem Festival · Momento Demento 2026</div>
-        <div class="lineup" data-i18n="ev_modem_lu"><b>Dates:</b> 03 — 09 Aug · gates 01 Aug · <b>Likely Padang stages:</b> The Swamp · <b>Full lineup:</b> TBA · Padang artists confirmed to attend</div>
+        <div class="lineup" data-i18n="ev_modem_lu"><b>Dates:</b> 03 — 09 Aug · gates 01 Aug · <b>Padang confirmed:</b> Anaïs Lin @ The Swamp stage · <b>Full lineup:</b> TBA</div>
         <div class="loc" data-i18n="ev_modem_loc">croatia · donje primišlje · robinzon kamp</div>
       </div>
       <span class="arr">→</span>
@@ -240,12 +249,12 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="ev">
-      <div class="dt"><div class="day">⊘</div><div class="mo">tba</div></div>
+      <div class="dt"><div class="day">⊘</div><div class="mo">tba/26</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
         <span class="tag label">padang showcase</span>
-        <div class="name" data-i18n="ev_arkana_n">Arkana Festival · 16th edition</div>
-        <div class="lineup" data-i18n="ev_arkana_lu"><b>Confirmed lineup:</b> Mallki · Tekmall · Padang guests · Sacred Valley of the Incas</div>
+        <div class="name" data-i18n="ev_arkana_n">Arkana Festival · 16th edition (2026)</div>
+        <div class="lineup" data-i18n="ev_arkana_lu"><b>Confirmed lineup:</b> Niobiun · Kilbee · Rollercoaster · Mallki · Aru · Dienstmann · Vorg · Tenebra · <b>curator:</b> Mallki</div>
         <div class="loc" data-i18n="ev_arkana_loc">Peru · sacred valley of the incas</div>
       </div>
       <span class="arr">→</span>
@@ -281,13 +290,27 @@ body.nav-open{overflow:hidden}
   <div class="sh"><span class="num">02</span><h2 data-i18n="h_history_2025">history · 2025</h2><div class="rule"></div><div class="meta" data-i18n="events_hist_meta">// sets/lives already recorded — available on lab series and padangtv</div></div>
   <div class="evs">
 
-    <div class="ev past">
-      <div class="dt"><div class="day">21</div><div class="mo">mar/26</div></div>
+    <div class="ev featured">
+      <div class="dt"><div class="day">06</div><div class="mo">mar/26</div></div>
       <div class="body">
         <span class="tag live">live recorded</span>
-        <div class="name" data-i18n="ev_sync_n">Syncronic · Padang × Blacklite</div>
-        <div class="lineup" data-i18n="ev_sync_lu"><b>Set:</b> Alex Alipe — recorded and released as Lab Series EP.21</div>
-        <div class="loc" data-i18n="ev_sync_loc">collab pad×blkl</div>
+        <span class="tag label">padang × blacklite</span>
+        <div class="name" data-i18n="ev_sync_n">Syncronic · Padang × Blacklite · POA edition</div>
+        <div class="lineup" data-i18n="ev_sync_lu"><b>Live recorded:</b> Alex Alipe set released as Lab Series EP.21 · <b>Full lineup ↓</b></div>
+        <div class="lineup-avs">
+          <a href="https://shotgun.live/pt-br/artists/djabstractmachine" target="_blank" rel="noopener" class="placeholder">Abstract Machine</a>
+          <a href="https://shotgun.live/pt-br/artists/shove" target="_blank" rel="noopener" class="placeholder">shove</a>
+          <a href="https://shotgun.live/pt-br/artists/piazermusic" target="_blank" rel="noopener" class="placeholder">PIAZER</a>
+          <a href="https://shotgun.live/pt-br/artists/greenwaveslive" target="_blank" rel="noopener"><img loading="lazy" src="https://i1.sndcdn.com/avatars-4kSAR1fFg40ALADO-ozuJCw-t500x500.jpg" alt="">Green Waves</a>
+          <a href="https://shotgun.live/pt-br/artists/alexalipe-music" target="_blank" rel="noopener" class="placeholder">Alex Alipe</a>
+          <a href="https://shotgun.live/pt-br/artists/dienstmann" target="_blank" rel="noopener"><img loading="lazy" src="https://i1.sndcdn.com/avatars-M6RzKB42I3Uc9mJl-dJsqcA-t500x500.jpg" alt="">Dienstmann</a>
+          <a href="https://shotgun.live/pt-br/artists/vorgmusicbr" target="_blank" rel="noopener"><img loading="lazy" src="https://i1.sndcdn.com/avatars-jB2JbnYKO1TXmSyF-bf7VSg-t500x500.jpg" alt="">VORG</a>
+          <a href="https://shotgun.live/pt-br/artists/tekmall" target="_blank" rel="noopener"><img loading="lazy" src="https://i1.sndcdn.com/avatars-UbnaR8SAlOF7x3tr-vc13xg-t500x500.jpg" alt="">TEKMALL</a>
+          <a href="https://shotgun.live/pt-br/artists/britt-rodrigues-1" target="_blank" rel="noopener"><img loading="lazy" src="https://i1.sndcdn.com/avatars-4QG6xPhQXqt0bQSo-Cj6rng-t500x500.jpg" alt="">Tenebra</a>
+          <a href="https://shotgun.live/pt-br/artists/secularbonzo" target="_blank" rel="noopener"><img loading="lazy" src="https://i1.sndcdn.com/avatars-yURPmQN9OpDfTXYy-s8EsRA-t500x500.jpg" alt="">Secular Bonzo</a>
+        </div>
+        <a class="ticket-btn" href="https://shotgun.live/pt-br/events/syncronic-padang-x-blacklite-poa-edition" target="_blank" rel="noopener">↗ shotgun event page</a>
+        <div class="loc" data-i18n="ev_sync_loc">brazil · porto alegre · centro histórico</div>
       </div>
       <span class="arr">↳</span>
     </div>
@@ -296,9 +319,9 @@ body.nav-open{overflow:hidden}
       <div class="dt"><div class="day">15</div><div class="mo">out/25</div></div>
       <div class="body">
         <span class="tag fest">festival</span>
-        <div class="name" data-i18n="ev_earth25_n">Earthdance 2025</div>
-        <div class="lineup" data-i18n="ev_earth25_lu"><b>Sets:</b> Dienstmann vs Vorg (b2b, recorded as EP.18) · Tekmall (full set, recorded)</div>
-        <div class="loc" data-i18n="ev_earth25_loc">earthdance brazil</div>
+        <div class="name" data-i18n="ev_earth25_n">Earthdance RS 2025 · Padang showcase</div>
+        <div class="lineup" data-i18n="ev_earth25_lu"><b>Padang sets:</b> Dienstmann vs Vorg (b2b, recorded as Lab EP.18) · Tekmall (full set) · Tenebra · Fabinho</div>
+        <div class="loc" data-i18n="ev_earth25_loc">brazil · rio grande do sul</div>
       </div>
       <span class="arr">↳</span>
     </div>

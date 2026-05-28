@@ -110,6 +110,8 @@
     tv_streaming: { pt:"// live sets · previews · lab series · <b>@padangrecords</b>", en:"// live sets · previews · lab series · <b>@padangrecords</b>", es:"// live sets · previews · lab series · <b>@padangrecords</b>", de:"// live-sets · previews · lab series · <b>@padangrecords</b>", fr:"// live sets · previews · lab series · <b>@padangrecords</b>", ja:"// ライブセット · プレビュー · ラボシリーズ · <b>@padangrecords</b>" },
     tv_subscribe: { pt:"▶ inscrever-se →", en:"▶ subscribe →", es:"▶ suscribirse →", de:"▶ abonnieren →", fr:"▶ s'abonner →", ja:"▶ チャンネル登録 →" },
     tv_now: { pt:"// tocando agora //", en:"// now playing //", es:"// reproduciendo //", de:"// jetzt //", fr:"// en cours //", ja:"// 再生中 //" },
+    s_since: { pt:"// desde", en:"// since", es:"// desde", de:"// seit", fr:"// depuis", ja:"// 創設" },
+    s_lab: { pt:"// lab series", en:"// lab series", es:"// lab series", de:"// lab series", fr:"// lab series", ja:"// ラボシリーズ" },
 
     /* ─ roster page UI ─ */
     roster_meta_label: { pt:"artists", en:"artists", es:"artistas", de:"Künstler", fr:"artistes", ja:"アーティスト" },
