@@ -148,6 +148,10 @@
                      ja:"<b>日程：</b> 8月3〜9日 · gates 8月1日 · <b>Padang 確定：</b> Anaïs Lin @ The Swamp ステージ · <b>全ラインナップ：</b> 未定" },
     ev_modem_loc:  { pt:"croácia · donje primišlje · robinzon kamp", en:"croatia · donje primišlje · robinzon kamp", es:"croacia · donje primišlje · robinzon kamp", de:"Kroatien · Donje Primišlje · Robinzon Kamp", fr:"croatie · donje primišlje · robinzon kamp", ja:"クロアチア · ドンイェ・プリミシュリェ · ロビンゾン・キャンプ" },
 
+    ev_drops_n:    { pt:"Drops Festival 2026 · Eslovênia", en:"Drops Festival 2026 · Slovenia", es:"Drops Festival 2026 · Eslovenia", de:"Drops Festival 2026 · Slowenien", fr:"Drops Festival 2026 · Slovénie", ja:"Drops Festival 2026 · スロベニア" },
+    ev_drops_lu:   { pt:"<b>Datas:</b> 11 — 16 ago · <b>Padang confirmado:</b> Soulid · Mallki · <b>Palcos:</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station", en:"<b>Dates:</b> 11 — 16 Aug · <b>Padang confirmed:</b> Soulid · Mallki · <b>Stages:</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station", es:"<b>Fechas:</b> 11 — 16 ago · <b>Padang confirmado:</b> Soulid · Mallki · <b>Escenarios:</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station", de:"<b>Daten:</b> 11. — 16. Aug · <b>Padang bestätigt:</b> Soulid · Mallki · <b>Stages:</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station", fr:"<b>Dates :</b> 11 — 16 août · <b>Padang confirmé :</b> Soulid · Mallki · <b>Scènes :</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station", ja:"<b>日程：</b> 8月11〜16日 · <b>Padang 確定：</b> Soulid · Mallki · <b>ステージ：</b> Drops (Lambda Labs QX3) · Cage (Funktion One) · Chill Station" },
+    ev_drops_loc:  { pt:"eslovênia · kranj · paintball club naklo · floresta udinborst", en:"slovenia · kranj · paintball club naklo · udinborst forest", es:"eslovenia · kranj · paintball club naklo · bosque udinborst", de:"slowenien · kranj · paintball club naklo · udinborst-wald", fr:"slovénie · kranj · paintball club naklo · forêt udinborst", ja:"スロベニア · クラニ · ペイントボール・クラブ・ナクロ · ウディンボルスト森林" },
+
     ev_up_n:       { pt:"Padang Sequence · Universo Paralello", en:"Padang Sequence · Universo Paralello", es:"Padang Sequence · Universo Paralello", de:"Padang Sequence · Universo Paralello", fr:"Padang Sequence · Universo Paralello", ja:"Padang Sequence · Universo Paralello" },
     ev_up_lu:      { pt:"<b>Palco:</b> Tropikalien · <b>Lineup:</b> TBA",
                      en:"<b>Stage:</b> Tropikalien · <b>Lineup:</b> TBA",
@@ -167,7 +171,7 @@
     ev_arkana17_loc:{ pt:"peru · vale sagrado dos incas", en:"peru · sacred valley of the incas", es:"perú · valle sagrado de los incas", de:"Peru · Heiliges Tal der Inkas", fr:"pérou · vallée sacrée des incas", ja:"ペルー · インカの聖なる谷" },
 
     /* ─ shop CTAs ─ */
-    shop_open:          { pt:"↳ abrir →", en:"↳ open →", es:"↳ abrir →", de:"↳ öffnen →", fr:"↳ ouvrir →", ja:"↳ 開く →" },
+    shop_open:          { pt:"↳ abrir →", en:"↳ open →", es:"↳ abrir →", de:"↳ öffnen →", fr:"↳ ouvrir →", ja:"↳ 商品を見る →" },
     shop_view_products: { pt:"↳ ver produtos →", en:"↳ view products →", es:"↳ ver productos →", de:"↳ Produkte ansehen →", fr:"↳ voir les produits →", ja:"↳ 商品を見る →" }
   };
 
