@@ -133,6 +133,9 @@ section{position:relative;padding:120px 32px;z-index:2}
 .tv .card .thumb::after{content:"▶";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,.7);opacity:.6;transition:opacity .25s}
 .tv .card:hover .thumb::after{opacity:1}
 .tv .card .ttl{padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;line-height:1.4;color:#e6e6e6;text-transform:uppercase;min-height:54px}
+.tv .card .thumb .vtag{position:absolute;top:8px;left:8px;z-index:3;font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:.18em;background:rgba(0,0,0,.78);color:var(--neon-1);padding:3px 7px;border:1px solid rgba(196,255,61,.35);text-transform:uppercase}
+.tv .card .ttl{display:flex;flex-direction:column;gap:6px}
+.tv .card .ttl .yloc{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:400;letter-spacing:.25em;color:var(--neon-1);opacity:.75;text-transform:uppercase}
 .tv .info{margin-top:28px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
 .tv .info .lbl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 .tv .info .lbl b{color:var(--yt);font-weight:400}
@@ -382,14 +385,14 @@ body.nav-open{overflow:hidden}
 <script>
 (function(){
   const VIDS=[
-    {id:"TWDsqVog2Ho",t:"Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years"},
-    {id:"JdxCTVidefc",t:"Tekmall @ Earthdance Festival 2025"},
-    {id:"YJtpETA8jFg",t:"Dienstmann LIVE @ Earthdance Festival RS 2023"},
-    {id:"cZeXR5mxVpY",t:"Anaïs Lin @ Modem Festival 2023"},
-    {id:"R3ZYqq6T3wQ",t:"Tekmall @ Arkana Festival 2025 · Peru"},
-    {id:"B1U4Qvxn-AI",t:"Sumerian Droids · Dark Prog Live @ 3 Dimensions 2022"},
-    {id:"CL25Rrxc4rE",t:"Vorg · Live Stream for Ecotribe Festival"},
-    {id:"KQ4z1hBSMRE",t:"Paracozm Live · Flux Indoor Edition PT.1"}
+    {id:"TWDsqVog2Ho",t:"Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years",tag:"B2B",y:"2024 · BR"},
+    {id:"R3ZYqq6T3wQ",t:"Tekmall @ Arkana Festival 2025 · Peru",tag:"FESTIVAL",y:"2025 · PE"},
+    {id:"cZeXR5mxVpY",t:"Anaïs Lin @ Modem Festival 2023",tag:"FESTIVAL",y:"2023 · HR"},
+    {id:"KQ4z1hBSMRE",t:"Paracozm Live · Flux Indoor Edition PT.1",tag:"LIVE",y:"2022 · BR"},
+    {id:"JdxCTVidefc",t:"Tekmall @ Earthdance Festival 2025",tag:"FESTIVAL",y:"2025 · BR"},
+    {id:"CL25Rrxc4rE",t:"Vorg · Live Stream for Ecotribe Festival",tag:"STREAMING",y:"2020 · BR"},
+    {id:"YJtpETA8jFg",t:"Dienstmann LIVE @ Earthdance RS 2023",tag:"FESTIVAL",y:"2023 · BR"},
+    {id:"B1U4Qvxn-AI",t:"Sumerian Droids · Dark Prog @ 3 Dimensions",tag:"LIVE",y:"2022 · CL"}
   ];
   const grid=document.getElementById('tvGrid');
   const frame=document.getElementById('tvFrame');
@@ -403,7 +406,7 @@ body.nav-open{overflow:hidden}
     c.setAttribute('role','button');
     c.setAttribute('aria-label','Play: '+v.t);
     // Use mqdefault as fallback when hqdefault doesn't exist for older videos
-    c.innerHTML='<div class="thumb"><img loading="lazy" src="https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg" alt="" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg\'"></div><div class="ttl">'+v.t+'</div>';
+    c.innerHTML='<div class="thumb"><img loading="lazy" src="https://i.ytimg.com/vi/'+v.id+'/hqdefault.jpg" alt="" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg\'"><span class="vtag">'+v.tag+'</span></div><div class="ttl">'+v.t+'<span class="yloc">'+v.y+'</span></div>';
     const activate=function(){
       frame.src='https://www.youtube.com/embed/'+v.id+'?autoplay=1&modestbranding=1&rel=0&playsinline=1';
       now.textContent=v.t;

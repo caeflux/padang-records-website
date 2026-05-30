@@ -53,6 +53,12 @@ section{position:relative;padding:80px 32px;z-index:2}
 .ev:hover{border-color:var(--neon-1);transform:translateX(4px)}
 .ev.past{opacity:.55}
 .ev.featured{border-color:rgba(196,255,61,.35);background:rgba(13,13,26,.7)}
+/* collapsible year sections */
+section[data-yr-collapsed="true"] .evs{display:none}
+section[data-yr-collapsed="true"] .cta-box{display:none}
+.sh .yr-tog{margin-left:auto;background:transparent;border:1px solid rgba(196,255,61,.35);color:var(--neon-1);padding:6px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.sh .yr-tog:hover{background:var(--neon-1);color:var(--bg)}
+
 /* notice banner: section under construction */
 .notice{max-width:1200px;margin:0 auto;padding:32px 24px 0}
 .notice .nb{display:flex;gap:14px;align-items:flex-start;border:1px dashed rgba(196,255,61,.3);background:rgba(13,13,26,.4);padding:18px 22px}
@@ -406,7 +412,7 @@ body.nav-open{overflow:hidden}
 </section>
 
 
-<section>
+<section data-yr-collapsed="true">
   <div class="sh"><span class="num">04</span><h2 data-i18n="h_year_2025">2025 · history</h2><div class="rule"></div><div class="meta" data-i18n="events_year_2025_meta">// recorded sets · lab series captures · festivals</div></div>
   <div class="evs">
 
@@ -464,7 +470,7 @@ body.nav-open{overflow:hidden}
   </div>
 </section>
 
-<section>
+<section data-yr-collapsed="true">
   <div class="sh"><span class="num">05</span><h2 data-i18n="h_year_2024">2024 · history</h2><div class="rule"></div><div class="meta" data-i18n="events_year_2024_meta">// earlier confirmations from roster artists</div></div>
   <div class="evs">
 
@@ -552,6 +558,27 @@ body.nav-open{overflow:hidden}
       if (b) { b.setAttribute('aria-expanded','false'); b.textContent='☰'; }
     });
     document.body.classList.remove('nav-open');
+  });
+})();
+</script>
+
+<script>
+// Year-section collapse toggle
+(function(){
+  document.querySelectorAll('section[data-yr-collapsed]').forEach(sec=>{
+    const sh=sec.querySelector('.sh');
+    if(!sh)return;
+    const btn=document.createElement('button');
+    btn.className='yr-tog';
+    btn.type='button';
+    const setLabel=()=>{btn.textContent=sec.getAttribute('data-yr-collapsed')==='true'?'▾ show':'▴ hide';};
+    setLabel();
+    btn.addEventListener('click',()=>{
+      const cur=sec.getAttribute('data-yr-collapsed')==='true';
+      sec.setAttribute('data-yr-collapsed', cur?'false':'true');
+      setLabel();
+    });
+    sh.appendChild(btn);
   });
 })();
 </script>
