@@ -258,12 +258,6 @@ body.nav-open{overflow:hidden}
   </div>
 </section>
 
-<div class="alphajump" id="alphajump" aria-label="alphabetic jump">
-  <button class="aj on" data-letter="ALL" data-i18n="aj_all">all</button>
-  <button class="aj" data-letter="A">A</button><button class="aj" data-letter="B">B</button><button class="aj" data-letter="C">C</button><button class="aj" data-letter="D">D</button><button class="aj" data-letter="E">E</button><button class="aj" data-letter="F">F</button><button class="aj" data-letter="G">G</button><button class="aj" data-letter="H">H</button><button class="aj" data-letter="I">I</button><button class="aj" data-letter="J">J</button><button class="aj" data-letter="K">K</button><button class="aj" data-letter="L">L</button><button class="aj" data-letter="M">M</button><button class="aj" data-letter="N">N</button><button class="aj" data-letter="O">O</button><button class="aj" data-letter="P">P</button><button class="aj" data-letter="Q">Q</button><button class="aj" data-letter="R">R</button><button class="aj" data-letter="S">S</button><button class="aj" data-letter="T">T</button><button class="aj" data-letter="U">U</button><button class="aj" data-letter="V">V</button><button class="aj" data-letter="W">W</button><button class="aj" data-letter="X">X</button><button class="aj" data-letter="Y">Y</button><button class="aj" data-letter="Z">Z</button>
-  <span class="ajcount" id="ajcount"></span>
-</div>
-
 <section id="a">
   <div class="sh"><span class="num">03</span><h2 data-i18n="h_roster">roster</h2><div class="rule"></div><div class="meta">// <b id="cntAll">55</b> artists</div></div>
   <div class="arts"><div class="gr" id="rs"></div></div>
@@ -537,48 +531,5 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.con
 <script src="i18n-extra.js"></script>
 <script src="i18n-bios.js"></script>
 
-<script>
-// Alphabet jump filter (filters .a cards by first letter of their name)
-(function(){
-  const btns=[...document.querySelectorAll('.aj')];
-  const grid=document.querySelector('.gr');
-  if(!grid)return;
-  function getCards(){return [...document.querySelectorAll('.a')].filter(a=>!a.classList.contains('cta')&&a.querySelector('.nm'));}
-  function update(){
-    const act=document.querySelector('.aj.on');
-    const k=act?act.dataset.letter:'ALL';
-    let visible=0;
-    getCards().forEach(c=>{
-      const nm=(c.querySelector('.nm')?.textContent||'').trim().toUpperCase();
-      const first=nm.charAt(0);
-      const match=(k==='ALL')||(first===k);
-      c.classList.toggle('hide',!match);
-      if(match)visible++;
-    });
-    const countEl=document.getElementById('ajcount');
-    if(countEl)countEl.textContent='// '+visible+' artists';
-  }
-  // mark empty letters (no artist starts with that letter)
-  function markEmpty(){
-    const used=new Set();
-    getCards().forEach(c=>{
-      const nm=(c.querySelector('.nm')?.textContent||'').trim().toUpperCase();
-      if(nm)used.add(nm.charAt(0));
-    });
-    btns.forEach(b=>{
-      const k=b.dataset.letter;
-      if(k==='ALL')return;
-      if(!used.has(k))b.classList.add('empty');
-    });
-  }
-  btns.forEach(b=>b.addEventListener('click',()=>{
-    btns.forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');
-    update();
-  }));
-  // wait a tick for any dynamic roster render
-  setTimeout(()=>{markEmpty();update();},300);
-})();
-</script>
 </body>
 </html>
