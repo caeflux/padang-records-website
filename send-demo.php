@@ -68,6 +68,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'email';
 if ($location === '') $errors[] = 'location';
 if ($genre === '')    $errors[] = 'genre';
 if (!filter_var($sclink, FILTER_VALIDATE_URL))  $errors[] = 'sclink';
+elseif (!preg_match('#^https?://(soundcloud\.com|drive\.google\.com)/#i', $sclink)) $errors[] = 'sclink';
 if ($bio === '')      $errors[] = 'bio';
 if (!$exclusive || !$rights || !$readguide) $errors[] = 'declarations';
 
@@ -114,7 +115,3 @@ $sent = mail($to, $subject, $body, $headers, '-fnoreply@padangrecords.net');
 
 if ($sent) {
     echo json_encode(['ok' => true]);
-} else {
-    http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'mail_failed']);
-}
