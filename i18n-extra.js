@@ -135,7 +135,7 @@
     demo_decl_1:     { pt:"faixas inéditas · não lançadas", en:"unreleased tracks · never released", es:"pistas inéditas · sin publicar", de:"unveröffentlichte Tracks · nie veröffentlicht", fr:"morceaux inédits · jamais sortis", ja:"未発表トラック · 未リリース" },
     demo_decl_2:     { pt:"todos os samples / colabs autorizados", en:"all samples / collabs cleared", es:"todos los samples / colabs autorizados", de:"alle Samples / Kollaborationen geklärt", fr:"tous les samples / collabs autorisés", ja:"全サンプル／コラボ承諾済み" },
     demo_decl_3:     { pt:"li o guia acima", en:"I read the guide above", es:"leí la guía de arriba", de:"ich habe den Leitfaden oben gelesen", fr:"j'ai lu le guide ci-dessus", ja:"上記ガイドを読みました" },
-    demo_note:       { pt:"// abre seu cliente de email com tudo pré-formatado", en:"// opens your email client with everything pre-filled", es:"// abre tu cliente de email con todo pre-formateado", de:"// öffnet dein E-Mail-Programm mit allem vorformatiert", fr:"// ouvre ton client mail avec tout préformaté", ja:"// メールクライアントに全項目を整形して開きます" },
+    demo_note:       { pt:"// enviado direto pra contact@padangrecords.net", en:"// sent directly to contact@padangrecords.net", es:"// enviado directo a contact@padangrecords.net", de:"// direkt an contact@padangrecords.net gesendet", fr:"// envoyé directement à contact@padangrecords.net", ja:"// contact@padangrecords.net に直接送信されます" },
     demo_submit:     { pt:"▶ enviar demo →", en:"▶ send demo →", es:"▶ enviar demo →", de:"▶ Demo senden →", fr:"▶ envoyer démo →", ja:"▶ デモを送る →" },
 
     /* ─ events: novos · 2026/27 ─ */

@@ -180,6 +180,12 @@ body.nav-open{overflow:hidden}
   footer .so{gap:10px 14px}
   footer .so a{font-size:9px}
 }
+
+.status{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;line-height:1.5;padding:10px 14px;border:1px solid transparent;transition:opacity .25s;opacity:0}
+.status.loading,.status.ok,.status.err{opacity:1}
+.status.loading{color:var(--ink-dim);border-color:rgba(255,255,255,.15)}
+.status.ok{color:var(--neon-1);border-color:rgba(196,255,61,.45);background:rgba(196,255,61,.06)}
+.status.err{color:#ff7a7a;border-color:rgba(255,80,80,.4);background:rgba(255,80,80,.06)}
 </style>
 </head>
 <body>
@@ -226,7 +232,9 @@ body.nav-open{overflow:hidden}
     </ul>
   </div>
 
-  <form class="form" id="demoForm" action="mailto:demos@padangrecords.net" method="post" enctype="text/plain">
+  <form class="form" id="demoForm" action="./send-demo.php" method="post" novalidate>
+      <!-- honeypot: bots fill, humans don't see -->
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" aria-hidden="true">
     <div class="row grid">
       <div>
         <label><span data-i18n="demo_l_artist">artist name</span> <span class="req">*</span></label>
@@ -301,7 +309,8 @@ body.nav-open{overflow:hidden}
 
     <div class="submit">
       <button type="submit" data-i18n="demo_submit">▶ send demo →</button>
-      <span class="note" data-i18n="demo_note">// opens your email client with everything pre-filled</span>
+      <span class="note" data-i18n="demo_note">// sent directly to contact@padangrecords.net</span>
+      <div class="status" id="demoStatus" role="status" aria-live="polite"></div>
     </div>
   </form>
 </section>
@@ -322,53 +331,70 @@ body.nav-open{overflow:hidden}
 </footer>
 
 <script>
-// Intercept submit, build mailto subject + body with formatted content
-document.getElementById('demoForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const f = e.target;
-  const get = (n) => (f.elements[n]?.value || '').trim();
-  const artist = get('artist');
-  const realname = get('realname');
-  const email = get('email');
-  const location = get('location');
-  const genre = get('genre');
-  const bpm = get('bpm');
-  const sclink = get('sclink');
-  const profile = get('profile');
-  const bio = get('bio');
-  const message = get('message');
+// Submit demo to send-demo.php — real email to contact@padangrecords.net
+(function(){
+  const form = document.getElementById('demoForm');
+  const status = document.getElementById('demoStatus');
+  const btn = form.querySelector('button[type="submit"]');
+  if (!form) return;
 
-  const subject = `DEMO — ${artist} (${genre || 'genre tba'})`;
-  const body = `// PADANG DEMO SUBMISSION
-================================
+  function setStatus(kind, msg) {
+    status.className = 'status ' + kind;
+    status.textContent = msg;
+  }
 
-ARTIST:      ${artist}
-REAL NAME:   ${realname}
-EMAIL:       ${email}
-LOCATION:    ${location}
-GENRE:       ${genre}
-BPM:         ${bpm || '—'}
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    // Collect form data into JSON
+    const fd = new FormData(form);
+    const payload = {};
+    fd.forEach((v, k) => { payload[k] = v; });
+    // Checkboxes — FormData skips unchecked, so explicitly check current state
+    ['exclusive','rights','readguide'].forEach(name => {
+      const el = form.elements[name];
+      payload[name] = el && el.checked;
+    });
 
-DEMO LINK:
-${sclink}
+    const originalBtnText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '⏳ sending...';
+    setStatus('loading', '// sending to padang a&r ...');
 
-PROFILE:
-${profile || '—'}
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(()=>({}));
 
-BIO:
-${bio}
-
-MESSAGE:
-${message || '—'}
-
-================================
-Declarations:
-[X] Tracks unreleased
-[X] Rights & samples cleared
-[X] Read submission guide
-`;
-  window.location.href = `mailto:demos@padangrecords.net?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-});
+      if (res.ok && data.ok) {
+        setStatus('ok', '✓ demo received. expect a reply in 3-6 weeks from a padang a&r.');
+        form.reset();
+        btn.textContent = '✓ sent';
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = originalBtnText;
+        }, 8000);
+      } else if (res.status === 422 && data.fields) {
+        setStatus('err', '✗ check the marked fields: ' + data.fields.join(', '));
+        btn.disabled = false;
+        btn.textContent = originalBtnText;
+        // Focus first invalid field
+        const first = form.elements[data.fields[0]];
+        if (first && first.focus) first.focus();
+      } else {
+        setStatus('err', '✗ send failed. try again, or email contact@padangrecords.net directly.');
+        btn.disabled = false;
+        btn.textContent = originalBtnText;
+      }
+    } catch (err) {
+      setStatus('err', '✗ network error. try again, or email contact@padangrecords.net directly.');
+      btn.disabled = false;
+      btn.textContent = originalBtnText;
+    }
+  });
+})();
 </script>
 
 <script src="./i18n.js" defer></script>
