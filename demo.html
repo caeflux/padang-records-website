@@ -278,9 +278,9 @@ body.nav-open{overflow:hidden}
     </div>
 
     <div class="row">
-      <label><span data-i18n="demo_l_sclink">soundcloud private link or google drive folder</span> <span class="req">*</span></label>
-      <input type="url" name="sclink" required pattern="https?://(soundcloud\.com|drive\.google\.com)/.*" placeholder="https://soundcloud.com/... or https://drive.google.com/drive/folders/...">
-      <p class="hint" data-i18n="demo_l_sclink_hint">// only SoundCloud (private/secret link) or Google Drive folder · no Dropbox / WeTransfer / Mega / etc</p>
+      <label><span data-i18n="demo_l_sclink">soundcloud private link · google drive · dropbox</span> <span class="req">*</span></label>
+      <input type="url" name="sclink" required pattern="https?://(soundcloud\.com|drive\.google\.com|(www\.)?dropbox\.com)/.*" placeholder="https://soundcloud.com/... · drive.google.com/... · dropbox.com/...">
+      <p class="hint" data-i18n="demo_l_sclink_hint">// SoundCloud (private/secret link) · Google Drive folder · Dropbox — no WeTransfer / Mega / etc</p>
     </div>
 
     <div class="row">

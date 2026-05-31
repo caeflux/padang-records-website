@@ -68,7 +68,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'email';
 if ($location === '') $errors[] = 'location';
 if ($genre === '')    $errors[] = 'genre';
 if (!filter_var($sclink, FILTER_VALIDATE_URL))  $errors[] = 'sclink';
-elseif (!preg_match('#^https?://(soundcloud\.com|drive\.google\.com)/#i', $sclink)) $errors[] = 'sclink';
+elseif (!preg_match('#^https?://(soundcloud\.com|drive\.google\.com|(www\.)?dropbox\.com)/#i', $sclink)) $errors[] = 'sclink';
 if ($bio === '')      $errors[] = 'bio';
 if (!$exclusive || !$rights || !$readguide) $errors[] = 'declarations';
 
