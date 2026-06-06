@@ -417,6 +417,23 @@ roster.forEach((a,i)=>{
     '</button>');
 });
 
+// ── Avatar load fallback ──
+// CSS background-image gives no error event. Preload via Image() and if it fails
+// (SC CDN hotlink block, 403, removed avatar, etc.), swap to gradient + initials.
+roster.forEach((a, i) => {
+  if (!a.p) return;
+  const probe = new Image();
+  probe.onerror = () => {
+    document.querySelectorAll('.a[data-i="' + i + '"] .av').forEach(el => {
+      el.style.backgroundImage = '';
+      el.style.background = gradient(i);
+      el.classList.remove('ph');
+      el.textContent = initials(a.n);
+    });
+  };
+  probe.src = a.p;
+});
+
 // Modal
 const modal=document.getElementById('modal');
 const mClose=document.getElementById('mClose');
@@ -430,6 +447,14 @@ function openArtist(i){
     av.style.backgroundImage='url('+a.p+')';
     av.textContent='';
     av.style.background='url('+a.p+') center/cover, #1a1a2a';
+    // Modal avatar fallback — if the SC CDN refuses, swap to gradient + initials
+    const probe = new Image();
+    probe.onerror = () => {
+      av.style.backgroundImage='';
+      av.style.background=gradient(i);
+      av.textContent=initials(a.n);
+    };
+    probe.src = a.p;
   } else {
     av.style.backgroundImage='';
     av.style.background=gradient(i);
