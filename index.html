@@ -382,9 +382,9 @@ body.nav-open{overflow:hidden}
   <div class="sh"><span class="num">05</span><h2 data-i18n="h_padangtv">padangtv</h2><div class="rule"></div><div class="meta">// official channel · live sets · previews · padang lab series · DJ recordings</div></div>
   <div class="frm">
     <div class="player">
-      <iframe id="tvFrame" src="https://www.youtube.com/embed/TWDsqVog2Ho?modestbranding=1&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      <iframe id="tvFrame" src="https://www.youtube.com/embed/UoFRyl2QH7w?modestbranding=1&rel=0&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
-    <div class="now"><span data-i18n="tv_now">// now playing //</span> <b id="tvNow">Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years</b></div>
+    <div class="now"><span data-i18n="tv_now">// now playing //</span> <b id="tvNow">TEKMALL @ Arkana Festival 2025 · Full Set · Vale Sagrado dos Incas</b></div>
     <div class="grid" id="tvGrid"></div>
     <div class="info">
       <span class="lbl" data-i18n="tv_streaming">// live sets · previews · lab series · <b>@padangrecords</b></span>
@@ -395,14 +395,18 @@ body.nav-open{overflow:hidden}
 <script>
 (function(){
   const VIDS=[
-    {id:"TWDsqVog2Ho",t:"Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years",tag:"B2B",y:"2024 · BR"},
-    {id:"R3ZYqq6T3wQ",t:"Tekmall @ Arkana Festival 2025 · Peru",tag:"FESTIVAL",y:"2025 · PE"},
+    {id:"UoFRyl2QH7w",t:"TEKMALL @ Arkana Festival 2025 · Full Set · Vale Sagrado dos Incas",tag:"FULL SET",y:"2025 · PE · 1:23:09"},
+    {id:"YJtpETA8jFg",t:"Dienstmann LIVE @ Earthdance RS 2023 · Full Set",tag:"FULL SET",y:"2023 · BR · 1:23:12"},
+    {id:"TWDsqVog2Ho",t:"Dienstmann vs Vorg · Earthdance 2024 · Padang 11 Years",tag:"B2B",y:"2024 · BR · 1:21:48"},
+    {id:"2gyYMVtISfQ",t:"TEKMALL @ Origens Gathering 2025 · Full Set",tag:"FULL SET",y:"2025 · BR · 1:02:18"},
+    {id:"hR7tpBw4q2A",t:"Padang Lab Series EP.21 · Alex Alipe @ Syncronic Padang × Blacklite",tag:"LAB EP",y:"2026 · BR · 1:00:22"},
+    {id:"yKSsZ9W71pY",t:"TENEBRA @ Earthdance Festival RS 2025 · Full Set",tag:"FULL SET",y:"2025 · BR · 56:38"},
+    {id:"ELC4zDcN2IU",t:"TENEBRA · Comic Monsters Festival 2025 · Full Set",tag:"FULL SET",y:"2025 · BR · 53:50"},
     {id:"cZeXR5mxVpY",t:"Anaïs Lin @ Modem Festival 2023",tag:"FESTIVAL",y:"2023 · HR"},
-    {id:"KQ4z1hBSMRE",t:"Paracozm Live · Flux Indoor Edition PT.1",tag:"LIVE",y:"2022 · BR"},
     {id:"JdxCTVidefc",t:"Tekmall @ Earthdance Festival 2025",tag:"FESTIVAL",y:"2025 · BR"},
-    {id:"CL25Rrxc4rE",t:"Vorg · Live Stream for Ecotribe Festival",tag:"STREAMING",y:"2020 · BR"},
-    {id:"YJtpETA8jFg",t:"Dienstmann LIVE @ Earthdance RS 2023",tag:"FESTIVAL",y:"2023 · BR"},
-    {id:"B1U4Qvxn-AI",t:"Sumerian Droids · Dark Prog @ 3 Dimensions",tag:"LIVE",y:"2022 · CL"}
+    {id:"B1U4Qvxn-AI",t:"Sumerian Droids · Dark Prog @ 3 Dimensions",tag:"LIVE",y:"2022 · CL"},
+    {id:"KQ4z1hBSMRE",t:"Paracozm Live · Flux Indoor Edition PT.1",tag:"LIVE",y:"2022 · BR"},
+    {id:"CL25Rrxc4rE",t:"Vorg · Live Stream for Ecotribe Festival",tag:"STREAMING",y:"2020 · BR"}
   ];
   const grid=document.getElementById('tvGrid');
   const frame=document.getElementById('tvFrame');
