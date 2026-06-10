@@ -187,6 +187,32 @@ body.nav-open{overflow:hidden}
 .status.ok{color:var(--neon-1);border-color:rgba(196,255,61,.45);background:rgba(196,255,61,.06)}
 .status.err{color:#ff7a7a;border-color:rgba(255,80,80,.4);background:rgba(255,80,80,.06)}
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '2047697899170790');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=2047697899170790&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<script>
+// Meta Pixel: track Contact event on any mailto: click
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="mailto:"]');
+  if (!a || !window.fbq) return;
+  var to = (a.href.match(/mailto:([^?]+)/)||[])[1] || '';
+  fbq('track', 'Contact', {to: to});
+}, true);
+</script>
 </head>
 <body>
 
@@ -369,6 +395,7 @@ body.nav-open{overflow:hidden}
       const data = await res.json().catch(()=>({}));
 
       if (res.ok && data.ok) {
+        if (window.fbq) fbq('track', 'Lead', {content_name: 'demo_submission', content_category: payload.genre || 'unknown'});
         setStatus('ok', '✓ demo received. expect a reply in 3-6 weeks from a padang a&r.');
         form.reset();
         btn.textContent = '✓ sent';
