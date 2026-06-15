@@ -1,11 +1,17 @@
 # Padang Records · cache strategy
-# HTML/JS/JSON: revalidate every load (max-age small + must-revalidate)
-# Images/fonts: cache long-term (immutable assets)
 
 <IfModule mod_headers.c>
-  <FilesMatch "\.(html|js|json|css)$">
+  # HTML: never cached — always fetch fresh (fixes the cron-deploy lag issue)
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+  # CSS/JS/JSON: short cache, must revalidate
+  <FilesMatch "\.(js|json|css)$">
     Header set Cache-Control "public, max-age=300, must-revalidate"
   </FilesMatch>
+  # Images/fonts: 30-day cache, immutable
   <FilesMatch "\.(svg|png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|otf)$">
     Header set Cache-Control "public, max-age=2592000, immutable"
   </FilesMatch>
