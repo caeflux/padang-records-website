@@ -4,6 +4,18 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>PADANG RECORDS — send your demo</title>
+<meta name="description" content="Send your demo to Padang Records - dark progressive, psytech and zenonesque. Read the guide and submit your unreleased tracks." />
+<link rel="canonical" href="https://padangrecords.net/demo.html" />
+<meta name="theme-color" content="#070710" />
+<link rel="icon" href="./img/logo.svg" type="image/svg+xml" />
+<link rel="icon" href="./img/padang-logo.png" type="image/png" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Padang Records" />
+<meta property="og:title" content="PADANG RECORDS — send your demo" />
+<meta property="og:description" content="Send your demo to Padang Records - dark progressive, psytech and zenonesque. Read the guide and submit your unreleased tracks." />
+<meta property="og:url" content="https://padangrecords.net/demo.html" />
+<meta property="og:image" content="https://padangrecords.net/img/logo-full.png" />
+<meta name="twitter:card" content="summary" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
@@ -369,6 +381,29 @@ document.addEventListener('click', function(e){
     status.textContent = msg;
   }
 
+  // Fallback when send-demo.php is unreachable (e.g. static hosting without PHP):
+  // offer a pre-filled mailto so no submission is ever lost.
+  function mailtoHref(p) {
+    var subject = '[DEMO] ' + (p.artist || '') + ' — ' + (p.genre || '');
+    var body = 'ARTIST: ' + (p.artist || '') + '\nREAL NAME: ' + (p.realname || '')
+      + '\nEMAIL: ' + (p.email || '') + '\nLOCATION: ' + (p.location || '')
+      + '\nGENRE: ' + (p.genre || '') + '\nBPM: ' + (p.bpm || '-')
+      + '\n\nDEMO LINK:\n' + (p.sclink || '') + '\n\nPROFILE:\n' + (p.profile || '-')
+      + '\n\nBIO:\n' + (p.bio || '') + '\n\nMESSAGE:\n' + (p.message || '-');
+    return 'mailto:contact@padangrecords.net?subject=' + encodeURIComponent(subject)
+      + '&body=' + encodeURIComponent(body);
+  }
+  function setStatusFallback(msg, p) {
+    status.className = 'status err';
+    status.textContent = msg + ' ';
+    var a = document.createElement('a');
+    a.href = mailtoHref(p);
+    a.textContent = '→ send via email instead';
+    a.style.color = 'inherit';
+    a.style.textDecoration = 'underline';
+    status.appendChild(a);
+  }
+
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     // Collect form data into JSON
@@ -386,7 +421,48 @@ document.addEventListener('click', function(e){
     btn.textContent = '⏳ sending...';
     setStatus('loading', '// sending to padang a&r ...');
 
+    function success() {
+      if (window.fbq) fbq('track', 'Lead', {content_name: 'demo_submission', content_category: payload.genre || 'unknown'});
+      setStatus('ok', '✓ demo received. expect a reply in 3-6 weeks from a padang a&r.');
+      form.reset();
+      btn.textContent = '✓ sent';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = originalBtnText;
+      }, 8000);
+    }
+    function fail(msg) {
+      setStatusFallback(msg, payload);
+      btn.disabled = false;
+      btn.textContent = originalBtnText;
+    }
+
+    // Tier 2 — static hosting (no PHP): deliver to the same inbox via FormSubmit.
+    async function sendViaFormSubmit() {
+      if (payload.website) { success(); return; } // honeypot: fake success for bots
+      const res = await fetch('https://formsubmit.co/ajax/contact@padangrecords.net', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: '[DEMO] ' + (payload.artist || '') + ' — ' + (payload.genre || ''),
+          _template: 'box',
+          _captcha: 'false',
+          artist: payload.artist, realname: payload.realname, email: payload.email,
+          location: payload.location, genre: payload.genre, bpm: payload.bpm || '—',
+          demo_link: payload.sclink, profile: payload.profile || '—',
+          bio: payload.bio, message: payload.message || '—',
+          declarations: 'tracks unreleased: ' + !!payload.exclusive
+            + ' · rights cleared: ' + !!payload.rights
+            + ' · read guide: ' + !!payload.readguide
+        })
+      });
+      const data = await res.json().catch(()=>({}));
+      if (res.ok && (data.success === true || data.success === 'true')) success();
+      else fail('✗ send failed.');
+    }
+
     try {
+      // Tier 1 — send-demo.php (PHP hosting)
       const res = await fetch(form.action, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -395,14 +471,7 @@ document.addEventListener('click', function(e){
       const data = await res.json().catch(()=>({}));
 
       if (res.ok && data.ok) {
-        if (window.fbq) fbq('track', 'Lead', {content_name: 'demo_submission', content_category: payload.genre || 'unknown'});
-        setStatus('ok', '✓ demo received. expect a reply in 3-6 weeks from a padang a&r.');
-        form.reset();
-        btn.textContent = '✓ sent';
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.textContent = originalBtnText;
-        }, 8000);
+        success();
       } else if (res.status === 422 && data.fields) {
         setStatus('err', '✗ check the marked fields: ' + data.fields.join(', '));
         btn.disabled = false;
@@ -411,14 +480,12 @@ document.addEventListener('click', function(e){
         const first = form.elements[data.fields[0]];
         if (first && first.focus) first.focus();
       } else {
-        setStatus('err', '✗ send failed. try again, or email contact@padangrecords.net directly.');
-        btn.disabled = false;
-        btn.textContent = originalBtnText;
+        // PHP absent/broken (e.g. static host returned the raw file or 404/405)
+        await sendViaFormSubmit().catch(() => fail('✗ send failed.'));
       }
     } catch (err) {
-      setStatus('err', '✗ network error. try again, or email contact@padangrecords.net directly.');
-      btn.disabled = false;
-      btn.textContent = originalBtnText;
+      // Server unreachable — still try FormSubmit before giving up
+      try { await sendViaFormSubmit(); } catch (e) { fail('✗ could not reach the server.'); }
     }
   });
 })();

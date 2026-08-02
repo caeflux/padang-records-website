@@ -1,26 +1,32 @@
 # Padang Records — site final
 
-Pasta canônica com os 7 HTMLs definitivos do mockup + sistema de tradução (i18n) em 6 idiomas. Para publicar, basta hospedar a pasta inteira (Netlify, Vercel, GitHub Pages, etc.) — o `index.html` é a entrada padrão.
+Pasta canônica com os 8 HTMLs definitivos + sistema de tradução (i18n) em 6 idiomas.
+
+> **Form de demo — envio real em qualquer host.** Cadeia de 3 níveis, todos entregando em `contact@padangrecords.net`:
+> 1. `send-demo.php` (PHP `mail()`) — usado quando o host tem PHP (ex.: HostGator);
+> 2. **FormSubmit** (`formsubmit.co/ajax/contact@padangrecords.net`) — usado automaticamente em host estático (Netlify/Vercel/GitHub Pages). ⚠️ Requer ativação única: clicar no link "Activate Form" enviado por email para `contact@padangrecords.net` (disparado em 2026-08-02);
+> 3. `mailto:` pré-preenchido — último recurso se ambos falharem.
 
 ## Páginas
 
-| Arquivo | Tamanho | Conteúdo |
-|---|---|---|
-| **index.html** | 33 KB | Home: hero, manifesto, 18 releases (Bandcamp embeds), preview de 11 artistas, latest signal, embed PadangTV, CTA demo |
-| **roster.html** | 38 KB | 56 artistas (17 confirmados, 39 pendentes) · cards clicáveis com foto real · modal de bio + email + embed SoundCloud + vídeos YouTube |
-| **lab.html** | 19 KB | Playlist completa (21 EPs) + 8 episódios da Lab Series em destaque |
-| **about.html** | 14 KB | Manifesto longo + timeline 2017-2026 + stats |
-| **events.html** | 16 KB | 3 próximos + 7 históricos de eventos/festivais |
-| **demo.html** | 16 KB | Form de submission com 12 campos + mailto pré-formatado |
-| **shop.html** | 22 KB | 5 designs Spreadshirt + iframe live da loja |
-| **i18n.js** | 32 KB | Sistema de tradução em 6 idiomas (~100 chaves) |
-| **README.md** | 4 KB | Esta documentação |
-
-Total: ~194 KB.
+| Arquivo | Conteúdo |
+|---|---|
+| **index.html** | Home: hero, manifesto, releases (Bandcamp embeds), preview de artistas, embed PadangTV, CTA demo |
+| **releases.html** | Catálogo completo de releases |
+| **roster.html** | 55 artistas · cards clicáveis com foto · modal de bio + email + embed SoundCloud + vídeos YouTube |
+| **lab.html** | Playlist completa + episódios da Lab Series em destaque |
+| **about.html** | Manifesto longo + timeline + stats |
+| **events.html** | Próximos eventos + históricos de eventos/festivais |
+| **demo.html** | Form de submission → `send-demo.php` (email real) com fallback `mailto:` |
+| **shop.html** | Designs Spreadshirt + iframe live da loja |
+| **i18n.js** | Sistema de tradução em 6 idiomas (~100 chaves) |
+| **i18n-extra.js / i18n-bios.js / i18n-lab.js** | Traduções extras, bios dos artistas (5 idiomas) e Lab Series |
+| **send-demo.php** | Backend do form de demo (honeypot, validação, proteção header injection) |
+| **README.md** | Esta documentação |
 
 ## Navegação
 
-Todos os 7 HTMLs compartilham o mesmo nav fixo no topo, com 9 itens + seletor de idioma:
+Todos os 8 HTMLs compartilham o mesmo nav fixo no topo + seletor de idioma:
 
 `Selo · Releases · Roster · Lab Series · PadangTV · Sobre · Eventos · Demo · Shop` · **`PT · EN · ES · DE · FR · JA`**
 
@@ -88,6 +94,10 @@ O JS detecta automaticamente. Conteúdo HTML dentro do valor é preservado (usa 
 
 ## Para publicar
 
+**Opção recomendada (form de demo 100% funcional):** host com PHP (ex.: HostGator, onde o domínio já está) — subir o conteúdo de `padang-final/` via FTP/cPanel.
+
+**Opção estática (form cai no fallback mailto):**
+
 ```bash
 # Netlify drop
 # Arraste a pasta padang-final/ inteira para app.netlify.com/drop
@@ -100,7 +110,9 @@ npx vercel --prod
 # Suba como repositório, ative Pages na branch main, pasta root
 ```
 
-Domínio sugerido: `padangrecords.net` (substituindo o atual hospedado em construtor de sites).
+Não subir: `fotos artistas/` (fotos-fonte, não usadas pelo site).
+
+Domínio: `padangrecords.net` (canonical/OG tags já apontam para ele).
 
 ## Próximos passos sugeridos
 
