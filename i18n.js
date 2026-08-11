@@ -132,9 +132,9 @@
       fr:"La <b>Padang Lab Series</b> est la vitrine de DJ sets curatés par le label — une séquence de <em>sessions hypnotiques</em> où des artistes résidents et invités mènent des voyages d'une heure ou plus à travers le dark progressive, psytech, forest et techno. Chaque épisode est une photographie sonore du moment créatif de l'artiste. Comprend des enregistrements live de festivals (Earthdance, Syncronic) et des sets en studio.",
       ja:"<b>Padang Lab Series</b>は、レーベルがキュレーションするDJセットのショーケース — dark progressive、psytech、forest、technoを横断する1時間以上の<em>ヒプノティック・セッション</em>の連続です。各エピソードはアーティストの創造的瞬間のサウンド・フォトグラフ。フェスティバル（Earthdance、Syncronic）のライブ録音とスタジオセットを含みます。"
     },
-    lab_all_eps: { pt:"//// ALL EPISODES · 21 ////", en:"//// ALL EPISODES · 21 ////", es:"//// TODOS LOS EPISODIOS · 21 ////", de:"//// ALLE FOLGEN · 21 ////", fr:"//// TOUS LES ÉPISODES · 21 ////", ja:"//// 全エピソード · 21 ////" },
+    lab_all_eps: { pt:"//// ALL EPISODES · 23 ////", en:"//// ALL EPISODES · 23 ////", es:"//// TODOS LOS EPISODIOS · 23 ////", de:"//// ALLE FOLGEN · 23 ////", fr:"//// TOUS LES ÉPISODES · 23 ////", ja:"//// 全エピソード · 23 ////" },
     lab_featured_meta: { pt:"// 8 sessões em destaque · ", en:"// 8 featured sessions · ", es:"// 8 sesiones destacadas · ", de:"// 8 ausgewählte Sessions · ", fr:"// 8 sessions en vedette · ", ja:"// 注目セッション 8 · " },
-    lab_featured_total: { pt:"21 episódios no total", en:"21 episodes total", es:"21 episodios en total", de:"21 Folgen insgesamt", fr:"21 épisodes au total", ja:"全21エピソード" },
+    lab_featured_total: { pt:"23 episódios no total", en:"23 episodes total", es:"23 episodios en total", de:"23 Folgen insgesamt", fr:"23 épisodes au total", ja:"全23エピソード" },
     lab_featured_curated: { pt:" · curadoria padang records", en:" · curated by padang records", es:" · curaduría padang records", de:" · kuratiert von padang records", fr:" · curaté par padang records", ja:" · padang records キュレーション" },
     lab_listen_sc: { pt:"↳ ouvir no sc", en:"↳ listen on sc", es:"↳ escuchar en sc", de:"↳ auf sc hören", fr:"↳ écouter sur sc", ja:"↳ SCで聴く" },
 

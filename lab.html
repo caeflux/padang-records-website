@@ -79,8 +79,20 @@ section{position:relative;padding:80px 32px;z-index:2}
 /* full playlist embed */
 .full{max-width:1100px;margin:0 auto 80px}
 .full .frm{position:relative;border:1px solid rgba(255,85,0,.3);background:rgba(13,13,26,.6);padding:24px}
-.full .frm::before{content:"//// ALL EPISODES · 21 ////";position:absolute;top:-10px;left:24px;background:var(--bg);padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--sc)}
+.full .frm::before{content:"//// ALL EPISODES · 23 ////";position:absolute;top:-10px;left:24px;background:var(--bg);padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--sc)}
 .full .frm iframe{display:block;border:0;width:100%;height:520px;background:#181a1b}
+
+/* ── news: label milestone feature ── */
+.news{max-width:1100px;margin:0 auto;border:1px solid rgba(255,122,24,.35);background:rgba(13,13,26,.6);padding:36px;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:start}
+.news .txt p{font-size:15.5px;line-height:1.75;font-weight:300;color:var(--ink);margin-bottom:18px;max-width:640px}
+.news .txt p b{color:var(--neon-1);font-weight:500}
+.news .quote{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.08em;color:#ff7a18;border-left:2px solid #ff7a18;padding-left:16px;line-height:1.8;margin-top:26px}
+.news .emb{border:1px solid rgba(255,255,255,.1)}
+.news .emb iframe{display:block;border:0;width:100%;height:400px;background:#181a1b}
+.news .emb .lk{display:flex;justify-content:flex-end;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase}
+.news .emb .lk a{color:var(--neon-1)}
+.news .emb .lk a:hover{opacity:.7}
+@media(max-width:860px){.news{grid-template-columns:1fr;padding:24px 18px;gap:24px}.news .emb iframe{height:340px}}
 
 /* episode grid */
 .eps{max-width:1400px;margin:0 auto}
@@ -269,9 +281,47 @@ document.addEventListener('click', function(e){
   </div>
 </section>
 
+<section>
+  <div class="sh"><span class="num">02</span><h2 data-i18n="h_lab_news">ten years beneath the same flag</h2><div class="rule"></div><div class="meta" data-i18n="lab_news_meta">// label milestone · noctusense · 2016 — 2026 · lab ep.23</div></div>
+  <div class="news">
+    <div class="txt">
+      <p data-i18n="lab_news_p1">From <b>2016 to 2026</b>, Noctusense has been part of the Padang Records story — not only as an artist, but as one of the minds that helped shape an important chapter of our sound. <b>Lab Series EP.23</b> marks the milestone: ten years beneath the same flag.</p>
+      <p data-i18n="lab_news_p2">As compiler and curator of <b>Haunted Spectre</b>, our most acclaimed dark progressive compilation series, Ronaldo played a fundamental role in pushing Padang into new territory. Through its releases and continuity, Haunted Spectre became more than a series — it helped define an era of the label and the darker path we chose to explore.</p>
+      <p data-i18n="lab_news_p3">From Brazil's Northeast, Noctusense has remained one of the few pirates carrying the Padang flag across the region, extending this story far beyond our usual waters. Ten years of music, friendship, discovery and shared vision.</p>
+      <p class="quote" data-i18n="lab_news_quote">"Some journeys deserve no monument.<br>They deserve to be played loud."</p>
+    </div>
+    <div class="emb">
+      <iframe src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2379305402&color=%23ff7a18&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true" allow="autoplay" loading="lazy" title="Padang Lab Series EP.23 — Noctusense 10 Years on Padang"></iframe>
+      <div class="lk"><a href="https://soundcloud.com/padangrec/padang-lab-series-ep-23" target="_blank" rel="noopener" data-i18n="lab_news_listen">↳ listen to ep.23 on soundcloud</a></div>
+    </div>
+  </div>
+</section>
+
 <section class="eps">
-  <div class="sh"><span class="num">02</span><h2 data-i18n="h_featured_eps">all episodes</h2><div class="rule"></div><div class="meta">// <b>21 episodes</b> · curated by padang records · ep.21 → ep.1</div></div>
+  <div class="sh"><span class="num">03</span><h2 data-i18n="h_featured_eps">all episodes</h2><div class="rule"></div><div class="meta">// <b>23 episodes</b> · curated by padang records · ep.23 → ep.1</div></div>
   <div class="gr">
+    <div class="ep" style="border-color:rgba(255,122,24,.35)">
+      <span class="num-tag" style="border-color:rgba(255,122,24,.55);color:#ff7a18">EP.23</span>
+      <div class="head">
+        <div class="artist">noctusense</div>
+        <div class="title" data-i18n="ep23_t">10 Years on Padang · 2016 — 2026</div>
+
+        <div class="meta"><span>10·08·2026</span><span data-i18n="ep23_loc">↳ anniversary set</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https://soundcloud.com/padangrec/padang-lab-series-ep-23&color=%23ff7a18&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span>Noctusense</span><a href="https://soundcloud.com/padangrec/padang-lab-series-ep-23" target="_blank" rel="noopener">↳ listen on sc</a></div>
+    </div>
+    <div class="ep live">
+      <span class="num-tag">EP.22</span>
+      <div class="head">
+        <div class="artist">secular bonzo</div>
+        <div class="title" data-i18n="ep22_t">Live Recorded at Syncronic - Padang x Blacklite</div>
+        <span class="live-tag">● live</span>
+        <div class="meta"><span>26·05·2026</span><span data-i18n="ep22_loc">↳ live recorded</span></div>
+      </div>
+      <div class="embed"><iframe src="https://w.soundcloud.com/player/?url=https://soundcloud.com/padangrec/padang-lab-series-ep-22&color=%23ff2bd6&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" allow="autoplay" loading="lazy"></iframe></div>
+      <div class="ft"><span>Secular Bonzo</span><a href="https://soundcloud.com/padangrec/padang-lab-series-ep-22" target="_blank" rel="noopener">↳ listen on sc</a></div>
+    </div>
     <div class="ep live">
       <span class="num-tag">EP.21</span>
       <div class="head">

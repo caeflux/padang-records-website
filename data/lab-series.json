@@ -1,5 +1,29 @@
 [
   {
+    "ep": 23,
+    "title": "Noctusense",
+    "subtitle": "10 Years on Padang · 2016 — 2026",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep-23",
+    "track_id": "soundcloud:tracks:2379305402",
+    "date": "2026-08-10",
+    "duration_sec": 5295,
+    "artwork": "https://i1.sndcdn.com/artworks-aQj3sl68nmRJMqnt-nSoYdA-t500x500.jpg",
+    "tags": ["anniversary", "10-years", "haunted-spectre", "label-milestone"],
+    "on_padangrec": true
+  },
+  {
+    "ep": 22,
+    "title": "Secular Bonzo",
+    "subtitle": "Live Recorded at Syncronic - Padang x Blacklite",
+    "sc_url": "https://soundcloud.com/padangrec/padang-lab-series-ep-22",
+    "track_id": "soundcloud:tracks:2328029708",
+    "date": "2026-05-26",
+    "duration_sec": 3665,
+    "artwork": "https://i1.sndcdn.com/artworks-eTJFpjtNSwdIqqcj-8XycWQ-t500x500.jpg",
+    "tags": ["live", "syncronic", "padang-x-blacklite"],
+    "on_padangrec": true
+  },
+  {
     "ep": 21,
     "title": "Alex Alipe",
     "subtitle": "Live Recorded at Syncronic - Padang x Blacklite",
