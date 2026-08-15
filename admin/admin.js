@@ -158,22 +158,8 @@ $('#authForm').addEventListener('submit', async (e) => {
   if (error) authFeedback(translateAuthErr(error), null);
 });
 
-$('#btnSignup').addEventListener('click', async () => {
-  authFeedback(null, null);
-  const email = $('#authEmail').value.trim();
-  const password = $('#authPass').value;
-  if (!email || password.length < 6) {
-    authFeedback('Informe e-mail e uma senha com pelo menos 6 caracteres.', null);
-    return;
-  }
-  $('#btnSignup').disabled = true;
-  const { data, error } = await sb.auth.signUp({ email, password });
-  $('#btnSignup').disabled = false;
-  if (error) { authFeedback(translateAuthErr(error), null); return; }
-  if (data && data.user && !data.session) {
-    authFeedback(null, 'Conta criada. Verifique seu e-mail para confirmar antes de entrar.');
-  }
-});
+/* Signup removido de proposito: contas de admin sao criadas apenas
+   pelo dashboard do Supabase (Authentication > Users > Add user). */
 
 function translateAuthErr(error) {
   const m = String((error && error.message) || '');

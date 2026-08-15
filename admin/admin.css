@@ -207,3 +207,6 @@ table.dt{width:100%;border-collapse:collapse;font-size:12.5px;min-width:640px}
   main{padding:24px 14px 60px}
   .panel{padding:18px 14px}
 }
+
+/* nota da tela de login (signup removido) */
+.auth-note { margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .4px; color: #9a958b; opacity: .75; }
