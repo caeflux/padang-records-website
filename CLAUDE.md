@@ -86,6 +86,8 @@ node --check /tmp/check.js
 | `demo.html` | Formulário de submissão · valida SC/Drive/Dropbox URL · manda pra `send-demo.php` |
 | `shop.html` | Spreadshirt embed |
 | `send-demo.php` | Backend do demo form · envia email pra `contact@padangrecords.net` |
+| `admin/` | Área restrita da label · login Supabase (allowlist), upload CSV Bandcamp, relatórios/royalties, checklist merch/e-mail, insights · **sem GA/Pixel, noindex** · docs: `../ARQUITETURA-AREA-RESTRITA.md` (fora do repo) |
+| `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
 | `data/releases.json` | Fonte canônica do catálogo (108 entradas ordenadas por data desc) |
 | `i18n.js` | 6 idiomas (PT/EN/ES/DE/FR/JA) · chaves nav + genéricas |
 | `i18n-bios.js` | Bios traduzidas dos artistas (EN/ES/DE/FR/JA — PT é source em roster.html) |

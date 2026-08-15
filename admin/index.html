@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Padang Records · Área Restrita</title>
+<meta name="theme-color" content="#0a0908" />
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml" />
+<link rel="icon" href="../img/padang-logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./admin.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ══════════ TELA DE LOGIN ══════════ -->
+<div id="authView" class="screen" hidden>
+  <div class="auth-card">
+    <div class="auth-logo">padang</div>
+    <div class="auth-sub">// área restrita · administração</div>
+    <form id="authForm" autocomplete="on">
+      <label for="authEmail">E-mail</label>
+      <input type="email" id="authEmail" autocomplete="email" required placeholder="voce@exemplo.com">
+      <label for="authPass">Senha</label>
+      <input type="password" id="authPass" autocomplete="current-password" required minlength="6" placeholder="••••••••">
+      <div id="authError" class="form-error" hidden></div>
+      <div id="authInfo" class="form-info" hidden></div>
+      <div class="auth-actions">
+        <button type="submit" class="btn btn-primary" id="btnLogin">Entrar</button>
+        <button type="button" class="btn btn-ghost" id="btnSignup">Criar conta</button>
+      </div>
+    </form>
+    <a class="auth-back" href="../index.html">← voltar ao site</a>
+  </div>
+</div>
+
+<!-- ══════════ ACESSO NEGADO ══════════ -->
+<div id="deniedView" class="screen" hidden>
+  <div class="auth-card">
+    <div class="auth-logo">padang</div>
+    <div class="denied-icon">⚠</div>
+    <p class="denied-msg">Acesso restrito — este e-mail não está na lista de administradores.</p>
+    <p class="denied-sub" id="deniedEmail"></p>
+    <div class="auth-actions">
+      <button type="button" class="btn btn-primary" id="btnDeniedLogout">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CARREGANDO ══════════ -->
+<div id="bootView" class="screen">
+  <div class="boot-spinner" aria-label="Carregando"></div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="appView" hidden>
+
+  <header class="topbar">
+    <div class="tb-brand">padang <span>· admin</span></div>
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button class="tab on" data-tab="overview" role="tab" aria-selected="true">Visão geral</button>
+      <button class="tab" data-tab="artists" role="tab" aria-selected="false">Artistas</button>
+      <button class="tab" data-tab="upload" role="tab" aria-selected="false">Upload</button>
+      <button class="tab" data-tab="insights" role="tab" aria-selected="false">Insights</button>
+    </nav>
+    <div class="tb-user">
+      <span id="tbEmail"></span>
+      <button class="btn btn-ghost btn-sm" id="btnLogout">Sair</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ────── VISÃO GERAL ────── -->
+    <section id="tab-overview" class="tabpane" role="tabpanel">
+      <div class="sh"><span class="num">01</span><h2>visão geral</h2><div class="rule"></div></div>
+      <div id="ovError" class="pane-error" hidden></div>
+      <div id="ovCurrencyWarn" class="notice" hidden></div>
+      <div id="ovEmpty" class="empty-state" hidden>
+        <div class="empty-num">∅</div>
+        <p>Nenhuma venda registrada ainda.</p>
+        <p class="empty-sub">Suba o primeiro CSV do Bandcamp na aba <b>Upload</b>.</p>
+      </div>
+      <div class="cards" id="ovCards" aria-busy="true"></div>
+    </section>
+
+    <!-- ────── ARTISTAS ────── -->
+    <section id="tab-artists" class="tabpane" hidden role="tabpanel">
+      <div class="sh"><span class="num">02</span><h2>artistas</h2><div class="rule"></div></div>
+      <div id="arError" class="pane-error" hidden></div>
+      <div class="toolbar">
+        <input type="search" id="arFilter" placeholder="Filtrar por nome…" aria-label="Filtrar artistas">
+        <label class="chk-inline"><input type="checkbox" id="arOnlyRoster"> só roster</label>
+        <label class="chk-inline"><input type="checkbox" id="arOnlySales"> só com vendas</label>
+        <span class="toolbar-count" id="arCount"></span>
+      </div>
+      <div class="table-wrap">
+        <table class="dt" id="arTable">
+          <thead>
+            <tr>
+              <th data-sort="stage_name" class="sortable">Artista</th>
+              <th data-sort="on_roster" class="sortable">Roster</th>
+              <th data-sort="sales_count" class="sortable num">Vendas</th>
+              <th data-sort="items_sold" class="sortable num">Itens</th>
+              <th data-sort="gross_total" class="sortable num">Bruto</th>
+              <th data-sort="net_revenue" class="sortable num">Net</th>
+              <th data-sort="revenue_share" class="sortable num">%</th>
+              <th data-sort="artist_share" class="sortable num">Valor artista</th>
+              <th data-sort="total_paid" class="sortable num">Pago</th>
+              <th data-sort="balance_due" class="sortable num">Saldo a pagar</th>
+              <th>Merch</th>
+              <th>E-mail criado</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="arBody"><tr><td colspan="13" class="td-loading">Carregando…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ────── UPLOAD ────── -->
+    <section id="tab-upload" class="tabpane" hidden role="tabpanel">
+      <div class="sh"><span class="num">03</span><h2>upload csv</h2><div class="rule"></div></div>
+      <div id="upError" class="pane-error" hidden></div>
+
+      <div class="panel">
+        <div class="panel-title">// tabela raw do bandcamp (.csv)</div>
+        <div class="up-grid">
+          <div class="filebox" id="fileBox">
+            <input type="file" id="csvFile" accept=".csv,text/csv" aria-label="Arquivo CSV">
+            <div class="filebox-hint" id="fileHint">Arraste o CSV aqui ou clique para escolher</div>
+          </div>
+          <div class="up-opts">
+            <div class="opt-title">Modo de importação</div>
+            <label class="radio"><input type="radio" name="upMode" value="append" checked>
+              <span><b>Adicionar</b> (com dedupe) — linhas repetidas são ignoradas</span></label>
+            <label class="radio"><input type="radio" name="upMode" value="replace_all">
+              <span><b>Substituir tudo</b> — apaga todos os uploads e vendas antes de importar</span></label>
+            <button class="btn btn-primary" id="btnUpload" disabled>Importar CSV</button>
+          </div>
+        </div>
+        <div class="progress" id="upProgress" hidden>
+          <div class="progress-bar" id="upBar"></div>
+          <div class="progress-label" id="upLabel"></div>
+        </div>
+        <div class="up-result" id="upResult" hidden></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">// histórico de uploads</div>
+        <div class="table-wrap">
+          <table class="dt">
+            <thead><tr><th>Arquivo</th><th>Período</th><th class="num">Linhas</th><th>Modo</th><th>Enviado em</th><th>Ações</th></tr></thead>
+            <tbody id="upHistBody"><tr><td colspan="6" class="td-loading">Carregando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">// nomes sem vínculo</div>
+        <p class="panel-sub">Vendas cujo nome de artista no Bandcamp não foi reconhecido. Vincule a um artista existente (cria um apelido) ou crie um novo artista.</p>
+        <div class="table-wrap">
+          <table class="dt">
+            <thead><tr><th>Nome no Bandcamp</th><th class="num">Vendas</th><th class="num">Receita (net)</th><th>Vincular a</th><th>Ações</th></tr></thead>
+            <tbody id="unmatchedBody"><tr><td colspan="5" class="td-loading">Carregando…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ────── INSIGHTS ────── -->
+    <section id="tab-insights" class="tabpane" hidden role="tabpanel">
+      <div class="sh"><span class="num">04</span><h2>insights</h2><div class="rule"></div></div>
+      <div id="inError" class="pane-error" hidden></div>
+      <div id="inEmpty" class="empty-state" hidden>
+        <div class="empty-num">∅</div>
+        <p>Sem dados para analisar ainda.</p>
+        <p class="empty-sub">Suba o primeiro CSV do Bandcamp na aba <b>Upload</b>.</p>
+      </div>
+      <div id="inGrid" class="charts-grid">
+        <div class="panel chart-panel wide">
+          <div class="panel-title">// receita líquida por mês</div>
+          <div class="chart-box"><canvas id="chMonthly"></canvas></div>
+        </div>
+        <div class="panel chart-panel wide">
+          <div class="panel-title">// net vs taxas por mês</div>
+          <div class="chart-box"><canvas id="chFees"></canvas></div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-title">// receita por país · top 12</div>
+          <div class="chart-box"><canvas id="chCountry"></canvas></div>
+        </div>
+        <div class="panel chart-panel">
+          <div class="panel-title">// receita por tipo de item</div>
+          <div class="chart-box"><canvas id="chType"></canvas></div>
+        </div>
+        <div class="panel chart-panel wide">
+          <div class="panel-title">// top 10 itens por receita líquida</div>
+          <div class="chart-box tall"><canvas id="chItems"></canvas></div>
+        </div>
+        <div class="panel wide">
+          <div class="panel-title">// top compradores &amp; recorrência</div>
+          <div class="kpi-row" id="buyerKpis"></div>
+          <div class="table-wrap">
+            <table class="dt">
+              <thead><tr><th>Comprador</th><th class="num">Compras</th><th class="num">Receita (net)</th><th class="num">Artistas</th><th>Primeira</th><th>Última</th></tr></thead>
+              <tbody id="buyersBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel wide">
+          <div class="panel-title">// códigos de desconto</div>
+          <div class="table-wrap">
+            <table class="dt">
+              <thead><tr><th>Código</th><th class="num">Usos</th><th class="num">Receita (net)</th></tr></thead>
+              <tbody id="discountsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="admin-footer">© padang records · área restrita · dados confidenciais</footer>
+</div>
+
+<!-- ══════════ MODAL: PAGAMENTO ══════════ -->
+<div class="modal-back" id="payModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+    <div class="modal-head">
+      <span id="payTitle">Registrar pagamento</span>
+      <button class="modal-x" id="payClose" aria-label="Fechar">✕</button>
+    </div>
+    <form id="payForm">
+      <div class="pay-artist" id="payArtist"></div>
+      <div class="frow2">
+        <div><label for="payAmount">Valor *</label>
+          <input type="number" id="payAmount" step="0.01" min="0.01" required placeholder="0,00"></div>
+        <div><label for="payCurrency">Moeda</label>
+          <input type="text" id="payCurrency" maxlength="3" value="USD" style="text-transform:uppercase"></div>
+      </div>
+      <div class="frow2">
+        <div><label for="payDate">Data</label><input type="date" id="payDate"></div>
+        <div><label for="payMethod">Método</label>
+          <select id="payMethod">
+            <option value="">—</option>
+            <option value="paypal">PayPal</option>
+            <option value="pix">Pix</option>
+            <option value="wise">Wise</option>
+            <option value="transferencia">Transferência</option>
+            <option value="outro">Outro</option>
+          </select></div>
+      </div>
+      <label for="payRef">Referência</label>
+      <input type="text" id="payRef" placeholder="ID da transação, recibo…">
+      <label for="payNotes">Observações</label>
+      <textarea id="payNotes" rows="2"></textarea>
+      <div id="payError" class="form-error" hidden></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="payCancel">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="paySave">Salvar pagamento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════ MODAL: CONFIRMAR SUBSTITUIÇÃO ══════════ -->
+<div class="modal-back" id="confirmModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+    <div class="modal-head"><span id="cfTitle">Substituir tudo?</span>
+      <button class="modal-x" id="cfClose" aria-label="Fechar">✕</button></div>
+    <p class="modal-msg" id="cfMsg"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="cfCancel">Cancelar</button>
+      <button type="button" class="btn btn-danger" id="cfOk">Sim, substituir tudo</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="./admin.js"></script>
+</body>
+</html>

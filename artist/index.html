@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Padang Records · Portal do Artista</title>
+<meta name="theme-color" content="#0a0908" />
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml" />
+<link rel="icon" href="../img/padang-logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./artist.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ══════════ TELA DE LOGIN ══════════ -->
+<div id="authView" class="screen" hidden>
+  <div class="auth-card">
+    <button type="button" class="lang-toggle" aria-label="PT / EN"><span class="lt-pt">PT</span><span class="lt-sep">/</span><span class="lt-en">EN</span></button>
+    <div class="auth-logo">padang</div>
+    <div class="auth-sub" data-i18n="auth_sub">// portal do artista</div>
+    <p class="auth-hint" data-i18n="auth_hint">Use o e-mail cadastrado junto à label. Se ainda não tem conta, crie uma com esse mesmo e-mail.</p>
+    <form id="authForm" autocomplete="on">
+      <label for="authEmail" data-i18n="auth_email_lbl">E-mail</label>
+      <input type="email" id="authEmail" autocomplete="email" required placeholder="voce@exemplo.com">
+      <label for="authPass" data-i18n="auth_pass_lbl">Senha</label>
+      <input type="password" id="authPass" autocomplete="current-password" required minlength="6" placeholder="••••••••">
+      <div id="authError" class="form-error" hidden></div>
+      <div id="authInfo" class="form-info" hidden></div>
+      <div class="auth-actions">
+        <button type="submit" class="btn btn-primary" id="btnLogin" data-i18n="btn_login">Entrar</button>
+        <button type="button" class="btn btn-ghost" id="btnSignup" data-i18n="btn_signup">Criar conta</button>
+      </div>
+    </form>
+    <a class="auth-back" href="../index.html" data-i18n="auth_back">← voltar ao site</a>
+  </div>
+</div>
+
+<!-- ══════════ CONTA NÃO VINCULADA ══════════ -->
+<div id="unlinkedView" class="screen" hidden>
+  <div class="auth-card">
+    <div class="auth-logo">padang</div>
+    <div class="denied-icon">◌</div>
+    <p class="denied-msg" data-i18n="ul_msg">Sua conta ainda não está vinculada a um artista do roster.</p>
+    <p class="denied-sub"><span data-i18n="ul_contact_pre">Fale com a label (</span><a href="mailto:contact@padangrecords.net" class="mail-link">contact@padangrecords.net</a><span data-i18n="ul_contact_post">) para vincular o e-mail </span><span id="ulEmail"></span></p>
+    <p class="admin-hint" id="ulAdminHint" hidden><span data-i18n="admin_hint_pre">você é admin — </span><a href="../admin/" data-i18n="admin_hint_link">ir para /admin/</a></p>
+    <div class="auth-actions">
+      <button type="button" class="btn btn-primary" id="btnUnlinkedLogout" data-i18n="btn_logout">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ERRO ══════════ -->
+<div id="errorView" class="screen" hidden>
+  <div class="auth-card">
+    <div class="auth-logo">padang</div>
+    <div class="denied-icon">⚠</div>
+    <p class="denied-msg" data-i18n="err_title">Não foi possível carregar seus dados.</p>
+    <p class="denied-sub" id="errDetail"></p>
+    <div class="auth-actions">
+      <button type="button" class="btn btn-primary" id="btnRetry" data-i18n="btn_retry">Tentar de novo</button>
+      <button type="button" class="btn btn-ghost" id="btnErrorLogout" data-i18n="btn_logout">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CARREGANDO ══════════ -->
+<div id="bootView" class="screen">
+  <div class="boot-spinner" aria-label="Carregando"></div>
+</div>
+
+<!-- ══════════ PAINEL DO ARTISTA ══════════ -->
+<div id="appView" hidden>
+
+  <header class="topbar">
+    <div class="tb-brand">padang <span data-i18n="tb_role">· artista</span></div>
+    <div class="tb-user">
+      <button type="button" class="lang-toggle" aria-label="PT / EN"><span class="lt-pt">PT</span><span class="lt-sep">/</span><span class="lt-en">EN</span></button>
+      <span id="tbEmail"></span>
+      <button class="btn btn-ghost btn-sm" id="btnLogout" data-i18n="btn_logout">Sair</button>
+    </div>
+  </header>
+
+  <main>
+    <p class="admin-hint" id="appAdminHint" hidden><span data-i18n="admin_hint_pre">você é admin — </span><a href="../admin/" data-i18n="admin_hint_link">ir para /admin/</a></p>
+
+    <div class="hello">
+      <div class="hello-line">
+        <h1 id="helloName"></h1>
+        <span class="badge" id="rosterBadge"></span>
+      </div>
+      <p class="hello-sub" data-i18n="hello_sub">// seu relatório de vendas na padang records</p>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <span class="lbl" data-i18n="card_net_lbl">receita líquida (net)</span>
+        <span class="val" id="cNet">—</span>
+        <span class="sub" data-i18n="card_net_sub">vendas bandcamp após taxas</span>
+      </div>
+      <div class="card">
+        <span class="lbl" data-i18n="card_share_lbl">seu valor</span>
+        <span class="val" id="cShare">—</span>
+        <span class="sub" id="cSharePct">—</span>
+      </div>
+      <div class="card">
+        <span class="lbl" data-i18n="card_paid_lbl">já pago</span>
+        <span class="val" id="cPaid">—</span>
+        <span class="sub" data-i18n="card_paid_sub">repasses já feitos pela label</span>
+      </div>
+      <div class="card hero">
+        <span class="lbl" data-i18n="card_due_lbl">saldo a receber</span>
+        <span class="val money" id="cDue">—</span>
+        <span class="sub" data-i18n="card_due_sub">seu valor − já pago</span>
+      </div>
+    </div>
+
+    <div class="meta-row">
+      <div class="meta"><span class="m-lbl" data-i18n="meta_sales">vendas</span><span class="m-val" id="mSales">—</span></div>
+      <div class="meta"><span class="m-lbl" data-i18n="meta_items">itens vendidos</span><span class="m-val" id="mItems">—</span></div>
+      <div class="meta"><span class="m-lbl" data-i18n="meta_first">primeira venda</span><span class="m-val" id="mFirst">—</span></div>
+      <div class="meta"><span class="m-lbl" data-i18n="meta_last">última venda</span><span class="m-val" id="mLast">—</span></div>
+    </div>
+
+    <div class="panel chart-panel">
+      <div class="panel-title" data-i18n="chart_title">// evolução mensal · receita líquida</div>
+      <div id="chError" class="pane-error" hidden></div>
+      <div id="chEmpty" class="chart-empty" hidden data-i18n="chart_empty">sem dados mensais ainda</div>
+      <div class="chart-box"><canvas id="chMonthly"></canvas></div>
+    </div>
+
+    <p class="footnote" data-i18n="footnote">valores baseados nos relatórios brutos do bandcamp importados pela label · 60% do net é repassado a artistas do roster</p>
+  </main>
+
+  <footer class="portal-footer" data-i18n="footer">© padang records · portal do artista · dados confidenciais</footer>
+</div>
+
+<script src="./artist.js"></script>
+</body>
+</html>
