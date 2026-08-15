@@ -210,3 +210,14 @@ table.dt{width:100%;border-collapse:collapse;font-size:12.5px;min-width:640px}
 
 /* nota da tela de login (signup removido) */
 .auth-note { margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .4px; color: #9a958b; opacity: .75; }
+
+/* ── insights v2 (aditivo) ── */
+.hero-strip{margin-bottom:28px}
+.hero-strip .card{border-color:var(--neon-dim);background:linear-gradient(135deg,rgba(196,255,61,.06),rgba(20,18,16,.6))}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 30px}
+.subnav .pill{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-dim);border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:color .2s,border-color .2s,background .2s}
+.subnav .pill:hover{color:var(--ink);border-color:var(--neon-dim)}
+.subnav .pill.on{color:var(--neon);border-color:var(--neon-dim);background:rgba(196,255,61,.06)}
+.in-block{margin-bottom:46px;scroll-margin-top:82px}
+.block-head{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:24px}
+.chart-note{margin-top:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--ink-dim)}

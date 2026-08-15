@@ -182,46 +182,169 @@
         <p>Sem dados para analisar ainda.</p>
         <p class="empty-sub">Suba o primeiro CSV do Bandcamp na aba <b>Upload</b>.</p>
       </div>
-      <div id="inGrid" class="charts-grid">
-        <div class="panel chart-panel wide">
-          <div class="panel-title">// receita líquida por mês</div>
-          <div class="chart-box"><canvas id="chMonthly"></canvas></div>
-        </div>
-        <div class="panel chart-panel wide">
-          <div class="panel-title">// net vs taxas por mês</div>
-          <div class="chart-box"><canvas id="chFees"></canvas></div>
-        </div>
-        <div class="panel chart-panel">
-          <div class="panel-title">// receita por país · top 12</div>
-          <div class="chart-box"><canvas id="chCountry"></canvas></div>
-        </div>
-        <div class="panel chart-panel">
-          <div class="panel-title">// receita por tipo de item</div>
-          <div class="chart-box"><canvas id="chType"></canvas></div>
-        </div>
-        <div class="panel chart-panel wide">
-          <div class="panel-title">// top 10 itens por receita líquida</div>
-          <div class="chart-box tall"><canvas id="chItems"></canvas></div>
-        </div>
-        <div class="panel wide">
-          <div class="panel-title">// top compradores &amp; recorrência</div>
-          <div class="kpi-row" id="buyerKpis"></div>
-          <div class="table-wrap">
-            <table class="dt">
-              <thead><tr><th>Comprador</th><th class="num">Compras</th><th class="num">Receita (net)</th><th class="num">Artistas</th><th>Primeira</th><th>Última</th></tr></thead>
-              <tbody id="buyersBody"></tbody>
-            </table>
+      <div id="inGrid">
+
+        <!-- tira de destaques -->
+        <div class="cards hero-strip" id="inHero" aria-busy="true"></div>
+
+        <!-- sub-navegação interna -->
+        <nav class="subnav" aria-label="Blocos de insights">
+          <a href="#in-timing" class="pill on">⏱ timing</a>
+          <a href="#in-catalog" class="pill">📀 catálogo &amp; preço</a>
+          <a href="#in-audience" class="pill">🌍 público &amp; alcance</a>
+          <a href="#in-finance" class="pill">💶 financeiro</a>
+        </nav>
+
+        <!-- ⏱ TIMING -->
+        <div class="in-block" id="in-timing">
+          <div class="block-head">⏱ timing</div>
+          <div class="charts-grid">
+            <div class="panel chart-panel">
+              <div class="panel-title">// melhor dia da semana · net por dia</div>
+              <div class="chart-box"><canvas id="chWeekday"></canvas></div>
+            </div>
+            <div class="panel chart-panel">
+              <div class="panel-title">// vendas por hora · horário de brasília</div>
+              <div class="chart-box"><canvas id="chHour"></canvas></div>
+            </div>
+            <div class="panel chart-panel">
+              <div class="panel-title">// sazonalidade · mês do ano</div>
+              <div class="chart-box"><canvas id="chSeason"></canvas></div>
+            </div>
+            <div class="panel chart-panel">
+              <div class="panel-title">// bandcamp friday · net por dia</div>
+              <div class="chart-box"><canvas id="chBcf"></canvas></div>
+              <p class="chart-note">aproximado: 1ª sexta do mês, desde mar/2020.</p>
+            </div>
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// receita líquida por mês</div>
+              <div class="chart-box"><canvas id="chMonthly"></canvas></div>
+            </div>
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// ano a ano · net (barras) + novos compradores (linha)</div>
+              <div class="chart-box"><canvas id="chYearly"></canvas></div>
+            </div>
           </div>
         </div>
-        <div class="panel wide">
-          <div class="panel-title">// códigos de desconto</div>
-          <div class="table-wrap">
-            <table class="dt">
-              <thead><tr><th>Código</th><th class="num">Usos</th><th class="num">Receita (net)</th></tr></thead>
-              <tbody id="discountsBody"></tbody>
-            </table>
+
+        <!-- 📀 CATÁLOGO & PREÇO -->
+        <div class="in-block" id="in-catalog">
+          <div class="block-head">📀 catálogo &amp; preço</div>
+          <div class="charts-grid">
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// top 10 itens por receita líquida</div>
+              <div class="chart-box tall"><canvas id="chItems"></canvas></div>
+            </div>
+            <div class="panel wide">
+              <div class="panel-title">// momentum de lançamentos · top 12 por net 30d</div>
+              <div class="table-wrap">
+                <table class="dt">
+                  <thead><tr><th>Item</th><th>Artista</th><th>1ª venda</th><th class="num">7d</th><th class="num">30d</th><th class="num">Total</th><th class="num">%30d/total</th></tr></thead>
+                  <tbody id="momentumBody"><tr><td colspan="7" class="td-loading">Carregando…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel chart-panel">
+              <div class="panel-title">// pontos de preço (€/$) · top 10 por receita</div>
+              <div class="chart-box"><canvas id="chPrices"></canvas></div>
+            </div>
+            <div class="panel chart-panel">
+              <div class="panel-title">// receita por tipo de item</div>
+              <div class="chart-box"><canvas id="chType"></canvas></div>
+            </div>
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// formato por ano · net empilhado</div>
+              <div class="chart-box"><canvas id="chFormatYear"></canvas></div>
+            </div>
+            <div class="panel wide">
+              <div class="panel-title">// artista destaque por ano</div>
+              <div class="table-wrap">
+                <table class="dt">
+                  <thead><tr><th>Ano</th><th>Artista</th><th class="num">Vendas</th><th class="num">Receita (net)</th></tr></thead>
+                  <tbody id="artistYearBody"><tr><td colspan="4" class="td-loading">Carregando…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
+
+        <!-- 🌍 PÚBLICO & ALCANCE -->
+        <div class="in-block" id="in-audience">
+          <div class="block-head">🌍 público &amp; alcance</div>
+          <div class="charts-grid">
+            <div class="panel chart-panel">
+              <div class="panel-title">// receita por país · top 12</div>
+              <div class="chart-box"><canvas id="chCountry"></canvas></div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">// top 15 cidades</div>
+              <div class="table-wrap">
+                <table class="dt">
+                  <thead><tr><th>Cidade</th><th>País</th><th class="num">Vendas</th><th class="num">Receita (net)</th></tr></thead>
+                  <tbody id="citiesBody"><tr><td colspan="4" class="td-loading">Carregando…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// de onde vêm as vendas · referrers top 12</div>
+              <div class="chart-box tall"><canvas id="chReferrers"></canvas></div>
+            </div>
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// novos vs recorrentes por mês · últimos 36 meses</div>
+              <div class="chart-box"><canvas id="chBuyersMonthly"></canvas></div>
+            </div>
+            <div class="panel wide">
+              <div class="panel-title">// top compradores &amp; recorrência</div>
+              <div class="kpi-row" id="buyerKpis"></div>
+              <div class="table-wrap">
+                <table class="dt">
+                  <thead><tr><th>Comprador</th><th class="num">Compras</th><th class="num">Receita (net)</th><th class="num">Artistas</th><th>Primeira</th><th>Última</th></tr></thead>
+                  <tbody id="buyersBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 💶 FINANCEIRO -->
+        <div class="in-block" id="in-finance">
+          <div class="block-head">💶 financeiro</div>
+          <div class="charts-grid">
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// net vs taxas por mês</div>
+              <div class="chart-box"><canvas id="chFees"></canvas></div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">// gorjetas · name your price</div>
+              <div class="kpi-row" id="tipsKpis"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">// refunds por ano</div>
+              <div class="table-wrap">
+                <table class="dt">
+                  <thead><tr><th>Ano</th><th class="num">Refunds</th><th class="num">Valor</th></tr></thead>
+                  <tbody id="refundsBody"><tr><td colspan="3" class="td-loading">Carregando…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel chart-panel wide">
+              <div class="panel-title">// saques do bandcamp · acumulado</div>
+              <div class="kpi-row" id="payoutKpis"></div>
+              <div class="chart-box"><canvas id="chPayouts"></canvas></div>
+              <p class="chart-note">saldo estimado = net total − saques acumulados · estimativa; moedas mistas (EUR+USD).</p>
+            </div>
+            <div class="panel wide">
+              <div class="panel-title">// códigos de desconto</div>
+              <div class="table-wrap">
+                <table class="dt">
+                  <thead><tr><th>Código</th><th class="num">Usos</th><th class="num">Receita (net)</th></tr></thead>
+                  <tbody id="discountsBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 

@@ -610,7 +610,7 @@ if(ag && HA.length){
     // só intercepta links externos (target="_blank") — não pega coisas dentro de iframes
     if (a.target !== '_blank' && a.target !== '') return;
     e.preventDefault();
-    const l    const left = Math.max(0, (screen.availWidth  - W) / 2);
+    const left = Math.max(0, (screen.availWidth  - W) / 2);
     const top  = Math.max(0, (screen.availHeight - H) / 2);
     const feat = 'width='+W+',height='+H+',left='+left+',top='+top+
                  ',toolbar=no,location=no,menubar=no,status=no,scrollbars=yes,resizable=yes';

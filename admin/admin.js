@@ -771,6 +771,7 @@ async function rematch() {
 /* Paleta categórica validada (CVD-safe, fundo escuro) — ordem fixa */
 const PAL = ['#7aa513', '#3987e5', '#d55181', '#c98500', '#199e70', '#9085e9'];
 const NEON = '#c4ff3d';
+const TYPE_LBL = { album: 'álbum (digital)', track: 'faixa (digital)', package: 'físico / merch', merch: 'merch', bundle: 'bundle', 'digital album': 'álbum (digital)', 'digital track': 'faixa (digital)' };
 const charts = {};
 function mkChart(canvasId, cfg) {
   const el = document.getElementById(canvasId);
@@ -797,32 +798,217 @@ const moneyTip = (ctx) => {
     : ctx.parsed;
   return (ctx.dataset.label ? ctx.dataset.label + ': ' : '') + money(v);
 };
+function kpiHtml(lbl, val) {
+  return '<div class="kpi"><span class="k-lbl">' + esc(lbl) + '</span><span class="k-val">' + esc(val) + '</span></div>';
+}
+function pctBR(x) {
+  return String(Math.round((Number(x) || 0) * 10) / 10).replace('.', ',') + '%';
+}
+function ratioBR(x) {
+  return String(Math.round((Number(x) || 0) * 10) / 10).replace('.', ',') + '×';
+}
+
+/* pills da sub-navegação (âncoras para os blocos) */
+$$('.subnav .pill').forEach((a) => {
+  a.addEventListener('click', () => {
+    $$('.subnav .pill').forEach((p) => { p.classList.toggle('on', p === a); });
+  });
+});
+
+/* Busca todas as linhas de uma view paginando em blocos de 1000.
+   O PostgREST corta a resposta em 1000 linhas por request — sem isso,
+   padang_v_payouts (~3,6k linhas) viria truncada e o acumulado final
+   (total sacado / saldo estimado) sairia errado em silêncio. */
+async function fetchAllRows(view, orderCols) {
+  const PAGE = 1000, all = [];
+  for (let from = 0; ; from += PAGE) {
+    let q = sb.from(view).select('*');
+    orderCols.forEach((c) => { q = q.order(c, { ascending: true }); });
+    const { data, error } = await q.range(from, from + PAGE - 1);
+    if (error) return { data: null, error: error };
+    all.push.apply(all, data || []);
+    if (!data || data.length < PAGE) return { data: all, error: null };
+  }
+}
 
 async function loadInsights() {
-  const err = $('#inError'), empty = $('#inEmpty'), grid = $('#inGrid');
+  const err = $('#inError'), empty = $('#inEmpty'), grid = $('#inGrid'), hero = $('#inHero');
   err.hidden = true; empty.hidden = true; grid.style.display = '';
+  hero.setAttribute('aria-busy', 'true');
   await detectCurrency();
   chartDefaults();
-  const [monthly, country, byType, topItems, buyers, discounts] = await Promise.all([
+  const [monthly, country, byType, topItems, buyers, discounts,
+    weekday, byHour, season, yearly, bcf, cities, referrers, tips, prices,
+    momentum, buyersMonthly, artistYearly, refunds, payouts, formatYearly, overview,
+    buyersTotal, buyersReturning] = await Promise.all([
     sb.from('padang_v_monthly').select('*').order('month', { ascending: true }),
     sb.from('padang_v_sales_by_country').select('*').order('net_revenue', { ascending: false }),
     sb.from('padang_v_sales_by_type').select('*').order('net_revenue', { ascending: false }),
     sb.from('padang_v_top_items').select('*').order('net_revenue', { ascending: false }).limit(10),
-    sb.from('padang_v_top_buyers').select('*').order('net_revenue', { ascending: false }),
-    sb.from('padang_v_discounts').select('*').order('uses', { ascending: false })
+    sb.from('padang_v_top_buyers').select('*').order('net_revenue', { ascending: false }).limit(15),
+    sb.from('padang_v_discounts').select('*').order('uses', { ascending: false }),
+    sb.from('padang_v_by_weekday').select('*').order('dow', { ascending: true }),
+    sb.from('padang_v_by_hour').select('*').order('hora', { ascending: true }),
+    sb.from('padang_v_seasonality').select('*').order('mes', { ascending: true }),
+    sb.from('padang_v_yearly').select('*').order('ano', { ascending: true }),
+    sb.from('padang_v_bandcamp_friday').select('*'),
+    sb.from('padang_v_top_cities').select('*').order('net_revenue', { ascending: false }).limit(15),
+    sb.from('padang_v_referrers').select('*').order('sales_count', { ascending: false }),
+    sb.from('padang_v_tips').select('*').maybeSingle(),
+    sb.from('padang_v_price_points').select('*').order('net_revenue', { ascending: false }).limit(10),
+    sb.from('padang_v_release_momentum').select('*').order('net_30d', { ascending: false }).limit(12),
+    sb.from('padang_v_buyers_monthly').select('*').order('month', { ascending: true }),
+    sb.from('padang_v_artist_yearly').select('*').order('ano', { ascending: true }),
+    sb.from('padang_v_refunds').select('*').order('ano', { ascending: true }),
+    fetchAllRows('padang_v_payouts', ['data', 'acumulado']),
+    sb.from('padang_v_format_yearly').select('*').order('ano', { ascending: true }),
+    sb.from('padang_v_overview').select('*').maybeSingle(),
+    sb.from('padang_v_top_buyers').select('*', { count: 'exact', head: true }),
+    sb.from('padang_v_top_buyers').select('*', { count: 'exact', head: true }).gt('purchases', 1)
   ]);
-  const firstErr = [monthly, country, byType, topItems, buyers, discounts].find((r) => r.error);
+  const results = [monthly, country, byType, topItems, buyers, discounts, weekday, byHour, season,
+    yearly, bcf, cities, referrers, tips, prices, momentum, buyersMonthly, artistYearly, refunds,
+    payouts, formatYearly, overview, buyersTotal, buyersReturning];
+  const firstErr = results.find((r) => r.error);
   if (firstErr) {
     err.textContent = 'Erro ao carregar insights: ' + errMsg(firstErr.error);
     err.hidden = false;
+    hero.setAttribute('aria-busy', 'false');
     return;
   }
   const mrows = monthly.data || [];
   if (!mrows.length) {
     grid.style.display = 'none';
     empty.hidden = false;
+    hero.setAttribute('aria-busy', 'false');
     return;
   }
+
+  const wrows = weekday.data || [];
+  const yrows = yearly.data || [];
+  const bcfRows = bcf.data || [];
+  const bfRow = bcfRows.find((r) => /friday/i.test(String(r.grupo || '')));
+  const nrRow = bcfRows.find((r) => !/friday/i.test(String(r.grupo || '')));
+
+  /* horas 0-23 completas (fuso de Brasília, já convertido na view) */
+  const hNet = new Array(24).fill(0), hCnt = new Array(24).fill(0);
+  (byHour.data || []).forEach((r) => {
+    const h = Number(r.hora);
+    if (h >= 0 && h <= 23) { hNet[h] = Number(r.net_revenue) || 0; hCnt[h] = Number(r.sales_count) || 0; }
+  });
+
+  /* ── tira de destaques ── */
+  function heroCard(lbl, val, sub) {
+    return '<div class="card"><span class="lbl">' + esc(lbl) + '</span><span class="val money">' + esc(val) + '</span>' +
+      (sub ? '<span class="sub">' + esc(sub) + '</span>' : '') + '</div>';
+  }
+  let heroHtml = '';
+  if (wrows.length) {
+    const bd = wrows.reduce((a, b) => ((Number(b.net_por_dia) || 0) > (Number(a.net_por_dia) || 0) ? b : a));
+    heroHtml += heroCard('melhor dia da semana', String(bd.dia || '—'), money(bd.net_por_dia) + ' de média por dia');
+  }
+  let peakStart = 0, peakSum = -1;
+  for (let h = 0; h <= 21; h++) {
+    const s3 = hNet[h] + hNet[h + 1] + hNet[h + 2];
+    if (s3 > peakSum) { peakSum = s3; peakStart = h; }
+  }
+  if (peakSum > 0) {
+    heroHtml += heroCard('melhor horário (brt)', peakStart + 'h–' + (peakStart + 2) + 'h', money(peakSum) + ' somados na faixa');
+  }
+  if (bfRow && nrRow && (Number(nrRow.net_por_dia) || 0) > 0) {
+    heroHtml += heroCard('efeito bandcamp friday',
+      ratioBR((Number(bfRow.net_por_dia) || 0) / Number(nrRow.net_por_dia)) + ' a média diária',
+      money(bfRow.net_por_dia) + '/dia vs ' + money(nrRow.net_por_dia) + '/dia');
+  }
+  if (yrows.length) {
+    const by = yrows.reduce((a, b) => ((Number(b.net_revenue) || 0) > (Number(a.net_revenue) || 0) ? b : a));
+    heroHtml += heroCard('melhor ano', String(by.ano || '—'), money(by.net_revenue) + ' · ' + fmtInt(by.sales_count) + ' vendas');
+  }
+  hero.innerHTML = heroHtml;
+  hero.setAttribute('aria-busy', 'false');
+
+  /* ═══ ⏱ TIMING ═══ */
+
+  /* melhor dia da semana — barras (maior em neon) */
+  const wVals = wrows.map((r) => Number(r.net_por_dia) || 0);
+  const wMax = Math.max.apply(null, wVals.concat([0]));
+  mkChart('chWeekday', {
+    type: 'bar',
+    data: {
+      labels: wrows.map((r) => String(r.dia || '')),
+      datasets: [{ label: 'Net por dia', data: wVals, backgroundColor: wVals.map((v) => (v === wMax && wMax > 0) ? NEON : PAL[0]), borderRadius: 3, maxBarThickness: 34 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: moneyTip, afterLabel: (ctx) => { const r = wrows[ctx.dataIndex]; return r ? fmtInt(r.sales_count) + ' vendas no total' : ''; } } }
+      },
+      scales: { y: { beginAtZero: true, ticks: { callback: moneyTick } }, x: { grid: { display: false } } }
+    }
+  });
+
+  /* por hora (0-23, horário de Brasília) */
+  mkChart('chHour', {
+    type: 'bar',
+    data: {
+      labels: hNet.map((_, h) => h + 'h'),
+      datasets: [{ label: 'Receita líquida', data: hNet, backgroundColor: PAL[1], borderRadius: 2, maxBarThickness: 18 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: moneyTip, afterLabel: (ctx) => fmtInt(hCnt[ctx.dataIndex]) + ' vendas' } }
+      },
+      scales: { y: { beginAtZero: true, ticks: { callback: moneyTick } }, x: { grid: { display: false }, ticks: { maxRotation: 0 } } }
+    }
+  });
+
+  /* sazonalidade — mês do ano (todos os anos somados) */
+  const sNet = new Array(12).fill(0), sCnt = new Array(12).fill(0);
+  (season.data || []).forEach((r) => {
+    const m = Number(r.mes);
+    if (m >= 1 && m <= 12) { sNet[m - 1] = Number(r.net_revenue) || 0; sCnt[m - 1] = Number(r.sales_count) || 0; }
+  });
+  mkChart('chSeason', {
+    type: 'bar',
+    data: {
+      labels: MESES.slice(),
+      datasets: [{ label: 'Receita líquida', data: sNet, backgroundColor: PAL[2], borderRadius: 3, maxBarThickness: 26 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: moneyTip, afterLabel: (ctx) => fmtInt(sCnt[ctx.dataIndex]) + ' vendas' } }
+      },
+      scales: { y: { beginAtZero: true, ticks: { callback: moneyTick } }, x: { grid: { display: false } } }
+    }
+  });
+
+  /* bandcamp friday vs dias normais — net por dia */
+  const bcfOrder = [bfRow, nrRow].filter(Boolean);
+  mkChart('chBcf', {
+    type: 'bar',
+    data: {
+      labels: bcfOrder.map((r) => String(r.grupo || '')),
+      datasets: [{
+        label: 'Net por dia',
+        data: bcfOrder.map((r) => Number(r.net_por_dia) || 0),
+        backgroundColor: bcfOrder.map((r) => (/friday/i.test(String(r.grupo || '')) ? NEON : PAL[0])),
+        borderRadius: 3, maxBarThickness: 90
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: moneyTip, afterLabel: (ctx) => { const r = bcfOrder[ctx.dataIndex]; return r ? fmtInt(r.sales_count) + ' vendas · ' + fmtInt(r.dias) + ' dias' : ''; } } }
+      },
+      scales: { y: { beginAtZero: true, ticks: { callback: moneyTick } }, x: { grid: { display: false } } }
+    }
+  });
 
   /* receita líquida por mês — linha (série única, cor da casa) */
   mkChart('chMonthly', {
@@ -855,66 +1041,32 @@ async function loadInsights() {
     }
   });
 
-  /* net vs taxas por mês — barras agrupadas (slots 1 e 2 da paleta) */
-  mkChart('chFees', {
+  /* ano a ano — barras de net + linha de novos compradores (eixo secundário) */
+  mkChart('chYearly', {
     type: 'bar',
     data: {
-      labels: mrows.map((r) => fmtMonth(r.month)),
+      labels: yrows.map((r) => String(r.ano)),
       datasets: [
-        { label: 'Líquido (net)', data: mrows.map((r) => Number(r.net_revenue) || 0), backgroundColor: PAL[0], borderRadius: 3, maxBarThickness: 26 },
-        { label: 'Taxas (fees)', data: mrows.map((r) => Number(r.fees) || 0), backgroundColor: PAL[1], borderRadius: 3, maxBarThickness: 26 }
+        { type: 'bar', label: 'Receita líquida', data: yrows.map((r) => Number(r.net_revenue) || 0), backgroundColor: PAL[0], borderRadius: 3, maxBarThickness: 34, yAxisID: 'y' },
+        { type: 'line', label: 'Novos compradores', data: yrows.map((r) => Number(r.novos_compradores) || 0), borderColor: PAL[1], backgroundColor: PAL[1], pointRadius: 3, pointHoverRadius: 5, borderWidth: 2, tension: 0.3, yAxisID: 'y2' }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } }, tooltip: { callbacks: { label: moneyTip } } },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } },
+        tooltip: { callbacks: { label: (ctx) => ctx.dataset.yAxisID === 'y2' ? (ctx.dataset.label + ': ' + fmtInt(ctx.parsed.y)) : moneyTip(ctx) } }
+      },
       scales: {
         y: { beginAtZero: true, ticks: { callback: moneyTick } },
+        y2: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: (v) => fmtInt(v), precision: 0 } },
         x: { grid: { display: false } }
       }
     }
   });
 
-  /* por país — barras, top 12, série única */
-  const crows = (country.data || []).filter((r) => r.country).slice(0, 12);
-  mkChart('chCountry', {
-    type: 'bar',
-    data: {
-      labels: crows.map((r) => String(r.country)),
-      datasets: [{ label: 'Receita líquida', data: crows.map((r) => Number(r.net_revenue) || 0), backgroundColor: PAL[1], borderRadius: 3, maxBarThickness: 30 }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { label: moneyTip } } },
-      scales: {
-        y: { beginAtZero: true, ticks: { callback: moneyTick } },
-        x: { grid: { display: false }, ticks: { maxRotation: 60, minRotation: 0 } }
-      }
-    }
-  });
-
-  /* por tipo de item — rosquinha */
-  const trows = (byType.data || []).filter((r) => Number(r.net_revenue) > 0);
-  const TYPE_LBL = { album: 'álbum (digital)', track: 'faixa (digital)', package: 'físico / merch', merch: 'merch', bundle: 'bundle', 'digital album': 'álbum (digital)', 'digital track': 'faixa (digital)' };
-  mkChart('chType', {
-    type: 'doughnut',
-    data: {
-      labels: trows.map((r) => TYPE_LBL[String(r.item_type || '').toLowerCase()] || String(r.item_type || 'outro')),
-      datasets: [{
-        data: trows.map((r) => Number(r.net_revenue) || 0),
-        backgroundColor: trows.map((_, i) => PAL[i % PAL.length]),
-        borderColor: '#0a0908',
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false, cutout: '58%',
-      plugins: {
-        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } },
-        tooltip: { callbacks: { label: (ctx) => ctx.label + ': ' + money(ctx.parsed) } }
-      }
-    }
-  });
+  /* ═══ 📀 CATÁLOGO & PREÇO ═══ */
 
   /* top 10 itens — barras horizontais */
   const irows = topItems.data || [];
@@ -940,20 +1092,198 @@ async function loadInsights() {
     }
   });
 
+  /* momentum de lançamentos — top 12 por net 30d */
+  const mmRows = momentum.data || [];
+  $('#momentumBody').innerHTML = mmRows.length ? mmRows.map((r) => {
+    const tot = Number(r.net_total) || 0;
+    const n30 = Number(r.net_30d) || 0;
+    return '<tr><td>' + esc(r.item_name || '—') +
+      (r.catalogo ? ' <span class="muted">· ' + esc(r.catalogo) + '</span>' : '') + '</td>' +
+      '<td>' + esc(r.artist_name || '—') + '</td>' +
+      '<td class="muted">' + esc(fmtDateOnly(r.primeira_venda)) + '</td>' +
+      '<td class="num">' + esc(money(r.net_7d)) + '</td>' +
+      '<td class="num">' + esc(money(n30)) + '</td>' +
+      '<td class="num">' + esc(money(tot)) + '</td>' +
+      '<td class="num">' + esc(tot > 0 ? pctBR(n30 / tot * 100) : '—') + '</td></tr>';
+  }).join('') : '<tr><td colspan="7" class="td-empty">sem lançamentos ainda</td></tr>';
+
+  /* pontos de preço — top 10 por receita, ordenados por preço */
+  const prows = (prices.data || []).slice().sort((a, b) => (Number(a.preco) || 0) - (Number(b.preco) || 0));
+  mkChart('chPrices', {
+    type: 'bar',
+    data: {
+      labels: prows.map((r) => '€/$ ' + (Number(r.preco) || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })),
+      datasets: [{ label: 'Receita líquida', data: prows.map((r) => Number(r.net_revenue) || 0), backgroundColor: PAL[3], borderRadius: 3, maxBarThickness: 30 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: moneyTip, afterLabel: (ctx) => { const r = prows[ctx.dataIndex]; return r ? fmtInt(r.sales_count) + ' vendas · ' + fmtInt(r.items_sold) + ' itens' : ''; } } }
+      },
+      scales: { y: { beginAtZero: true, ticks: { callback: moneyTick } }, x: { grid: { display: false }, ticks: { maxRotation: 45 } } }
+    }
+  });
+
+  /* por tipo de item — rosquinha */
+  const trows = (byType.data || []).filter((r) => Number(r.net_revenue) > 0);
+  mkChart('chType', {
+    type: 'doughnut',
+    data: {
+      labels: trows.map((r) => TYPE_LBL[String(r.item_type || '').toLowerCase()] || String(r.item_type || 'outro')),
+      datasets: [{
+        data: trows.map((r) => Number(r.net_revenue) || 0),
+        backgroundColor: trows.map((_, i) => PAL[i % PAL.length]),
+        borderColor: '#0a0908',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '58%',
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } },
+        tooltip: { callbacks: { label: (ctx) => ctx.label + ': ' + money(ctx.parsed) } }
+      }
+    }
+  });
+
+  /* formato por ano — barras empilhadas por tipo */
+  const frows = formatYearly.data || [];
+  const fyYears = Array.from(new Set(frows.map((r) => String(r.ano)))).sort();
+  const fyTypes = Array.from(new Set(frows.map((r) => String(r.item_type || 'outro'))));
+  const fyMap = {};
+  frows.forEach((r) => { fyMap[String(r.ano) + '|' + String(r.item_type || 'outro')] = Number(r.net_revenue) || 0; });
+  mkChart('chFormatYear', {
+    type: 'bar',
+    data: {
+      labels: fyYears,
+      datasets: fyTypes.map((tp, i) => ({
+        label: TYPE_LBL[tp.toLowerCase()] || tp,
+        data: fyYears.map((y) => fyMap[y + '|' + tp] || 0),
+        backgroundColor: PAL[i % PAL.length],
+        maxBarThickness: 34
+      }))
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } },
+        tooltip: { callbacks: { label: moneyTip } }
+      },
+      scales: {
+        y: { beginAtZero: true, stacked: true, ticks: { callback: moneyTick } },
+        x: { stacked: true, grid: { display: false } }
+      }
+    }
+  });
+
+  /* artista destaque por ano (maior net do ano) */
+  const ayRows = artistYearly.data || [];
+  const ayBest = {};
+  ayRows.forEach((r) => {
+    const y = String(r.ano);
+    if (!ayBest[y] || (Number(r.net_revenue) || 0) > (Number(ayBest[y].net_revenue) || 0)) ayBest[y] = r;
+  });
+  const ayList = Object.keys(ayBest).sort((a, b) => Number(b) - Number(a)).map((y) => ayBest[y]);
+  $('#artistYearBody').innerHTML = ayList.length ? ayList.map((r) =>
+    '<tr><td>' + esc(r.ano) + '</td>' +
+    '<td class="artist-name">' + esc(r.artista || '—') + (r.on_roster ? ' <span class="muted">· roster</span>' : '') + '</td>' +
+    '<td class="num">' + esc(fmtInt(r.sales_count)) + '</td>' +
+    '<td class="num">' + esc(money(r.net_revenue)) + '</td></tr>'
+  ).join('') : '<tr><td colspan="4" class="td-empty">sem dados por artista</td></tr>';
+
+  /* ═══ 🌍 PÚBLICO & ALCANCE ═══ */
+
+  /* por país — barras, top 12, série única */
+  const crows = (country.data || []).filter((r) => r.country).slice(0, 12);
+  mkChart('chCountry', {
+    type: 'bar',
+    data: {
+      labels: crows.map((r) => String(r.country)),
+      datasets: [{ label: 'Receita líquida', data: crows.map((r) => Number(r.net_revenue) || 0), backgroundColor: PAL[1], borderRadius: 3, maxBarThickness: 30 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: moneyTip } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: moneyTick } },
+        x: { grid: { display: false }, ticks: { maxRotation: 60, minRotation: 0 } }
+      }
+    }
+  });
+
+  /* top 15 cidades — tabela */
+  const ctRows = cities.data || [];
+  $('#citiesBody').innerHTML = ctRows.length ? ctRows.map((r) =>
+    '<tr><td>' + esc(r.cidade || '—') + '</td>' +
+    '<td class="muted">' + esc(r.pais || '—') + '</td>' +
+    '<td class="num">' + esc(fmtInt(r.sales_count)) + '</td>' +
+    '<td class="num">' + esc(money(r.net_revenue)) + '</td></tr>'
+  ).join('') : '<tr><td colspan="4" class="td-empty">sem dados de cidade</td></tr>';
+
+  /* de onde vêm as vendas — referrers, top 12 por vendas + % do total */
+  const rrAll = (referrers.data || []).filter((r) => r.origem);
+  const rrTotal = rrAll.reduce((s, r) => s + (Number(r.sales_count) || 0), 0);
+  const rrows = rrAll.slice(0, 12);
+  mkChart('chReferrers', {
+    type: 'bar',
+    data: {
+      labels: rrows.map((r) => { const o = String(r.origem); return o.length > 36 ? o.slice(0, 35) + '…' : o; }),
+      datasets: [{ label: 'Vendas', data: rrows.map((r) => Number(r.sales_count) || 0), backgroundColor: PAL[4], borderRadius: 3, maxBarThickness: 22 }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: (ctx) => fmtInt(ctx.parsed.x) + ' vendas' + (rrTotal ? ' · ' + pctBR((Number(ctx.parsed.x) || 0) / rrTotal * 100) + ' do total' : ''),
+          afterLabel: (ctx) => { const r = rrows[ctx.dataIndex]; return r ? 'net ' + money(r.net_revenue) : ''; }
+        } }
+      },
+      scales: {
+        x: { beginAtZero: true, ticks: { precision: 0 } },
+        y: { grid: { display: false }, ticks: { autoSkip: false } }
+      }
+    }
+  });
+
+  /* novos vs recorrentes por mês — barras empilhadas (últimos 36 meses) */
+  const bmRows = (buyersMonthly.data || []).slice(-36);
+  mkChart('chBuyersMonthly', {
+    type: 'bar',
+    data: {
+      labels: bmRows.map((r) => fmtMonth(r.month)),
+      datasets: [
+        { label: 'Novos', data: bmRows.map((r) => Number(r.novos) || 0), backgroundColor: PAL[0], maxBarThickness: 22 },
+        { label: 'Recorrentes', data: bmRows.map((r) => Number(r.recorrentes) || 0), backgroundColor: PAL[1], maxBarThickness: 22 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } },
+        tooltip: { callbacks: { label: (ctx) => ctx.dataset.label + ': ' + fmtInt(ctx.parsed.y) } }
+      },
+      scales: {
+        y: { beginAtZero: true, stacked: true, ticks: { precision: 0 } },
+        x: { stacked: true, grid: { display: false } }
+      }
+    }
+  });
+
   /* top compradores + recorrência */
   const brows = buyers.data || [];
-  const totalBuyers = brows.length;
-  const returning = brows.filter((b) => Number(b.purchases) > 1).length;
-  const retPct = totalBuyers ? Math.round((returning / totalBuyers) * 1000) / 10 : 0;
+  /* contagens via head+count: a lista vem limitada a 15 linhas para a
+     tabela — contar sobre ela subestimaria compradores e inflaria o % */
+  const totalBuyers = Number(buyersTotal.count) || 0;
+  const returning = Number(buyersReturning.count) || 0;
+  const retPct = totalBuyers ? (returning / totalBuyers) * 100 : 0;
   $('#buyerKpis').innerHTML =
-    kpi('compradores', fmtInt(totalBuyers)) +
-    kpi('voltam a comprar', String(retPct).replace('.', ',') + '%') +
-    kpi('receita top 10', money(brows.slice(0, 10).reduce((s, b) => s + (Number(b.net_revenue) || 0), 0)));
-  function kpi(lbl, val) {
-    return '<div class="kpi"><span class="k-lbl">' + lbl + '</span><span class="k-val">' + esc(val) + '</span></div>';
-  }
-  const bb = $('#buyersBody');
-  bb.innerHTML = brows.slice(0, 15).map((b) =>
+    kpiHtml('compradores', fmtInt(totalBuyers)) +
+    kpiHtml('voltam a comprar', pctBR(retPct)) +
+    kpiHtml('receita top 10', money(brows.slice(0, 10).reduce((s, b) => s + (Number(b.net_revenue) || 0), 0)));
+  $('#buyersBody').innerHTML = brows.slice(0, 15).map((b) =>
     '<tr><td>' + esc(b.buyer || b.buyer_email || '—') +
     (b.buyer && b.buyer_email ? ' <span class="muted">· ' + esc(b.buyer_email) + '</span>' : '') + '</td>' +
     '<td class="num">' + esc(fmtInt(b.purchases)) + '</td>' +
@@ -962,6 +1292,85 @@ async function loadInsights() {
     '<td class="muted">' + esc(fmtDateOnly(b.first_purchase)) + '</td>' +
     '<td class="muted">' + esc(fmtDateOnly(b.last_purchase)) + '</td></tr>'
   ).join('') || '<tr><td colspan="6" class="td-empty">sem compradores ainda</td></tr>';
+
+  /* ═══ 💶 FINANCEIRO ═══ */
+
+  /* net vs taxas por mês — barras agrupadas (slots 1 e 2 da paleta) */
+  mkChart('chFees', {
+    type: 'bar',
+    data: {
+      labels: mrows.map((r) => fmtMonth(r.month)),
+      datasets: [
+        { label: 'Líquido (net)', data: mrows.map((r) => Number(r.net_revenue) || 0), backgroundColor: PAL[0], borderRadius: 3, maxBarThickness: 26 },
+        { label: 'Taxas (fees)', data: mrows.map((r) => Number(r.fees) || 0), backgroundColor: PAL[1], borderRadius: 3, maxBarThickness: 26 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10 } }, tooltip: { callbacks: { label: moneyTip } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: moneyTick } },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  /* gorjetas name-your-price — cards */
+  const tp = tips.data;
+  if (tp) {
+    const vt = Number(tp.vendas_total) || 0;
+    const vg = Number(tp.vendas_com_gorjeta) || 0;
+    $('#tipsKpis').innerHTML =
+      kpiHtml('total em gorjetas', money(tp.total_gorjetas)) +
+      kpiHtml('gorjeta média', money(tp.gorjeta_media)) +
+      kpiHtml('vendas com gorjeta', fmtInt(vg) + (vt ? ' (' + pctBR((vg / vt) * 100) + ')' : '')) +
+      kpiHtml('downloads grátis', fmtInt(tp.downloads_gratis));
+  } else {
+    $('#tipsKpis').innerHTML = kpiHtml('gorjetas', 'sem dados');
+  }
+
+  /* refunds por ano — tabela compacta */
+  const rfRows = refunds.data || [];
+  $('#refundsBody').innerHTML = rfRows.length ? rfRows.map((r) =>
+    '<tr><td>' + esc(r.ano) + '</td>' +
+    '<td class="num">' + esc(fmtInt(r.refunds)) + '</td>' +
+    '<td class="num">' + esc(money(r.valor)) + '</td></tr>'
+  ).join('') : '<tr><td colspan="3" class="td-empty">nenhum refund registrado</td></tr>';
+
+  /* saques do bandcamp — acumulado + saldo estimado em conta */
+  const payRows = payouts.data || [];
+  const lastAcc = payRows.length ? (Number(payRows[payRows.length - 1].acumulado) || 0) : 0;
+  const ovNet = overview.data ? (Number(overview.data.net_total) || 0) : 0;
+  $('#payoutKpis').innerHTML =
+    kpiHtml('total sacado', money(lastAcc)) +
+    kpiHtml('nº de saques', fmtInt(payRows.length)) +
+    kpiHtml('saldo estimado em conta', money(ovNet - lastAcc));
+  mkChart('chPayouts', {
+    type: 'line',
+    data: {
+      labels: payRows.map((r) => fmtDateOnly(r.data)),
+      datasets: [{
+        label: 'Acumulado sacado',
+        data: payRows.map((r) => Number(r.acumulado) || 0),
+        borderColor: PAL[5],
+        backgroundColor: 'rgba(144,133,233,.12)',
+        stepped: true,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        borderWidth: 2,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: moneyTip } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: moneyTick } },
+        x: { grid: { display: false }, ticks: { maxRotation: 45 } }
+      }
+    }
+  });
 
   /* descontos */
   const drows = (discounts.data || []).filter((d) => d.discount_code);
