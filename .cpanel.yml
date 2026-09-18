@@ -2,8 +2,8 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/padangne/public_html/
-    - /bin/cp -R about.html demo.html events.html index.html lab.html releases.html roster.html shop.html send-demo.php $DEPLOYPATH
-    - /bin/cp -R i18n.js i18n-bios.js i18n-extra.js i18n-lab.js track.js $DEPLOYPATH
+    - /bin/cp -R about.html demo.html events.html index.html lab.html releases.html roster.html shop.html send-demo.php send-newsletter.php $DEPLOYPATH
+    - /bin/cp -R i18n.js i18n-bios.js i18n-extra.js i18n-lab.js track.js newsletter.js blocks.css $DEPLOYPATH
     - /bin/cp -R img data $DEPLOYPATH
     - /bin/cp -R en es de fr ja release $DEPLOYPATH
     - /bin/cp sitemap.xml robots.txt $DEPLOYPATH

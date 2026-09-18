@@ -339,6 +339,8 @@ document.addEventListener('click', function(e){
 }, true);
 </script>
 <script src="/track.js" defer></script>
+<link rel="stylesheet" href="/blocks.css" />
+<script src="/newsletter.js" defer></script>
 </head>
 <body>
 
@@ -433,6 +435,16 @@ document.addEventListener('click', function(e){
 </section>
 
 
+<section id="pc" class="pcomp rv" data-release="full-discography">
+  <div class="frm">
+    <div>
+      <div class="big"><b class="pc-n">110</b> <span data-i18n="pc_releases">Releases</span> · <span data-i18n="pc_since">seit 2013</span></div>
+      <div class="sub" data-i18n="pc_sub">hol dir die komplette digitale Diskografie</div>
+    </div>
+    <a class="go" href="https://padang.bandcamp.com/" target="_blank" rel="noopener" data-i18n="pc_cta">↳ komplette Diskografie auf Bandcamp</a>
+  </div>
+</section>
+
 <section id="s" class="plr rv">
   <div class="sh"><span class="num">04</span><h2 data-i18n="h_latest_signal">neuestes signal</h2><div class="rule"></div></div>
   <div class="frm">
@@ -508,6 +520,20 @@ document.addEventListener('click', function(e){
   });
 })();
 </script>
+
+<section id="nl" class="nl rv">
+  <div class="nl-box">
+    <div class="nl-h" data-i18n="nl_title">neue Releases zuerst. Kein Spam.</div>
+    <form class="nl-form" action="/send-newsletter.php" method="post" novalidate>
+      <label><span data-i18n="nl_name">Name (optional)</span><input type="text" name="name" autocomplete="name" maxlength="120" /></label>
+      <label><span data-i18n="nl_email">E-Mail</span><input type="email" name="email" autocomplete="email" maxlength="200" required /></label>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button type="submit" data-i18n="nl_submit">abonnieren</button>
+    </form>
+    <div class="nl-note" data-i18n="nl_note">nur Release-News von Padang Records. Abmeldung jederzeit.</div>
+    <div class="nl-status" role="status" aria-live="polite"></div>
+  </div>
+</section>
 
 <section id="c" class="cta rv">
   <h3 data-i18n="cta_demo_h">schick deine<br/>demo.</h3>

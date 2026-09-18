@@ -74,6 +74,8 @@ document.addEventListener('click', function(e){
 }, true);
 </script>
 <script src="/track.js" defer></script>
+<link rel="stylesheet" href="/blocks.css" />
+<script src="/newsletter.js" defer></script>
 </head>
 <body>
 
@@ -153,7 +155,30 @@ Contributions flow from both the venerable masters and the bold new voices of th
 Artwork by Oberas
 Master by Marcelo Dubianchi Fakri</div>
   </section>
-<!-- release:extra -->
+
+<section id="pc" class="pcomp" data-release="full-discography">
+  <div class="frm">
+    <div>
+      <div class="big"><b class="pc-n">110</b> <span data-i18n="pc_releases">リリース</span> · <span data-i18n="pc_since">2013年から</span></div>
+      <div class="sub" data-i18n="pc_sub">デジタル・ディスコグラフィーをまるごと手に入れる</div>
+    </div>
+    <a class="go" href="https://padang.bandcamp.com/" target="_blank" rel="noopener" data-i18n="pc_cta">↳ Bandcamp でディスコグラフィーを見る</a>
+  </div>
+</section>
+
+<section id="nl" class="nl">
+  <div class="nl-box">
+    <div class="nl-h" data-i18n="nl_title">新作をいち早く。スパムなし。</div>
+    <form class="nl-form" action="/send-newsletter.php" method="post" novalidate>
+      <label><span data-i18n="nl_name">名前（任意）</span><input type="text" name="name" autocomplete="name" maxlength="120" /></label>
+      <label><span data-i18n="nl_email">メールアドレス</span><input type="email" name="email" autocomplete="email" maxlength="200" required /></label>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button type="submit" data-i18n="nl_submit">登録する</button>
+    </form>
+    <div class="nl-note" data-i18n="nl_note">Padang Records の新作情報のみ。いつでも配信停止できます。</div>
+    <div class="nl-status" role="status" aria-live="polite"></div>
+  </div>
+</section>
 </main>
 
 <footer>

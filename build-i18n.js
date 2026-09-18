@@ -165,15 +165,24 @@ function setHtmlLang(html, lang) {
   });
 }
 
-// nas subpastas de idioma, assets apontam para a raiz
+// nas subpastas de idioma, assets apontam para a raiz (./img, ./data e todo .js/.css/.php da raiz);
+// links para páginas (./x.html, ./release/…) continuam relativos e ficam no idioma
+const ASSET = /(["'(])\.\/(img\/|data\/|[\w-]+\.(?:js|css|php)\b)/g;
 function absolutizeAssets(html) {
-  return html.replace(/(["'(])\.\/(img\/|data\/|i18n[\w-]*\.js|track\.js|send-[\w-]+\.php)/g, '$1/$2');
+  return html.replace(ASSET, '$1/$2');
+}
+
+// contadores de catálogo que o build mantém em dia a partir do releases.json
+function syncCounts(html, n) {
+  return html.replace(/(<b class="pc-n">)\d+(<\/b>)/g, `$1${n}$2`)
+             .replace(/(<span class="rel-count">)\d+(<\/span>)/g, `$1${n}$2`);
 }
 
 function renderPage(template, page, lang, dict, stats, byAlbum) {
   const key = page.replace(/\.html$/, '');
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
   if (page === 'releases.html' || page === 'index.html') template = linkCards(template, byAlbum);
+  template = syncCounts(template, Object.keys(byAlbum).length);
   let html = applyTranslations(template, dict, lang, stats);
   html = setHtmlLang(html, lang);
   const headEnd = html.search(/<\/head>/i);
@@ -257,8 +266,19 @@ function releaseLayout() {
   const scripts = [...src.matchAll(/<script>[\s\S]*?<\/script>/g)].map(m => m[0])
     .filter(s => /padang\.bandcamp\.com → abre popup|MOBILE NAV — hamburger toggle/.test(s));
   if (scripts.length !== 2) throw new Error('releases.html: scripts do popup/menu mobile não encontrados');
-  const headBase = head.replace(/<style>[\s\S]*?<\/style>\n?/, '<link rel="stylesheet" href="/release/release.css" />\n');
-  return { style, headBase, nav, footer, scripts };
+  const headBase = head
+    .replace(/<style>[\s\S]*?<\/style>\n?/, '<link rel="stylesheet" href="/release/release.css" />\n')
+    .replace(/<link rel="stylesheet" href="\.\/blocks\.css" \/>\n?/, '')
+    .replace(/(<\/?head>)?\s*$/, '\n<link rel="stylesheet" href="/blocks.css" />\n<script src="/newsletter.js" defer></script>\n');
+  // blocos de conversão: mesma marcação da home (fonte única), sem a animação .rv
+  const home = read('index.html');
+  const block = id => {
+    const m = home.match(new RegExp(`<section id="${id}" class="[^"]*"[^>]*>`));
+    if (!m) throw new Error(`index.html: <section id="${id}"> não encontrada`);
+    const end = findClose(home, 'section', m.index + m[0].length);
+    return home.slice(m.index, end + '</section>'.length).replace(/ rv"/, '"');
+  };
+  return { style, headBase, nav, footer, scripts, blocks: block('pc') + '\n\n' + block('nl') };
 }
 
 const RELEASE_CSS = `
@@ -385,7 +405,8 @@ ${r.description_en || r.credits ? `
     <div class="txt">${escText(r.description_en)}</div>` : ''}${r.credits ? `
     <div class="cr">${escText(r.credits)}</div>` : ''}
   </section>
-` : ''}<!-- release:extra -->
+` : ''}
+${layout.blocks}
 </main>`;
 
   const title = `${artistText} — ${r.title} (${type}) · PADANG RECORDS`;
@@ -412,9 +433,11 @@ ${layout.scripts.join('\n')}
 </body>
 </html>
 `;
-  html = applyTranslations(html, dict, lang, stats);          // nav + rodapé
-  html = html.replace(/(href|src)="\.\/(?!img\/|data\/|i18n|track\.js|send-)/g, `$1="${P}/`); // links entre páginas
-  return absolutizeAssets(html);
+  html = applyTranslations(html, dict, lang, stats);          // nav, rodapé e blocos
+  html = syncCounts(html, layout.total);
+  html = absolutizeAssets(html);
+  html = html.replace(/(href|src|action)="\.\//g, `$1="${P}/`); // links entre páginas ficam no idioma
+  return html;
 }
 
 // ── 3. validação: todo <script> inline precisa compilar ─────────
@@ -486,6 +509,7 @@ function main() {
 
   // páginas de release
   const layout = releaseLayout();
+  layout.total = releases.length;
   const roster = rosterIndex();
   if (write('release/release.css', layout.style + '\n' + RELEASE_CSS)) written++;
   const pagesBefore = files;

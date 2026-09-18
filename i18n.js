@@ -286,6 +286,20 @@
     rel_label:     { pt:"selo", en:"label", es:"sello", de:"label", fr:"label", ja:"レーベル" },
     rel_roster:    { pt:"perfil no roster", en:"roster profile", es:"perfil en el roster", de:"Roster-Profil", fr:"profil dans le roster", ja:"ロスター・プロフィール" },
 
+    /* ─ padang complete (discografia digital completa no Bandcamp) ─ */
+    pc_releases: { pt:"lançamentos", en:"releases", es:"lanzamientos", de:"Releases", fr:"sorties", ja:"リリース" },
+    pc_since:    { pt:"desde 2013", en:"since 2013", es:"desde 2013", de:"seit 2013", fr:"depuis 2013", ja:"2013年から" },
+    pc_sub:      { pt:"leve a discografia digital completa", en:"get the full digital discography", es:"llévate la discografía digital completa", de:"hol dir die komplette digitale Diskografie", fr:"obtenez la discographie numérique complète", ja:"デジタル・ディスコグラフィーをまるごと手に入れる" },
+    pc_cta:      { pt:"↳ discografia completa no bandcamp", en:"↳ full discography on bandcamp", es:"↳ discografía completa en bandcamp", de:"↳ komplette Diskografie auf Bandcamp", fr:"↳ discographie complète sur bandcamp", ja:"↳ Bandcamp でディスコグラフィーを見る" },
+    /* ─ newsletter (captura de e-mail) ─ */
+    nl_title:  { pt:"lançamentos novos, antes de todo mundo. Sem spam.", en:"new releases, first. No spam.", es:"lanzamientos nuevos, antes que nadie. Sin spam.", de:"neue Releases zuerst. Kein Spam.", fr:"les nouvelles sorties, en premier. Pas de spam.", ja:"新作をいち早く。スパムなし。" },
+    nl_name:   { pt:"nome (opcional)", en:"name (optional)", es:"nombre (opcional)", de:"Name (optional)", fr:"nom (facultatif)", ja:"名前（任意）" },
+    nl_email:  { pt:"e-mail", en:"email", es:"e-mail", de:"E-Mail", fr:"e-mail", ja:"メールアドレス" },
+    nl_submit: { pt:"assinar", en:"subscribe", es:"suscribirme", de:"abonnieren", fr:"s'abonner", ja:"登録する" },
+    nl_note:   { pt:"só novidades da padang records. cancele quando quiser.", en:"padang records release news only. unsubscribe anytime.", es:"solo novedades de padang records. date de baja cuando quieras.", de:"nur Release-News von Padang Records. Abmeldung jederzeit.", fr:"uniquement les nouveautés de padang records. désinscription à tout moment.", ja:"Padang Records の新作情報のみ。いつでも配信停止できます。" },
+    /* ─ roster: link do artista no Bandcamp (campo bc: da entry) ─ */
+    roster_on_bc: { pt:"// no bandcamp", en:"// on bandcamp", es:"// en bandcamp", de:"// auf bandcamp", fr:"// sur bandcamp", ja:"// bandcamp" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];

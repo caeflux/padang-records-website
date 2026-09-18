@@ -1,0 +1,45 @@
+/* PADANG · blocks.css — blocos de conversão compartilhados
+ * .pcomp  Padang Complete (discografia digital completa no Bandcamp)
+ * .nl     newsletter (captura de e-mail)
+ * Usado em index.html, releases.html e nas páginas /release/<slug>/.
+ * Usa os tokens de cor/fonte de cada página (:root --bg, --ink, --neon-1…).
+ */
+
+/* ── Padang Complete ── */
+.pcomp{max-width:1100px;margin:0 auto;padding:0 32px 90px}
+.pcomp .frm{position:relative;display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;padding:40px 36px;border:1px solid rgba(196,255,61,.25);background:rgba(13,13,26,.6)}
+.pcomp .frm::before{content:"//// padang complete ////";position:absolute;top:-10px;left:24px;padding:0 12px;background:var(--bg);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--neon-1)}
+.pcomp .big{font-family:'Major Mono Display',monospace;font-size:clamp(26px,4vw,48px);line-height:1;letter-spacing:-.01em;text-transform:lowercase;color:var(--ink)}
+.pcomp .big b{font-weight:400;color:var(--neon-1)}
+.pcomp .sub{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim)}
+.pcomp a.go{display:inline-flex;align-items:center;min-height:44px;padding:14px 22px;border:1px solid var(--neon-1);background:var(--neon-1);color:#0a0908;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;transition:background .2s,color .2s}
+.pcomp a.go:hover{background:transparent;color:var(--neon-1)}
+
+/* ── newsletter ── */
+.nl{max-width:1100px;margin:0 auto;padding:0 32px 100px}
+.nl-box{position:relative;padding:40px 36px;border:1px solid rgba(255,255,255,.1);background:var(--bg-2,#141210)}
+.nl-h{margin-bottom:26px;font-family:'Major Mono Display',monospace;font-size:clamp(22px,3vw,36px);line-height:1.1;letter-spacing:-.01em;text-transform:lowercase;color:var(--ink)}
+.nl-form{display:grid;grid-template-columns:1fr 1.4fr auto;gap:12px;align-items:end}
+.nl-form label{display:flex;flex-direction:column;gap:7px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim)}
+.nl-form input{min-height:44px;padding:12px 14px;border:1px solid rgba(255,255,255,.18);border-radius:0;background:transparent;color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:15px;letter-spacing:0;text-transform:none}
+.nl-form input:focus{outline:none;border-color:var(--neon-1)}
+.nl-form button{min-height:44px;padding:12px 24px;border:1px solid var(--neon-1);background:var(--neon-1);color:#0a0908;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.nl-form button:hover{background:transparent;color:var(--neon-1)}
+.nl-form button:disabled{opacity:.5;cursor:wait}
+.nl-form .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.nl-note{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
+.nl-status{min-height:1.2em;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-dim)}
+.nl-status.ok{color:var(--neon-1)}
+.nl-status.err{color:#ff7a18}
+
+/* dentro da página de release o <main> já tem largura/padding */
+.rel .pcomp,.rel .nl{max-width:none;padding:0;margin-top:72px}
+
+@media(max-width:720px){
+  .pcomp,.nl{padding:0 16px 64px}
+  .pcomp .frm{grid-template-columns:1fr;padding:32px 20px}
+  .pcomp a.go{justify-content:center}
+  .nl-box{padding:32px 20px}
+  .nl-form{grid-template-columns:1fr}
+  .rel .pcomp,.rel .nl{padding:0;margin-top:56px}
+}

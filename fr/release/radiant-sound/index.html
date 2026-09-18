@@ -74,6 +74,8 @@ document.addEventListener('click', function(e){
 }, true);
 </script>
 <script src="/track.js" defer></script>
+<link rel="stylesheet" href="/blocks.css" />
+<script src="/newsletter.js" defer></script>
 </head>
 <body>
 
@@ -140,7 +142,30 @@ document.addEventListener('click', function(e){
 Master by Audioprime
 Artwork by Jib'n'Jok (fb.com/Jibnjok)</div>
   </section>
-<!-- release:extra -->
+
+<section id="pc" class="pcomp" data-release="full-discography">
+  <div class="frm">
+    <div>
+      <div class="big"><b class="pc-n">110</b> <span data-i18n="pc_releases">sorties</span> · <span data-i18n="pc_since">depuis 2013</span></div>
+      <div class="sub" data-i18n="pc_sub">obtenez la discographie numérique complète</div>
+    </div>
+    <a class="go" href="https://padang.bandcamp.com/" target="_blank" rel="noopener" data-i18n="pc_cta">↳ discographie complète sur bandcamp</a>
+  </div>
+</section>
+
+<section id="nl" class="nl">
+  <div class="nl-box">
+    <div class="nl-h" data-i18n="nl_title">les nouvelles sorties, en premier. Pas de spam.</div>
+    <form class="nl-form" action="/send-newsletter.php" method="post" novalidate>
+      <label><span data-i18n="nl_name">nom (facultatif)</span><input type="text" name="name" autocomplete="name" maxlength="120" /></label>
+      <label><span data-i18n="nl_email">e-mail</span><input type="email" name="email" autocomplete="email" maxlength="200" required /></label>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button type="submit" data-i18n="nl_submit">s'abonner</button>
+    </form>
+    <div class="nl-note" data-i18n="nl_note">uniquement les nouveautés de padang records. désinscription à tout moment.</div>
+    <div class="nl-status" role="status" aria-live="polite"></div>
+  </div>
+</section>
 </main>
 
 <footer>
