@@ -1,13 +1,16 @@
 # CLAUDE.md — Padang Records website runbook
 
-Guia operacional pra qualquer assistente Claude (Claude Code, Cowork, Sonnet-via-API) que abrir este diretório. Este é o site oficial da label Padang Records — estático (HTML/CSS/JS + 1 PHP) — deploy contínuo via git.
+Guia operacional pra qualquer assistente Claude (Claude Code, Cowork, Sonnet-via-API) que abrir este diretório. Este é o site oficial da label Padang Records — estático (HTML/CSS/JS + 2 PHP), gerado por idioma pelo `build-i18n.js` — deploy contínuo via git.
 
 ## Contexto rápido
 
 - **Live:** https://padangrecords.net (HostGator shared hosting)
 - **Owner:** Carlos Dienstmann (fundador da label, artista Dienstmann)
 - **Repo:** https://github.com/caeflux/padang-records-website (**precisa ficar público** — o cron do cPanel usa clone HTTPS sem deploy key)
-- **Workspace:** `C:\Users\carlo\OneDrive\Documentos\Claude\Projects\Website Padang Records\padang-final\` (todos os arquivos ficam aqui, na raiz do repo)
+- **Workspaces** (dois computadores):
+  - **Mac:** `~/Library/Mobile Documents/com~apple~CloudDocs/Padang Records/` — clone direto do repo. `gh` logado como `caeflux` e Node 22 em `~/.local/bin` (`export PATH="$HOME/.local/bin:$PATH"`). Push funciona sem token.
+  - **Windows:** `C:\Users\carlo\OneDrive\Documentos\Claude\Projects\Website Padang Records\padang-final\` — cópia de trabalho no OneDrive + clone em `/tmp/padang-deploy` no sandbox (ver "Fluxo de deploy").
+  - **Antes de começar em qualquer um dos dois: `git pull`** — o outro computador pode ter publicado.
 - **Deploy:** cron cPanel roda **a cada 20 min, nos minutos :00, :20 e :40** (medido em 18/09/2026) → `git fetch origin main + reset --hard + copia pra public_html/` via `.cpanel.yml`. Arquivo ou pasta nova só vai ao ar se estiver listado no `.cpanel.yml`.
 
 ## Build por idioma — OBRIGATÓRIO antes de todo push
@@ -31,14 +34,24 @@ Troca de idioma no navegador: o botão navega para a URL do idioma e salva a esc
 ## Fluxo de deploy (padrão que USAR)
 
 ```
-1. Editar arquivos no workspace (ver "Como editar" abaixo)
-2. Clonar repo em /tmp/padang-deploy no sandbox Linux (se não existir)
-3. Copiar arquivos editados do workspace → /tmp/padang-deploy
-4. git add + commit (mensagem descritiva) + push origin main
-5. Cron pega em ≤5min automaticamente — não precisa fazer mais nada
+1. git pull                       (o outro computador pode ter publicado)
+2. Editar a FONTE: as 8 páginas da raiz, i18n*.js, data/*.json, track.js, blocks.css…
+   (nunca en/ es/ de/ fr/ ja/ release/ nem sitemap.xml/robots.txt — são gerados)
+3. node build-i18n.js             (deve terminar sem erro; 2ª rodada = "0 arquivos alterados")
+4. node --check <cada .js editado>
+5. git add -A && git commit -m "mensagem descritiva" && git push origin main
+6. Cron publica na próxima rodada (:00, :20 ou :40) — conferir ao vivo com ?cb=<aleatório>
 ```
 
-Snippet reutilizável de deploy:
+**Mac** (clone direto, `gh` já autenticado):
+
+```bash
+cd "$HOME/Library/Mobile Documents/com~apple~CloudDocs/Padang Records"
+export PATH="$HOME/.local/bin:$PATH"
+git pull && node build-i18n.js && git add -A && git commit -m "…" && git push origin main
+```
+
+**Windows / sandbox Linux** (workspace no OneDrive + clone em `/tmp`):
 
 ```bash
 cd /tmp
@@ -50,18 +63,21 @@ cd /tmp
   git config user.name "Carlos Eduardo"
   cd ..
 }
-cd /tmp/padang-deploy
-# copiar arquivos alterados do OneDrive:
+cd /tmp/padang-deploy && git pull
+# copiar arquivos-FONTE alterados do OneDrive:
 cp "/sessions/<session>/mnt/Website Padang Records/padang-final/<file>" <file>
-git add <files>
+node build-i18n.js                # gera en/ es/ de/ fr/ ja/ release/ sitemap robots
+git add -A
 git commit -m "clara mensagem descritiva"
 git push origin main
+# depois do push, traga de volta para o OneDrive o que o build reescreveu na raiz
+# (as 8 páginas recebem o PT e o bloco <!-- seo -->), senão a próxima cópia desfaz o build
 ```
 
 ## Como editar arquivos (importante!)
 
 ### ⚠️ NÃO use o `Edit` tool direto em arquivos grandes de `padang-final/`
-O OneDrive silenciosamente **trunca** arquivos grandes escritos por Edit/Write. Sintomas: arquivo fica menor do que deveria, script quebra mid-statement, JS não valida.
+O OneDrive silenciosamente **trunca** arquivos grandes escritos por Edit/Write (no Mac, o repo fica no iCloud Drive — mesmo cuidado: patches via Python e conferir tamanho/sintaxe depois). Sintomas: arquivo fica menor do que deveria, script quebra mid-statement, JS não valida.
 
 **Ao invés disso**, escreva um script Python que atua no sandbox mount:
 
@@ -77,56 +93,56 @@ Salve em `/tmp/patch.py` (não no OneDrive) e execute via bash. Isso escreve dir
 
 ### Sempre valide antes de commit
 ```bash
-# JS externos:
-node --check i18n-bios.js
-node --check i18n-extra.js
-
-# JS embutido em HTML (extraia primeiro):
-python3 -c "
-s = open('index.html').read()
-i = s.find('<script>')
-j = s.find('</script>', i)
-open('/tmp/check.js','w').write(s[i+8:j])
-"
-node --check /tmp/check.js
+node --check i18n.js i18n-extra.js i18n-lab.js i18n-bios.js track.js newsletter.js build-i18n.js
+node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; erro aborta
 ```
 
 ## Mapa de arquivos
 
 | Arquivo | Conteúdo |
 |---|---|
-| `index.html` | Home · hero, roster carrossel, releases 12 mais recentes, Latest Signal, PadangTV grid |
-| `roster.html` | 58 artistas · card grid + modal de bio · array JS embutido |
-| `releases.html` | 108 releases · por ano, com Bandcamp embed 470px altura |
-| `events.html` | 21 eventos · card + modal expansível · EVDATA dict inline |
-| `lab.html` | 21 episódios Padang Lab Series · SoundCloud embeds |
+| `index.html` | Home · hero, roster carrossel, releases recentes, **Padang Complete**, Latest Signal, PadangTV, **newsletter** |
+| `roster.html` | 58 artistas · card grid + modal de bio · array JS embutido · deep link `roster.html#artist=<slug>` abre o modal |
+| `releases.html` | 110 releases · por ano, Bandcamp embed · nome do artista no card linka `/release/<slug>/` (feito pelo build) · Padang Complete no fim |
+| `events.html` | eventos · card + modal expansível · EVDATA dict inline |
+| `lab.html` | 24 episódios Padang Lab Series · SoundCloud embeds |
 | `about.html` | Timeline da label 2013→2026 |
 | `demo.html` | Formulário de submissão · valida SC/Drive/Dropbox URL · manda pra `send-demo.php` |
 | `shop.html` | Spreadshirt embed |
 | `send-demo.php` | Backend do demo form · envia email pra `contact@padangrecords.net` |
+| `send-newsletter.php` | Backend da newsletter · honeypot + validação · e-mail `[newsletter] <lang> <email>` pra `contact@` |
+| `build-i18n.js` | **Build** (Node, sem deps): idiomas, SEO, páginas de release, sitemap, robots — ver seção própria |
+| `track.js` | Medição GA4 nas 8 páginas + releases: outbound_click, UTMs, language_selected, embed_play |
+| `newsletter.js` | Envio do form `.nl-form` (PHP → fallback FormSubmit) + evento `newsletter_signup` |
+| `blocks.css` | Estilos compartilhados de `.pcomp` (Padang Complete) e `.nl` (newsletter) |
+| `en/ es/ de/ fr/ ja/` | **Gerado** — as 8 páginas por idioma + `release/` de cada idioma |
+| `release/<slug>/` | **Gerado** — página PT de cada release; `release/release.css` = estilo do releases.html + layout da página |
+| `sitemap.xml`, `robots.txt` | **Gerados** — 708 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
 | `admin/` | Área restrita da label · login Supabase (allowlist), upload CSV Bandcamp, relatórios/royalties, checklist merch/e-mail, insights · **sem GA/Pixel, noindex** · docs: `../ARQUITETURA-AREA-RESTRITA.md` (fora do repo) |
 | `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
-| `data/releases.json` | Fonte canônica do catálogo (108 entradas ordenadas por data desc) |
-| `i18n.js` | 6 idiomas (PT/EN/ES/DE/FR/JA) · chaves nav + genéricas |
+| `data/releases.json` | Fonte canônica do catálogo (110 entradas, data desc) — alimenta páginas de release, sitemap e contadores |
+| `data/lab-series.json` | Episódios da Lab Series |
+| `i18n.js` | 6 idiomas (PT/EN/ES/DE/FR/JA) · nav + genéricas + `seo_*` + `rel_*` + `pc_*` + `nl_*` · troca de idioma por URL |
 | `i18n-bios.js` | Bios traduzidas dos artistas (EN/ES/DE/FR/JA — PT é source em roster.html) |
 | `i18n-extra.js` | Chaves de events, lab, demo, shop |
-| `i18n-lab.js` | Metadados dos 21 Lab episodes |
+| `i18n-lab.js` | Metadados dos Lab episodes |
 | `img/artists/` | Fotos locais dos artistas (fallback pra SC avatar, ver "Avatares") |
 | `img/logo-full.png`, `img/padang-logo.png` | Logos |
 | `fotos artistas/<slug>/` | Pasta onde o user dropa fotos+bios originais (input, não é servido) |
-| `.cpanel.yml` | Script de deploy (rsync-like via `cp -R`) |
+| `.cpanel.yml` | Script de deploy (`cp -R`) — **arquivo/pasta nova só vai ao ar se entrar aqui** |
 | `.htaccess` | HTML `no-cache` · CSS/JS 5min · imagens 30 dias |
 
 ## Estruturas de dados chave
 
 ### Roster entry (roster.html)
 ```js
-{n:"NomeArtístico",c:"BR",s:1,sc:"https://soundcloud.com/handle",p:"https://i1.sndcdn.com/avatars-XXX.jpg",yt:null,r:[["album_id","Album Name"]],va:[["va_id","VA Name"]],b:"<b>Real Name</b>, Cidade, País. Bio...",e:"contact@email OU D"}
+{n:"NomeArtístico",c:"BR",s:1,sc:"https://soundcloud.com/handle",bc:null,p:"https://i1.sndcdn.com/avatars-XXX.jpg",yt:null,r:[["album_id","Album Name"]],va:[["va_id","VA Name"]],b:"<b>Real Name</b>, Cidade, País. Bio...",e:"contact@email OU D"}
 ```
 - `n`: nome de palco (usado como display + chave)
 - `c`: código país (BR/PT/GR/etc)
 - `s`: 1=confirmed (verde), 0=pending review
 - `sc`: URL SC completa (pode ser search fallback)
+- `bc`: Bandcamp próprio do artista (`"https://x.bandcamp.com/"`) ou `null` — quando preenchido, aparece "on bandcamp" no modal
 - `p`: URL avatar (SC hotlink OU `./img/artists/<slug>.jpg` local — tem fallback JS pra gradient+iniciais se falhar)
 - `yt`: `null` ou `[["Label","yt_video_id"]]`
 - `r`: releases EP/LP no Padang, formato `[["bandcamp_album_id","Title"]]`
@@ -155,9 +171,11 @@ node --check /tmp/check.js
 Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas em `i18n-extra.js`.
 
 ### Release entry
-- `data/releases.json`: source of truth
-- `index.html`: card no grid latest-12, número de counter (`107 releases`), Latest Signal iframe
+- `data/releases.json`: source of truth. Campos: `slug`, `url`, `title`, `artist` (`null` = VA), `released` (ISO), `released_label` ("02 Sep 2026"), `lastmod`, `tracks`, `album_id`, `type` (`EP`/`LP`/`VA`), `beatport_url` (ou `null` — sem botão Beatport), `cover_url` (`https://f4.bcbits.com/img/a<art_id>_10.jpg`), `description_en` e `credits` (texto do Bandcamp, ou `null`), `tracklist` (`[{"n":1,"title":"…","duration":449}]`, uma faixa por linha)
+- `build-i18n.js` gera `/release/<slug>/` × 6 idiomas (capa, tracklist, embed, Buy on Bandcamp/Beatport, frase indexável traduzida, JSON-LD `MusicAlbum`, link pro roster) e põe no sitemap
+- `index.html`: card no grid, Latest Signal iframe e contadores manuais (`110 releases`, `+98`)
 - `releases.html`: card no ano correspondente + counter do ano
+- Contadores `<b class="pc-n">` (Padang Complete) e `<span class="rel-count">` (hero do catálogo) são **sincronizados pelo build** — não editar
 
 ## Convenções de conteúdo (do memory + user preferences)
 
@@ -182,10 +200,13 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 5. Fluxo padrão de deploy
 
 ### Adicionar release
-1. `data/releases.json`: prepend nova entrada (formato: slug, url, title, artist, released ISO, released_label, lastmod, tracks, album_id)
-2. `index.html`: swap ★ LATEST card, demote release anterior pra tipo normal, incrementa counter 107→108 (todas ocorrências), atualiza caption + iframe da Latest Signal
-3. `releases.html`: swap ★ LATEST do ano correspondente, incrementa counter do ano
-4. Bandcamp album_id vem do URL do embed player oficial (formato `album=XXXXXXX`)
+1. Dados do Bandcamp: abrir `https://padang.bandcamp.com/album/<slug>` e ler o JSON `data-tralbum` (`current.id` = album_id, `art_id`, `trackinfo`, `current.about`, `current.credits`, `current.release_date`)
+2. `data/releases.json`: prepend a entrada **com todos os campos** (ver "Release entry"); `beatport_url` quando o release estiver no Beatport
+3. `index.html`: swap ★ LATEST card, demote release anterior pra tipo normal, incrementa `110 releases` (todas ocorrências) e o `+98`, atualiza caption + iframe da Latest Signal
+4. `releases.html`: swap ★ LATEST do ano correspondente, incrementa counter do ano
+5. Se o artista está no roster: `r:[["album_id","Título"]]` na entry
+6. `node build-i18n.js` → gera as 6 páginas do release, linka o card, atualiza sitemap e contadores `pc-n`/`rel-count`
+7. Fluxo padrão de deploy
 
 ### Adicionar evento
 1. Card HTML em `events.html` inserido cronologicamente na seção "2026 upcoming" (ou history se passado)
@@ -201,6 +222,9 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 
 ## Ferramentas úteis nesta sessão
 
+(Windows/Cowork. No Mac: `Bash` local tem git, `gh`, Node 22 e python3; o painel de preview não lê a pasta do iCloud — para testar, espelhe com `rsync` para uma pasta temporária e sirva com `python3 -m http.server`.)
+
+
 - **`mcp__workspace__bash`** — shell Linux com Python, Node, git. Use pra tudo que não é edição
 - **`mcp__workspace__web_fetch`** — pega URL como markdown renderizado; BLOQUEADO pra alguns domínios (SC CDN); NÃO renderiza JS
 - **`WebSearch`** — search web via Anthropic search
@@ -209,9 +233,24 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 
 ## Analytics
 
-Meta Pixel `2047697899170790` instalado em todas as 8 páginas.
+### GA4 `G-355LVX96J2` (8 páginas + páginas de release; nunca em `/admin/` e `/artist/`)
 
-Eventos custom disparados:
+| Evento | Onde | Parâmetros |
+|---|---|---|
+| `outbound_click` | `track.js` — clique (e clique do meio) em link para Bandcamp, Beatport, SoundCloud, Spotify, YouTube, Spreadshop | `platform`, `page`, `release_slug`, `lang`, `link_url` |
+| `language_selected` | `track.js` — botão de idioma | `lang`, `from_lang`, `page` |
+| `embed_play` | `track.js` — janela perde o foco para um iframe (heurística; 1× por iframe por pageview) | `platform`, `page`, `release_slug`, `album_id`, `lang` |
+| `demo_submit` | `demo.html` — envio aceito | `genre`, `lang` |
+| `newsletter_signup` | `newsletter.js` — inscrição aceita | `lang`, `page` |
+
+**Eventos-chave** (marcar na interface do GA4 → Admin → Eventos): `outbound_click`, `demo_submit`, `newsletter_signup`. Para ver os parâmetros nos relatórios, registrar como dimensões personalizadas (escopo evento): `platform`, `page`, `release_slug`, `lang`, `from_lang`, `genre`, `album_id`.
+
+**UTMs**: `track.js` acrescenta em runtime, em todo link para Bandcamp/Beatport, `utm_source=padangrecords.net&utm_medium=<page>&utm_campaign=<release_slug|catalog>&utm_content=<lang>` (o bloco Padang Complete usa `utm_campaign=full-discography` via `data-release`). Não mexe em UTMs de terceiros; preserva query strings.
+
+`page` = `index`, `releases`, `roster`, `lab`, `events`, `about`, `demo`, `shop` ou `release`. `lang` = idioma da URL.
+
+### Meta Pixel `2047697899170790` (8 páginas + páginas de release)
+
 - `PageView` — automático em todas as páginas
 - `Lead` — demo.html quando `send-demo.php` retorna ok (payload inclui gênero)
 - `ViewContent` — roster.html abrir modal de artista (payload: artist name)
@@ -220,6 +259,10 @@ Eventos custom disparados:
 
 ## Gotchas conhecidos
 
+- **Cron de 20 min, não 5** — push logo depois de :00/:20/:40 espera até a rodada seguinte. Conferir com `?cb=<aleatório>` na URL.
+- **Cache de JS/CSS de 5 min** (`.htaccess`) — logo após o deploy, o navegador pode juntar HTML novo com JS antigo; se algo parecer não funcionar, espere 5 min ou recarregue forçado.
+- **Pastas geradas** — editar `en/…`, `release/…`, `sitemap.xml` ou o bloco `<!-- seo -->` à mão é perdido no próximo build.
+- **Sem redirecionamento pelo idioma do navegador** — de propósito (SEO). Só a escolha salva (`padang-lang`) redireciona.
 - **OneDrive truncation** — nunca use Edit/Write direto em arquivos grandes em `padang-final/`. Use Python via sandbox.
 - **Repo público obrigatório** — se ficar privado, cron para de puxar silenciosamente. Livre pra ver, só push precisa PAT.
 - **SC CDN 403** — SoundCloud às vezes bloqueia hotlink de avatares. O roster.html tem fallback JS (`probe.onerror`) que degrada pra gradient + iniciais. Solução permanente: baixar foto pra `img/artists/`.
@@ -231,28 +274,29 @@ Eventos custom disparados:
 
 - **Email geral / eventos:** contact@padangrecords.net
 - **Demos submission:** demos@padangrecords.net (só no `send-demo.php`)
-- **cPanel:** https://padangrecords.net:2083 (user tem acesso, cron do Git Version Control roda a cada 5min)
-- **GitHub PAT** — necessário só pra `git push` (leitura é pública). Pedir ao user via prompt/env var no início da sessão; nunca commitar. User gerou um com escopo `contents:write` no repo `caeflux/padang-records-website`.
+- **cPanel:** https://padangrecords.net:2083 (user tem acesso, cron do Git Version Control roda a cada 20 min: :00/:20/:40)
+- **GitHub** — push só com autenticação (leitura é pública). Mac: `gh` logado (`gh auth status`), sem token manual. Windows/sandbox: PAT pedido ao user no início da sessão; nunca commitar.
 - **Google Drive** com bios/EPKs originais dos artistas (referenciado na memória, não indexado aqui)
 - **Google Sheet** de aniversários: `Padangers Birthday's Date.xlsx` (id `164cOl_2paNfluWBO5U65JOQfLRJn09X3`)
 
-## Estado atual (snapshot 2026-06-24)
+## Estado atual (snapshot 2026-09-18)
 
-- 58 artistas no roster (32 com foto local ou SC avatar, restante gradient+iniciais)
-- 108 releases catalogados (mais recente: Orbsynth — Integrated, 24 Jun 2026)
-- 21 eventos (16 futuros / 5 históricos)
-- 21 episódios Padang Lab Series
-- Meta Pixel ativo
-- Cron pipeline funcionando (repo público, deploy ≤5min)
+- 58 artistas no roster (campo `bc` ainda `null` em todos — preencher conforme o user informar)
+- 110 releases catalogados (mais recente: Champirolls — Beyond Fences, 02 Sep 2026); 72 com Beatport
+- 24 episódios Padang Lab Series (mais recente: EP.24 VORG live @ Arkana Festival 2026)
+- 708 URLs: 8 páginas × 6 idiomas + 110 releases × 6 idiomas
+- GA4 com 5 eventos + UTMs; Meta Pixel ativo; newsletter capturando via e-mail para `contact@`
+- Cron pipeline funcionando (repo público, deploy a cada 20 min)
 
 ## Ao final de qualquer edição — checklist
 
+- [ ] `node build-i18n.js` rodado (2ª rodada = 0 arquivos alterados)
 - [ ] JS válido (`node --check`)
 - [ ] Contagem de linhas comparável ao antes (detectar truncation)
 - [ ] Committed com mensagem clara descrevendo *o que + porquê*
 - [ ] Pushado pra `main`
-- [ ] Verificado ao vivo em ≤5min (via `mcp__workspace__web_fetch` ou Chrome MCP)
+- [ ] Verificado ao vivo na rodada seguinte do cron (≤20 min), com `?cb=` para furar cache
 
 ---
 
-Última atualização: 2026-06-24 · commit `0eb5d95`
+Última atualização: 2026-09-18 · blocos de crescimento (medição, SEO internacional, páginas de release, conversão)
