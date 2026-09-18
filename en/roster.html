@@ -632,6 +632,19 @@ document.querySelectorAll('.a').forEach(card=>{
 mClose.addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});
+// Deep link: roster.html#artist=<slug> abre o modal do artista (links das páginas de release)
+function artistSlug(n){return n.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')}
+function openFromHash(){
+  const m=location.hash.match(/^#artist=([a-z0-9-]+)/);
+  if(!m)return;
+  const i=roster.findIndex(a=>artistSlug(a.n)===m[1]);
+  if(i<0)return;
+  openArtist(i);
+  history.replaceState(null,'',location.pathname+location.search);
+}
+// espera os scripts defer (i18n-bios traduz a bio quando o modal abre)
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',openFromHash);else openFromHash();
+window.addEventListener('hashchange',openFromHash);
 </script>
 <script>
 // MOBILE NAV — hamburger toggle

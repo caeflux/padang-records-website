@@ -272,6 +272,20 @@
                           fr:"Merch officiel Padang Records — t-shirts, sweats et plus via Spreadshirt. Label dark progressive, psytech et minimal psy depuis 2013.",
                           ja:"Padang Records 公式マーチ — Spreadshirt で T シャツ、パーカーなど。2013年からの dark progressive、psytech、minimal psy レーベル。" },
 
+    /* ─ páginas de release (/release/<slug>/, geradas pelo build-i18n.js) ─ */
+    rel_back:      { pt:"← catálogo completo", en:"← full catalog", es:"← catálogo completo", de:"← kompletter Katalog", fr:"← catalogue complet", ja:"← 全カタログ" },
+    rel_buy_bc:    { pt:"Comprar no Bandcamp", en:"Buy on Bandcamp", es:"Comprar en Bandcamp", de:"Auf Bandcamp kaufen", fr:"Acheter sur Bandcamp", ja:"Bandcamp で購入" },
+    rel_buy_bp:    { pt:"Comprar no Beatport", en:"Buy on Beatport", es:"Comprar en Beatport", de:"Auf Beatport kaufen", fr:"Acheter sur Beatport", ja:"Beatport で購入" },
+    rel_listen:    { pt:"ouça", en:"listen", es:"escucha", de:"anhören", fr:"écouter", ja:"試聴" },
+    rel_tracklist: { pt:"faixas", en:"tracklist", es:"lista de temas", de:"tracklist", fr:"liste des titres", ja:"トラックリスト" },
+    rel_about:     { pt:"sobre o lançamento", en:"about this release", es:"sobre el lanzamiento", de:"über das release", fr:"à propos de la sortie", ja:"このリリースについて" },
+    rel_about_note:{ pt:"// texto original do lançamento", en:"// original release notes", es:"// texto original del lanzamiento", de:"// originaler release-text", fr:"// texte original de la sortie", ja:"// リリース時のオリジナル・テキスト" },
+    rel_credits:   { pt:"créditos", en:"credits", es:"créditos", de:"credits", fr:"crédits", ja:"クレジット" },
+    rel_released:  { pt:"lançamento", en:"released", es:"publicado", de:"veröffentlicht", fr:"sortie", ja:"リリース日" },
+    rel_tracks:    { pt:"faixas", en:"tracks", es:"temas", de:"tracks", fr:"titres", ja:"曲数" },
+    rel_label:     { pt:"selo", en:"label", es:"sello", de:"label", fr:"label", ja:"レーベル" },
+    rel_roster:    { pt:"perfil no roster", en:"roster profile", es:"perfil en el roster", de:"Roster-Profil", fr:"profil dans le roster", ja:"ロスター・プロフィール" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];

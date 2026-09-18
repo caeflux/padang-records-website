@@ -5,12 +5,12 @@ deployment:
     - /bin/cp -R about.html demo.html events.html index.html lab.html releases.html roster.html shop.html send-demo.php $DEPLOYPATH
     - /bin/cp -R i18n.js i18n-bios.js i18n-extra.js i18n-lab.js track.js $DEPLOYPATH
     - /bin/cp -R img data $DEPLOYPATH
-    - /bin/cp -R en es de fr ja $DEPLOYPATH
+    - /bin/cp -R en es de fr ja release $DEPLOYPATH
     - /bin/cp sitemap.xml robots.txt $DEPLOYPATH
     - /bin/cp -R admin artist $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/find $DEPLOYPATH -maxdepth 3 -type f \( -name "*.html" -o -name "*.js" -o -name "*.json" -o -name "*.svg" -o -name "*.txt" -o -name "*.php" -o -name "*.css" -o -name "*.xml" \) -exec chmod 644 {} \;
     - /bin/chmod 755 $DEPLOYPATH/admin $DEPLOYPATH/artist
-    - /bin/find $DEPLOYPATH/en $DEPLOYPATH/es $DEPLOYPATH/de $DEPLOYPATH/fr $DEPLOYPATH/ja -type d -exec chmod 755 {} \; -o -type f -exec chmod 644 {} \;
+    - /bin/find $DEPLOYPATH/en $DEPLOYPATH/es $DEPLOYPATH/de $DEPLOYPATH/fr $DEPLOYPATH/ja $DEPLOYPATH/release -type d -exec chmod 755 {} \; -o -type f -exec chmod 644 {} \;
     - /bin/find $DEPLOYPATH -maxdepth 2 -type d -name img -o -type d -name data -exec chmod 755 {} \;
     - /bin/chmod 644 $DEPLOYPATH/.htaccess
