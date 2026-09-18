@@ -86,7 +86,7 @@ section{position:relative;padding:60px 32px 120px;z-index:2}
 .a .av::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(10,9,8,.6));pointer-events:none}
 .a:hover .av{filter:grayscale(0) contrast(1.05) brightness(.95)}
 .a .info{flex:1;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
-.a .nm{font-family:'Major Mono Display',monospace;font-size:24px;font-weight:400;line-height:1.05;color:var(--ink);text-transform:lowercase;letter-spacing:-.01em;transition:color .2s;word-break:break-word;overflow-wrap:anywhere;hyphens:auto}
+.a .nm{font-family:'Major Mono Display',monospace;font-size:24px;font-weight:400;line-height:1.05;color:var(--ink);text-transform:lowercase;letter-spacing:-.01em;transition:color .2s;word-break:normal;overflow-wrap:break-word;hyphens:manual}
 .a:hover .nm{color:var(--neon-1)}
 .a .cy{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;color:var(--ink-dim);text-transform:uppercase}
 .a .st{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin-top:2px;display:flex;align-items:center;gap:6px}
@@ -206,6 +206,10 @@ body.nav-open{overflow:hidden}
 /* ─── Auto-fill grids que poderiam quebrar em 320px ─── */
 @media(max-width:480px){
   .arts .gr{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))!important}
+  /* nome do artista escala com a largura do card: a palavra mais longa (13 letras,
+     "rollercoaster") sempre cabe inteira, sem cortar no meio */
+  .a .info{container-type:inline-size}
+  .a .nm{font-size:min(18px,10cqi)}
   .designs .gr,.chans{grid-template-columns:1fr!important}
 }
 
@@ -612,6 +616,41 @@ document.querySelectorAll('.a').forEach(card=>{
 mClose.addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});
+</script>
+<script>
+// MOBILE NAV — hamburger toggle
+(function(){
+  const navs = document.querySelectorAll('nav');
+  navs.forEach(nav => {
+    const btn = nav.querySelector('.nbg');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+      btn.textContent = open ? '✕' : '☰';
+      document.body.classList.toggle('nav-open', open);
+    });
+    nav.querySelectorAll('ul a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.textContent = '☰';
+          document.body.classList.remove('nav-open');
+        }
+      });
+    });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('nav.open').forEach(n => {
+      n.classList.remove('open');
+      const b = n.querySelector('.nbg');
+      if (b) { b.setAttribute('aria-expanded','false'); b.textContent='☰'; }
+    });
+    document.body.classList.remove('nav-open');
+  });
+})();
 </script>
 <script src="./i18n.js" defer></script>
 <script src="./i18n-extra.js" defer></script>
