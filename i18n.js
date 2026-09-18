@@ -134,7 +134,7 @@
     },
     lab_all_eps: { pt:"//// ALL EPISODES · 23 ////", en:"//// ALL EPISODES · 23 ////", es:"//// TODOS LOS EPISODIOS · 23 ////", de:"//// ALLE FOLGEN · 23 ////", fr:"//// TOUS LES ÉPISODES · 23 ////", ja:"//// 全エピソード · 23 ////" },
     lab_featured_meta: { pt:"// 8 sessões em destaque · ", en:"// 8 featured sessions · ", es:"// 8 sesiones destacadas · ", de:"// 8 ausgewählte Sessions · ", fr:"// 8 sessions en vedette · ", ja:"// 注目セッション 8 · " },
-    lab_featured_total: { pt:"23 episódios no total", en:"23 episodes total", es:"23 episodios en total", de:"23 Folgen insgesamt", fr:"23 épisodes au total", ja:"全23エピソード" },
+    lab_featured_total: { pt:"24 episódios no total", en:"24 episodes total", es:"24 episodios en total", de:"24 Folgen insgesamt", fr:"24 épisodes au total", ja:"全24エピソード" },
     lab_featured_curated: { pt:" · curadoria padang records", en:" · curated by padang records", es:" · curaduría padang records", de:" · kuratiert von padang records", fr:" · curaté par padang records", ja:" · padang records キュレーション" },
     lab_listen_sc: { pt:"↳ ouvir no sc", en:"↳ listen on sc", es:"↳ escuchar en sc", de:"↳ auf sc hören", fr:"↳ écouter sur sc", ja:"↳ SCで聴く" },
 
