@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /artist/
+
+Sitemap: https://padangrecords.net/sitemap.xml

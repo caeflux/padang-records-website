@@ -8,7 +8,25 @@ Guia operacional pra qualquer assistente Claude (Claude Code, Cowork, Sonnet-via
 - **Owner:** Carlos Dienstmann (fundador da label, artista Dienstmann)
 - **Repo:** https://github.com/caeflux/padang-records-website (**precisa ficar público** — o cron do cPanel usa clone HTTPS sem deploy key)
 - **Workspace:** `C:\Users\carlo\OneDrive\Documentos\Claude\Projects\Website Padang Records\padang-final\` (todos os arquivos ficam aqui, na raiz do repo)
-- **Deploy:** cron cPanel roda a cada 5min → `git fetch origin main + reset --hard + copia pra public_html/` via `.cpanel.yml`
+- **Deploy:** cron cPanel roda **a cada 20 min, nos minutos :00, :20 e :40** (medido em 18/09/2026) → `git fetch origin main + reset --hard + copia pra public_html/` via `.cpanel.yml`. Arquivo ou pasta nova só vai ao ar se estiver listado no `.cpanel.yml`.
+
+## Build por idioma — OBRIGATÓRIO antes de todo push
+
+O site tem uma URL por idioma: PT na raiz (`/releases.html`) e `/en/`, `/es/`, `/de/`, `/fr/`, `/ja/` (`/de/releases.html`). As versões de idioma são **geradas** — nunca edite nada dentro de `en/ es/ de/ fr/ ja/`, nem o bloco `<!-- seo:start … seo:end -->` do `<head>`.
+
+```bash
+node build-i18n.js
+```
+
+Rode **depois de qualquer mudança** em uma das 8 páginas, em `i18n*.js` ou em `data/*.json`, e **antes de todo commit/push**. O build:
+- aplica as traduções dos `data-i18n` (PT fica gravado na raiz, que é fonte e saída ao mesmo tempo; os outros idiomas vão para as subpastas);
+- gera `<title>`, `meta description`, `canonical`, `hreflang` (6 idiomas + `x-default` → `/en/`) e `og:locale` a partir das chaves `seo_title_<página>` / `seo_desc_<página>` do `i18n.js`;
+- reescreve `sitemap.xml` e `robots.txt`;
+- valida a sintaxe de todo `<script>` inline gerado (erro aborta o build).
+
+É idempotente: rodar duas vezes seguidas deve dizer `0 arquivos alterados`. Texto novo em HTML deve ganhar `data-i18n="chave"` + a chave nos 6 idiomas; sem chave, o texto sai igual em todos os idiomas. Página nova precisa entrar em `PAGES` no `build-i18n.js`, ganhar as duas chaves `seo_*` e entrar no `.cpanel.yml`.
+
+Troca de idioma no navegador: o botão navega para a URL do idioma e salva a escolha em `localStorage` (`padang-lang`). Na chegada, só essa escolha explícita redireciona — nunca o idioma do navegador (o Googlebot precisa ver cada URL no idioma dela).
 
 ## Fluxo de deploy (padrão que USAR)
 

@@ -213,6 +213,65 @@
                   fr:"Technomad II (Anaïs Lin) · The Weight of Thought (Headweller) · Chronicles (Green Waves) · Cosmic Visitors · Õtoto (Falzar) · VA The Nightmare (Nuit Noire) · Reborn: Echoes of the Forest (Tekmall) · Tekra (MNGRM). Le label dépasse les 100 sorties.",
                   ja:"Technomad II (Anaïs Lin)、The Weight of Thought (Headweller)、Chronicles (Green Waves)、Cosmic Visitors、Õtoto (Falzar)、VA The Nightmare (Nuit Noire)、Reborn: Echoes of the Forest (Tekmall)、Tekra (MNGRM)。レーベルは100リリースを突破。" },
 
+    /* ─ SEO: <title> e meta description por página (usados pelo build-i18n.js) ─
+       nomes de gênero ficam em inglês em todos os idiomas — é assim que se busca */
+    seo_title_index:    { pt:"PADANG RECORDS — selo de dark progressive e psytech", en:"PADANG RECORDS — dark progressive & psytech label", es:"PADANG RECORDS — sello de dark progressive y psytech", de:"PADANG RECORDS — Label für dark progressive & psytech", fr:"PADANG RECORDS — label dark progressive & psytech", ja:"PADANG RECORDS — dark progressive & psytech レーベル" },
+    seo_desc_index:     { pt:"Padang Records é um selo underground brasileiro desde 2013 — dark progressive, psytech, zenonesque e minimal psy. Mais de 100 lançamentos no Bandcamp e no Beatport.",
+                          en:"Padang Records is a Brazilian underground label since 2013 — dark progressive, psytech, zenonesque and minimal psy. 100+ releases on Bandcamp and Beatport.",
+                          es:"Padang Records es un sello underground brasileño desde 2013 — dark progressive, psytech, zenonesque y minimal psy. Más de 100 lanzamientos en Bandcamp y Beatport.",
+                          de:"Padang Records ist ein brasilianisches Underground-Label seit 2013 — dark progressive, psytech, zenonesque und minimal psy. Über 100 Releases auf Bandcamp und Beatport.",
+                          fr:"Padang Records est un label underground brésilien depuis 2013 — dark progressive, psytech, zenonesque et minimal psy. Plus de 100 sorties sur Bandcamp et Beatport.",
+                          ja:"Padang Records は2013年設立のブラジルのアンダーグラウンド・レーベル。dark progressive、psytech、zenonesque、minimal psy。Bandcamp と Beatport で100作以上をリリース。" },
+    seo_title_releases: { pt:"PADANG RECORDS — catálogo de lançamentos", en:"PADANG RECORDS — releases catalog", es:"PADANG RECORDS — catálogo de lanzamientos", de:"PADANG RECORDS — Release-Katalog", fr:"PADANG RECORDS — catalogue des sorties", ja:"PADANG RECORDS — リリース・カタログ" },
+    seo_desc_releases:  { pt:"Catálogo completo da Padang Records: EPs, álbuns e coletâneas de dark progressive, psytech, zenonesque e minimal psy desde 2013. Ouça e compre no Bandcamp e no Beatport.",
+                          en:"The full Padang Records catalog: dark progressive, psytech, zenonesque and minimal psy EPs, albums and VA compilations since 2013. Listen and buy on Bandcamp and Beatport.",
+                          es:"Catálogo completo de Padang Records: EPs, álbumes y recopilatorios de dark progressive, psytech, zenonesque y minimal psy desde 2013. Escucha y compra en Bandcamp y Beatport.",
+                          de:"Der komplette Katalog von Padang Records: dark progressive, psytech, zenonesque und minimal psy — EPs, Alben und VA-Compilations seit 2013. Anhören und kaufen auf Bandcamp und Beatport.",
+                          fr:"Le catalogue complet de Padang Records : EPs, albums et compilations VA dark progressive, psytech, zenonesque et minimal psy depuis 2013. Écoutez et achetez sur Bandcamp et Beatport.",
+                          ja:"Padang Records 全カタログ：2013年以来の dark progressive、psytech、zenonesque、minimal psy の EP・アルバム・VA コンピレーション。Bandcamp と Beatport で試聴・購入。" },
+    seo_title_roster:   { pt:"PADANG RECORDS — artistas", en:"PADANG RECORDS — roster", es:"PADANG RECORDS — artistas", de:"PADANG RECORDS — Künstler", fr:"PADANG RECORDS — artistes", ja:"PADANG RECORDS — アーティスト" },
+    seo_desc_roster:    { pt:"Os artistas da Padang Records: produtores de mais de 20 países no dark progressive, psytech, zenonesque e minimal psy. Bios, lançamentos, sets e contatos para booking.",
+                          en:"The Padang Records roster: producers from 20+ countries playing dark progressive, psytech, zenonesque and minimal psy. Bios, releases, sets and booking contacts.",
+                          es:"Los artistas de Padang Records: productores de más de 20 países en dark progressive, psytech, zenonesque y minimal psy. Bios, lanzamientos, sets y contacto para booking.",
+                          de:"Die Künstler von Padang Records: Produzenten aus über 20 Ländern — dark progressive, psytech, zenonesque und minimal psy. Bios, Releases, Sets und Booking-Kontakte.",
+                          fr:"Les artistes de Padang Records : producteurs de plus de 20 pays — dark progressive, psytech, zenonesque et minimal psy. Bios, sorties, sets et contacts booking.",
+                          ja:"Padang Records のアーティスト：20か国以上から集まった dark progressive、psytech、zenonesque、minimal psy のプロデューサー。バイオ、リリース、セット、ブッキング窓口。" },
+    seo_title_lab:      { pt:"PADANG LAB SERIES — DJ sets e gravações ao vivo", en:"PADANG LAB SERIES — DJ sets & live recordings", es:"PADANG LAB SERIES — DJ sets y grabaciones en vivo", de:"PADANG LAB SERIES — DJ-Sets & Live-Aufnahmen", fr:"PADANG LAB SERIES — DJ sets & enregistrements live", ja:"PADANG LAB SERIES — DJ セット & ライブ録音" },
+    seo_desc_lab:       { pt:"Padang Lab Series: DJ sets de mais de uma hora e gravações ao vivo de festivais da tripulação Padang Records — dark progressive, psytech, zenonesque e minimal psy.",
+                          en:"Padang Lab Series: hour-long DJ sets and festival live recordings from the Padang Records crew — dark progressive, psytech, zenonesque and minimal psy.",
+                          es:"Padang Lab Series: DJ sets de más de una hora y grabaciones en vivo de festivales del equipo de Padang Records — dark progressive, psytech, zenonesque y minimal psy.",
+                          de:"Padang Lab Series: stundenlange DJ-Sets und Festival-Live-Mitschnitte der Padang-Records-Crew — dark progressive, psytech, zenonesque und minimal psy.",
+                          fr:"Padang Lab Series : DJ sets de plus d'une heure et enregistrements live de festivals par l'équipe Padang Records — dark progressive, psytech, zenonesque et minimal psy.",
+                          ja:"Padang Lab Series：Padang Records クルーによる1時間超の DJ セットとフェスのライブ録音 — dark progressive、psytech、zenonesque、minimal psy。" },
+    seo_title_events:   { pt:"PADANG RECORDS — eventos e festivais", en:"PADANG RECORDS — events & festivals", es:"PADANG RECORDS — eventos y festivales", de:"PADANG RECORDS — Events & Festivals", fr:"PADANG RECORDS — événements & festivals", ja:"PADANG RECORDS — イベント & フェスティバル" },
+    seo_desc_events:    { pt:"Eventos e festivais da Padang Records: próximas datas e a história na pista desde 2013 — artistas de dark progressive, psytech, zenonesque e minimal psy pelo mundo.",
+                          en:"Padang Records events and festivals: upcoming shows and dancefloor history since 2013 — dark progressive, psytech, zenonesque and minimal psy artists on stages worldwide.",
+                          es:"Eventos y festivales de Padang Records: próximas fechas e historia en la pista desde 2013 — artistas de dark progressive, psytech, zenonesque y minimal psy por el mundo.",
+                          de:"Events und Festivals von Padang Records: kommende Shows und Dancefloor-Geschichte seit 2013 — dark progressive, psytech, zenonesque und minimal psy Artists weltweit.",
+                          fr:"Événements et festivals Padang Records : prochaines dates et histoire du dancefloor depuis 2013 — artistes dark progressive, psytech, zenonesque et minimal psy dans le monde.",
+                          ja:"Padang Records のイベントとフェスティバル：今後の出演予定と2013年からのダンスフロアの歴史 — 世界各地の dark progressive、psytech、zenonesque、minimal psy アーティスト。" },
+    seo_title_about:    { pt:"PADANG RECORDS — sobre o selo", en:"PADANG RECORDS — about the label", es:"PADANG RECORDS — sobre el sello", de:"PADANG RECORDS — über das Label", fr:"PADANG RECORDS — à propos du label", ja:"PADANG RECORDS — レーベルについて" },
+    seo_desc_about:     { pt:"A história da Padang Records: selo underground de Novo Hamburgo (RS) lançando dark progressive, psytech, zenonesque e minimal psy desde 2013.",
+                          en:"The story of Padang Records: an underground label from Novo Hamburgo, Brazil, releasing dark progressive, psytech, zenonesque and minimal psy since 2013.",
+                          es:"La historia de Padang Records: sello underground de Novo Hamburgo, Brasil, que publica dark progressive, psytech, zenonesque y minimal psy desde 2013.",
+                          de:"Die Geschichte von Padang Records: ein Underground-Label aus Novo Hamburgo, Brasilien, das seit 2013 dark progressive, psytech, zenonesque und minimal psy veröffentlicht.",
+                          fr:"L'histoire de Padang Records : un label underground de Novo Hamburgo, au Brésil, qui publie du dark progressive, psytech, zenonesque et minimal psy depuis 2013.",
+                          ja:"Padang Records の歩み：ブラジル・ノヴォ・アンブルゴ発、2013年から dark progressive、psytech、zenonesque、minimal psy をリリースするアンダーグラウンド・レーベル。" },
+    seo_title_demo:     { pt:"PADANG RECORDS — envie sua demo", en:"PADANG RECORDS — send your demo", es:"PADANG RECORDS — envía tu demo", de:"PADANG RECORDS — Demo einsenden", fr:"PADANG RECORDS — envoyez votre démo", ja:"PADANG RECORDS — デモ送付" },
+    seo_desc_demo:      { pt:"Envie sua demo para a Padang Records — dark progressive, psytech, zenonesque e minimal psy. Leia o guia de envio e mande suas faixas inéditas.",
+                          en:"Send your demo to Padang Records — dark progressive, psytech, zenonesque and minimal psy. Read the submission guide and send your unreleased tracks.",
+                          es:"Envía tu demo a Padang Records — dark progressive, psytech, zenonesque y minimal psy. Lee la guía de envío y manda tus tracks inéditos.",
+                          de:"Schick dein Demo an Padang Records — dark progressive, psytech, zenonesque und minimal psy. Lies den Einsende-Guide und sende unveröffentlichte Tracks.",
+                          fr:"Envoyez votre démo à Padang Records — dark progressive, psytech, zenonesque et minimal psy. Lisez le guide et envoyez vos morceaux inédits.",
+                          ja:"Padang Records にデモを送る — dark progressive、psytech、zenonesque、minimal psy。送付ガイドを読んで、未発表曲を送ってください。" },
+    seo_title_shop:     { pt:"PADANG RECORDS — loja · merch · vinil", en:"PADANG RECORDS — shop · merch · vinyl", es:"PADANG RECORDS — tienda · merch · vinilo", de:"PADANG RECORDS — Shop · Merch · Vinyl", fr:"PADANG RECORDS — boutique · merch · vinyle", ja:"PADANG RECORDS — ショップ · マーチ · ヴァイナル" },
+    seo_desc_shop:      { pt:"Merch oficial da Padang Records — camisetas, moletons e mais via Spreadshirt. Selo de dark progressive, psytech e minimal psy desde 2013.",
+                          en:"Official Padang Records merch — shirts, hoodies and more via Spreadshirt. Dark progressive, psytech and minimal psy label since 2013.",
+                          es:"Merch oficial de Padang Records — camisetas, sudaderas y más vía Spreadshirt. Sello de dark progressive, psytech y minimal psy desde 2013.",
+                          de:"Offizielles Padang-Records-Merch — Shirts, Hoodies und mehr über Spreadshirt. Label für dark progressive, psytech und minimal psy seit 2013.",
+                          fr:"Merch officiel Padang Records — t-shirts, sweats et plus via Spreadshirt. Label dark progressive, psytech et minimal psy depuis 2013.",
+                          ja:"Padang Records 公式マーチ — Spreadshirt で T シャツ、パーカーなど。2013年からの dark progressive、psytech、minimal psy レーベル。" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];
@@ -227,7 +286,28 @@
   // O browser já reporta o idioma do sistema, que reflete a localização do usuário
   // na grande maioria dos casos. Geolocalização por IP só seria útil pra distinguir
   // um BR rodando macOS em EN — caso edge demais pra adicionar latência de fetch.
+  // ── páginas estáticas por idioma (geradas pelo build-i18n.js) ──
+  // <html lang="xx" data-static-lang>: a URL define o idioma (/ = pt, /en/, /es/, /de/, /fr/, /ja/).
+  // Trocar idioma navega para a URL correspondente. Só a escolha explícita salva em
+  // localStorage redireciona na chegada — nunca o idioma do navegador (o Googlebot
+  // precisa ver cada URL no idioma dela).
+  const LANG_PREFIX = /^\/(en|es|de|fr|ja)(\/|$)/;
+  function staticLang() {
+    var h = document.documentElement;
+    return h.hasAttribute('data-static-lang') ? (h.getAttribute('lang') || 'pt') : null;
+  }
+  function savedLang() {
+    try { var v = localStorage.getItem(STORAGE_KEY); return SUPPORTED.indexOf(v) >= 0 ? v : null; } catch(e) { return null; }
+  }
+  function urlFor(lang) {
+    var path = location.pathname.replace(LANG_PREFIX, '/');
+    return (lang === 'pt' ? '' : '/' + lang) + path + location.search + location.hash;
+  }
+  function canNavigate() { return /^https?:$/.test(location.protocol); }
+
   function detect() {
+    var st = staticLang();
+    if (st) return st;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved && SUPPORTED.indexOf(saved) >= 0) return saved;
@@ -263,9 +343,16 @@
   function setLang(lang) {
     if (SUPPORTED.indexOf(lang) < 0) lang = DEFAULT_LANG;
     try { localStorage.setItem(STORAGE_KEY, lang); } catch(e){}
+    var st = staticLang();
+    if (st && canNavigate()) {
+      if (lang !== st) location.href = urlFor(lang);
+      return;
+    }
     apply(lang);
   }
   function init() {
+    var st = staticLang(), saved = savedLang();
+    if (st && saved && saved !== st && canNavigate()) { location.replace(urlFor(saved)); return; }
     apply(detect());
     document.querySelectorAll('.lang-switch [data-lang]').forEach(function(b) {
       b.addEventListener('click', function(e) {
@@ -276,5 +363,5 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
-  window.PADANG_I18N = { dict: DICT, apply: apply, setLang: setLang, detect: detect };
+  window.PADANG_I18N = { dict: DICT, apply: apply, setLang: setLang, detect: detect, urlFor: urlFor, SUPPORTED: SUPPORTED };
 })();
