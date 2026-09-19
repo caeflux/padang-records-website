@@ -300,6 +300,13 @@
     /* ─ roster: link do artista no Bandcamp (campo bc: da entry) ─ */
     roster_on_bc: { pt:"// no bandcamp", en:"// on bandcamp", es:"// en bandcamp", de:"// auf bandcamp", fr:"// sur bandcamp", ja:"// bandcamp" },
 
+    /* ─ filtro de tipo do catálogo (releases.html) ─ ep/lp/va são códigos de formato, iguais em todo idioma */
+    rf_all:     { pt:"todos", en:"all", es:"todos", de:"alle", fr:"tous", ja:"すべて" },
+    rf_ep:      { pt:"ep", en:"ep", es:"ep", de:"ep", fr:"ep", ja:"ep" },
+    rf_lp:      { pt:"lp", en:"lp", es:"lp", de:"lp", fr:"lp", ja:"lp" },
+    rf_va:      { pt:"va", en:"va", es:"va", de:"va", fr:"va", ja:"va" },
+    rf_showing: { pt:"exibidos", en:"showing", es:"mostrados", de:"angezeigt", fr:"affichés", ja:"件を表示" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];

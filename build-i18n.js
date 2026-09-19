@@ -178,10 +178,10 @@ function syncCounts(html, n) {
              .replace(/(<span class="rel-count">)\d+(<\/span>)/g, `$1${n}$2`);
 }
 
-function renderPage(template, page, lang, dict, stats, byAlbum) {
+function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   const key = page.replace(/\.html$/, '');
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
-  if (page === 'releases.html' || page === 'index.html') template = linkCards(template, byAlbum);
+  if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
   template = syncCounts(template, Object.keys(byAlbum).length);
   let html = applyTranslations(template, dict, lang, stats);
   html = setHtmlLang(html, lang);
@@ -204,6 +204,13 @@ function linkCards(html, byAlbum) {
       if (!r) return all;
       return `<div class="r${cls || ''}" data-release="${r.slug}">${mid}<a class="rp" href="./release/${r.slug}/">${artist}</a>`;
     });
+}
+// data-type="EP|LP|VA" nos cards (o filtro do catálogo usa; o card ★ LATEST não tem o tipo no .cat)
+function tagTypes(html, bySlug) {
+  return html.replace(/<div class="r( [^"]*)?" data-release="([^"]+)"( data-type="[^"]*")?>/g, (all, cls, slug, had) => {
+    const r = bySlug[slug];
+    return r ? `<div class="r${cls || ''}" data-release="${slug}" data-type="${r.type}">` : all;
+  });
 }
 
 // ── 2c. páginas de release: /release/<slug>/ (+ /xx/release/<slug>/) ──
@@ -490,6 +497,7 @@ function main() {
   const releases = JSON.parse(read('data/releases.json'));
   const newestRelease = releases.map(r => (r.lastmod || r.released || '').slice(0, 10)).sort().pop();
   const byAlbum = Object.fromEntries(releases.map(r => [r.album_id, r]));
+  const bySlug = Object.fromEntries(releases.map(r => [r.slug, r]));
   const stats = { applied: 0, missing: new Set() };
   const entries = [];
   let written = 0, scripts = 0, files = 0;
@@ -497,7 +505,7 @@ function main() {
   for (const page of PAGES) {
     const template = read(page);
     for (const lang of LANGS) {
-      const html = renderPage(template, page, lang, dict, stats, byAlbum);
+      const html = renderPage(template, page, lang, dict, stats, byAlbum, bySlug);
       const rel = lang === SOURCE_LANG ? page : `${lang}/${page}`;
       scripts += checkScripts(rel, html);
       if (write(rel, html)) written++;

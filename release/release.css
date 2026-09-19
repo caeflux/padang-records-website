@@ -122,6 +122,7 @@ body.nav-open{overflow:hidden}
 .rfbtn{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--ink-dim);padding:7px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
 .rfbtn:hover{color:var(--ink);border-color:rgba(196,255,61,.45)}
 .rfbtn.on{background:var(--neon-1);color:var(--bg);border-color:var(--neon-1)}
+.rfcount b{font-weight:400;color:inherit}
 .rfcount{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;color:var(--ink-dim);text-transform:uppercase}
 .year.hide{display:none}
 .r.hide{display:none}
