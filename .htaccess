@@ -10,6 +10,10 @@
   RewriteRule ^ https://padangrecords.net%{REQUEST_URI} [R=301,L]
   RewriteCond %{HTTP_HOST} ^www\.padangrecords\.net$ [NC]
   RewriteRule ^ https://padangrecords.net%{REQUEST_URI} [R=301,L]
+  # /index.html, /de/index.html, /release/x/index.html → URL do diretório (a canônica).
+  # THE_REQUEST = pedido original do navegador; evita loop com o DirectoryIndex interno.
+  RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.html[\s?] [NC]
+  RewriteRule ^(.*/)?index\.html$ /$1 [R=301,L,NE]
 </IfModule>
 
 <IfModule mod_headers.c>
@@ -31,6 +35,9 @@
   Header set X-Content-Type-Options "nosniff"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
+
+# Página 404 própria (noindex)
+ErrorDocument 404 /404.html
 
 # Force UTF-8
 AddDefaultCharset UTF-8

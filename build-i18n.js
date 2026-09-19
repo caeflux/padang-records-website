@@ -186,6 +186,7 @@ function syncCounts(html, n) {
 }
 
 function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
+  template = template.replace(/href="\.\/index\.html(#[^"]*)?"/g, (m, h) => `href="./${h || ''}"`);
   const key = page.replace(/\.html$/, '');
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
   if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
@@ -279,7 +280,7 @@ function releaseLayout() {
   const src = read('releases.html');
   const head = src.slice(src.search(/<head>/i) + 6, src.search(/<\/head>/i));
   const style = head.match(/<style>([\s\S]*?)<\/style>/)[1];
-  const nav = src.match(/<nav>[\s\S]*?<\/nav>/)[0];
+  const nav = src.match(/<nav>[\s\S]*?<\/nav>/)[0].replace(/href="\.\/index\.html(#[^"]*)?"/g, (m, h) => `href="./${h || ''}"`);
   const footer = src.match(/<footer>[\s\S]*?<\/footer>/)[0];
   const scripts = [...src.matchAll(/<script>[\s\S]*?<\/script>/g)].map(m => m[0])
     .filter(s => /padang\.bandcamp\.com → abre popup|MOBILE NAV — hamburger toggle/.test(s));
@@ -602,7 +603,7 @@ function artistLayout() {
   const src = read('roster.html');
   const head = src.slice(src.search(/<head>/i) + 6, src.search(/<\/head>/i));
   const style = head.match(/<style>([\s\S]*?)<\/style>/)[1];
-  const nav = src.match(/<nav>[\s\S]*?<\/nav>/)[0].replace(/ class="on"/g, '').replace(/<a href="\.\/roster\.html"/, '<a href="./roster.html" class="on"');
+  const nav = src.match(/<nav>[\s\S]*?<\/nav>/)[0].replace(/href="\.\/index\.html(#[^"]*)?"/g, (m, h) => `href="./${h || ''}"`).replace(/ class="on"/g, '').replace(/<a href="\.\/roster\.html"/, '<a href="./roster.html" class="on"');
   const footer = src.match(/<footer>[\s\S]*?<\/footer>/)[0];
   const scripts = [...src.matchAll(/<script>[\s\S]*?<\/script>/g)].map(m => m[0]).filter(s => /MOBILE NAV — hamburger toggle/.test(s));
   if (scripts.length !== 1) throw new Error('roster.html: script do menu mobile não encontrado');
