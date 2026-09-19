@@ -307,6 +307,19 @@
     rf_va:      { pt:"va", en:"va", es:"va", de:"va", fr:"va", ja:"va" },
     rf_showing: { pt:"exibidos", en:"showing", es:"mostrados", de:"angezeigt", fr:"affichés", ja:"件を表示" },
 
+    /* ─ páginas de artista (/artists/<slug>/, geradas pelo build-i18n.js) ─ */
+    ar_back:         { pt:"← todos os artistas", en:"← all artists", es:"← todos los artistas", de:"← alle Künstler", fr:"← tous les artistes", ja:"← アーティスト一覧" },
+    ar_label_artist: { pt:"artista da padang records", en:"padang records artist", es:"artista de padang records", de:"padang-records-artist", fr:"artiste padang records", ja:"padang records アーティスト" },
+    ar_bio:          { pt:"// bio", en:"// bio", es:"// bio", de:"// bio", fr:"// bio", ja:"// バイオ" },
+    ar_releases:     { pt:"// releases na padang records", en:"// releases on padang records", es:"// lanzamientos en padang records", de:"// releases auf padang records", fr:"// sorties sur padang records", ja:"// padang records でのリリース" },
+    ar_va:           { pt:"// coletâneas · compiladas por", en:"// compilations · compiled by", es:"// recopilatorios · compilados por", de:"// compilations · zusammengestellt von", fr:"// compilations · compilées par", ja:"// コンピレーション · 選曲" },
+    ar_sc:           { pt:"// soundcloud", en:"// soundcloud", es:"// soundcloud", de:"// soundcloud", fr:"// soundcloud", ja:"// soundcloud" },
+    ar_tv:           { pt:"// padangtv · live / colab", en:"// padangtv · live / collab", es:"// padangtv · live / colab", de:"// padangtv · live / collab", fr:"// padangtv · live / collab", ja:"// padangtv · ライブ / コラボ" },
+    ar_booking:      { pt:"booking · e-mail", en:"booking · email", es:"booking · e-mail", de:"booking · e-mail", fr:"booking · e-mail", ja:"ブッキング · メール" },
+    ar_title_suffix: { pt:"artista · dark progressive / psytech · PADANG RECORDS", en:"artist · dark progressive / psytech · PADANG RECORDS", es:"artista · dark progressive / psytech · PADANG RECORDS", de:"Artist · dark progressive / psytech · PADANG RECORDS", fr:"artiste · dark progressive / psytech · PADANG RECORDS", ja:"アーティスト · dark progressive / psytech · PADANG RECORDS" },
+    ar_desc_suffix:  { pt:"Artista da Padang Records — selo brasileiro de dark progressive, psytech, zenonesque e minimal psy.", en:"Padang Records artist — Brazilian label for dark progressive, psytech, zenonesque and minimal psy.", es:"Artista de Padang Records — sello brasileño de dark progressive, psytech, zenonesque y minimal psy.", de:"Padang-Records-Artist — brasilianisches Label für dark progressive, psytech, zenonesque und minimal psy.", fr:"Artiste Padang Records — label brésilien de dark progressive, psytech, zenonesque et minimal psy.", ja:"Padang Records のアーティスト — dark progressive、psytech、zenonesque、minimal psy のブラジルのレーベル。" },
+    roster_page_link:{ pt:"// página do artista", en:"// artist page", es:"// página del artista", de:"// künstlerseite", fr:"// page de l'artiste", ja:"// アーティスト・ページ" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];

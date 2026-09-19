@@ -367,7 +367,7 @@ function renderRelease(r, lang, dict, layout, roster, stats) {
   let artistHtml = escText(artistText);
   for (const name of inRoster) {
     const re = new RegExp(escText(name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-    artistHtml = artistHtml.replace(re, m => `<a href="${P}/roster.html#artist=${artistSlug(name)}">${m}</a>`);
+    artistHtml = artistHtml.replace(re, m => `<a href="${P}/artists/${artistSlug(name)}/">${m}</a>`);
   }
   const cover700 = r.cover_url.replace(/_10\.jpg$/, '_16.jpg');
   const L = key => escText(t(dict, key, lang) || key);
@@ -390,7 +390,7 @@ function renderRelease(r, lang, dict, layout, roster, stats) {
         <a class="bc" href="${r.url}" target="_blank" rel="noopener" data-i18n="rel_buy_bc">${L('rel_buy_bc')}</a>${r.beatport_url ? `
         <a class="bp" href="${r.beatport_url}" target="_blank" rel="noopener" data-i18n="rel_buy_bp">${L('rel_buy_bp')}</a>` : ''}
       </div>${inRoster.map(name => `
-      <div class="rel-profile">↳ <a href="${P}/roster.html#artist=${artistSlug(name)}">${escText(name)} · <span data-i18n="rel_roster">${L('rel_roster')}</span></a></div>`).join('')}
+      <div class="rel-profile">↳ <a href="${P}/artists/${artistSlug(name)}/">${escText(name)} · <span data-i18n="rel_roster">${L('rel_roster')}</span></a></div>`).join('')}
     </div>
   </article>
 
@@ -444,6 +444,204 @@ ${layout.scripts.join('\n')}
   html = syncCounts(html, layout.total);
   html = absolutizeAssets(html);
   html = html.replace(/(href|src|action)="\.\//g, `$1="${P}/`); // links entre páginas ficam no idioma
+  return html;
+}
+
+// ── 2d. páginas de artista: /artists/<slug>/ (+ /xx/artists/<slug>/) ──
+// (/artist/ sem "s" é o portal restrito — não confundir)
+function loadRoster() {
+  const src = read('roster.html');
+  const a = src.indexOf('const D="demos@padangrecords.net";');
+  const b = src.indexOf('\n];', a);
+  if (a < 0 || b < 0) throw new Error('roster.html: array roster não encontrado');
+  const ctx = {}; vm.createContext(ctx);
+  vm.runInContext(src.slice(a, b + 3) + '\nthis.__roster = roster;', ctx, { filename: 'roster.html' });
+  return ctx.__roster;
+}
+function loadBios() {
+  const noop = () => {};
+  const ctx = { document: { readyState: 'complete', documentElement: { lang: 'pt' }, getElementById: () => null, querySelectorAll: () => [], addEventListener: noop }, setTimeout: noop, MutationObserver: function () { this.observe = noop; }, console };
+  ctx.window = ctx; vm.createContext(ctx);
+  vm.runInContext(read('i18n-bios.js'), ctx, { filename: 'i18n-bios.js' });
+  return ctx.window.PADANG_BIOS || {};
+}
+const PALETTE = [['#ff2bd6', '#42e8ff'], ['#c4ff3d', '#ff2bd6'], ['#42e8ff', '#ff7a18'], ['#ff7a18', '#c4ff3d'], ['#ff2bd6', '#c4ff3d'], ['#42e8ff', '#ff2bd6'], ['#c4ff3d', '#42e8ff'], ['#ff7a18', '#ff2bd6']];
+const initials = n => n.replace(/[^A-Za-zÀ-ÿ&]/g, ' ').trim().split(/\s+/).map(w => w[0] || '').join('').slice(0, 2);
+const stripTags = s => String(s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+function excerpt(s, max) {
+  s = stripTags(s);
+  if (s.length <= max) return s;
+  const cut = s.slice(0, max).replace(/[,;:\s]+\S*$/, '');
+  return cut + '…';
+}
+
+function artistLayout() {
+  const src = read('roster.html');
+  const head = src.slice(src.search(/<head>/i) + 6, src.search(/<\/head>/i));
+  const style = head.match(/<style>([\s\S]*?)<\/style>/)[1];
+  const nav = src.match(/<nav>[\s\S]*?<\/nav>/)[0].replace(/ class="on"/g, '').replace(/<a href="\.\/roster\.html"/, '<a href="./roster.html" class="on"');
+  const footer = src.match(/<footer>[\s\S]*?<\/footer>/)[0];
+  const scripts = [...src.matchAll(/<script>[\s\S]*?<\/script>/g)].map(m => m[0]).filter(s => /MOBILE NAV — hamburger toggle/.test(s));
+  if (scripts.length !== 1) throw new Error('roster.html: script do menu mobile não encontrado');
+  const headBase = head
+    .replace(/<style>[\s\S]*?<\/style>\n?/, '<link rel="stylesheet" href="/artists/artist.css" />\n')
+    .replace(/<link rel="stylesheet" href="\.\/blocks\.css" \/>\n?/, '')
+    .replace(/\s*$/, '\n<link rel="stylesheet" href="/blocks.css" />\n');
+  const home = read('index.html');
+  const m = home.match(/<section id="pc" class="[^"]*"[^>]*>/);
+  const end = findClose(home, 'section', m.index + m[0].length);
+  const pcomp = home.slice(m.index, end + '</section>'.length).replace(/ rv"/, '"');
+  return { style, headBase, nav, footer, scripts, pcomp };
+}
+
+const ARTIST_CSS = `
+/* ── página de artista (gerado por build-i18n.js — não editar) ── */
+.ar{max-width:1100px;margin:0 auto;padding:120px 32px 60px}
+.ar .crumb{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:28px}
+.ar .crumb a:hover{color:var(--neon-1)}
+.ar-head{display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:center;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ar-av{position:relative;width:220px;height:220px;border-radius:50%;overflow:hidden;background-color:#1a1a2a;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15),0 0 60px -14px rgba(196,255,61,.35);display:flex;align-items:center;justify-content:center;font-family:'Major Mono Display',monospace;font-size:64px;color:#fff;text-transform:lowercase;letter-spacing:-.02em}
+.ar-av img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.15) contrast(1.05)}
+.ar-av .ini{display:none}.ar-av.nf .ini{display:block}
+.ar-info h1{font-family:'Major Mono Display',monospace;font-weight:400;font-size:clamp(36px,6vw,72px);line-height:.95;letter-spacing:-.02em;text-transform:lowercase;color:var(--ink)}
+.ar-cy{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--neon-1)}
+.ar-cy span{color:var(--ink-dim)}
+.ar-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.ar-links a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:11px 18px;border:1px solid rgba(255,255,255,.18);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);transition:border-color .2s,color .2s}
+.ar-links a:hover{border-color:var(--neon-1);color:var(--neon-1)}
+.ar h2{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--neon-2);margin:48px 0 18px;display:flex;align-items:center;gap:16px}
+.ar h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(196,255,61,.5),transparent)}
+.ar-bio p{font-size:16px;line-height:1.7;font-weight:300;color:var(--ink);max-width:760px}
+.ar-bio p b{font-weight:500}
+.ar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.ar-card{display:block;border:1px solid rgba(255,255,255,.08);background:var(--bg-2);transition:transform .25s,border-color .25s}
+.ar-card:hover{transform:translateY(-3px);border-color:rgba(196,255,61,.5)}
+.ar-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.ar-card .t{padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);line-height:1.5}
+.ar-card .t small{display:block;color:var(--ink-dim);font-size:9px;letter-spacing:.25em;margin-top:4px}
+.ar-card.emb iframe{display:block;border:0;width:100%;height:380px}
+.ar-sc iframe{display:block;border:0;width:100%;height:380px;background:#181a1b}
+.ar-tv{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ar-tv a{display:block;border:1px solid rgba(255,255,255,.08);background:var(--bg-2)}
+.ar-tv a:hover{border-color:rgba(196,255,61,.5)}
+.ar-tv img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.ar-tv span{display:block;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-dim)}
+.ar .pcomp{max-width:none;padding:0;margin-top:72px}
+@media(max-width:720px){.ar{padding:96px 16px 48px}.ar-head{grid-template-columns:1fr;gap:24px;text-align:center;justify-items:center}.ar-links{justify-content:center}.ar .pcomp{margin-top:56px}}
+`;
+
+function artistJsonLd(a, url, photo, bio, albums) {
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'MusicGroup',
+    name: a.n,
+    url,
+    description: excerpt(bio, 300),
+    genre: ['Dark progressive', 'Psytech', 'Zenonesque', 'Minimal psy'],
+    memberOf: { '@type': 'Organization', name: 'Padang Records', url: BASE + '/' }
+  };
+  if (photo) ld.image = photo;
+  const same = [a.sc, a.bc].filter(u => u && /^https?:/.test(u) && !/\/search\//.test(u));
+  if (same.length) ld.sameAs = same;
+  if (albums.length) ld.album = albums.map(r => ({ '@type': 'MusicAlbum', name: r.title, url: `${BASE}/release/${r.slug}/`, image: r.cover_url, datePublished: r.released }));
+  return `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`;
+}
+
+function renderArtist(a, i, lang, dict, bios, layout, byAlbum, stats) {
+  const P = lang === SOURCE_LANG ? '' : '/' + lang;
+  const slug = artistSlug(a.n);
+  const urls = Object.fromEntries(LANGS.map(l => [l, `${BASE}${l === SOURCE_LANG ? '' : '/' + l}/artists/${slug}/`]));
+  const bio = (bios[a.n] && bios[a.n][lang]) || a.b || '';
+  const L = key => escText(t(dict, key, lang) || key);
+  const photoRel = a.p ? (a.p.startsWith('./') ? a.p.slice(1) : a.p) : null;   // ./img/… → /img/…
+  const photoAbs = photoRel ? (photoRel.startsWith('/') ? BASE + photoRel : photoRel) : null;
+  const grad = `linear-gradient(135deg,${PALETTE[i % PALETTE.length][0]},${PALETTE[i % PALETTE.length][1]})`;
+  const rel = (a.r || []).map(([id, title]) => byAlbum[id] || { title, album_id: id });
+  const vas = (a.va || []).map(([id, title]) => byAlbum[id] || { title, album_id: id });
+  const albums = rel.filter(r => r.slug);
+  const card = r => r.slug
+    ? `<a class="ar-card" href="${P}/release/${r.slug}/"><img src="${r.cover_url.replace(/_10\.jpg$/, '_7.jpg')}" alt="${escAttr(r.title)}" loading="lazy" width="350" height="350" /><div class="t">${escText(r.title)}<small>${escText(r.released_label)} · ${r.type}</small></div></a>`
+    : `<div class="ar-card emb"><iframe loading="lazy" src="https://bandcamp.com/EmbeddedPlayer/album=${r.album_id}/size=large/bgcol=181a1b/linkcol=c4ff3d/tracklist=false/artwork=small/transparent=true/" seamless title="${escAttr(r.title)}"></iframe></div>`;
+  const email = a.e === 'D' || !a.e ? 'demos@padangrecords.net' : a.e;
+  const scOk = a.s && a.sc && !/\/search\//.test(a.sc);
+
+  const body = `<main class="ar" data-artist="${slug}">
+  <div class="crumb"><a href="${P}/roster.html" data-i18n="ar_back">${L('ar_back')}</a></div>
+  <header class="ar-head">
+    <div class="ar-av${photoRel ? '' : ' nf'}" style="background:${grad}">${photoRel ? `<img src="${escAttr(photoRel)}" alt="${escAttr(a.n)}" width="220" height="220" onerror="this.parentNode.classList.add('nf');this.remove()" />` : ''}<span class="ini">${escText(initials(a.n)).toLowerCase()}</span></div>
+    <div class="ar-info">
+      <h1>${escText(a.n)}</h1>
+      <div class="ar-cy">↳ ${escText(a.c)} · <span data-i18n="ar_label_artist">${L('ar_label_artist')}</span></div>
+      <div class="ar-links">${scOk ? `
+        <a href="${escAttr(a.sc)}" target="_blank" rel="noopener">soundcloud →</a>` : ''}${a.bc ? `
+        <a href="${escAttr(a.bc)}" target="_blank" rel="noopener">bandcamp →</a>` : ''}
+        <a href="mailto:${escAttr(email)}?subject=booking%20-%20${encodeURIComponent(a.n)}"><span data-i18n="ar_booking">${L('ar_booking')}</span> →</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="ar-bio">
+    <h2 data-i18n="ar_bio">${L('ar_bio')}</h2>
+    <p>${bio}</p>
+  </section>
+${rel.length ? `
+  <section>
+    <h2 data-i18n="ar_releases">${L('ar_releases')}</h2>
+    <div class="ar-grid">
+${rel.map(r => '      ' + card(r)).join('\n')}
+    </div>
+  </section>
+` : ''}${vas.length ? `
+  <section>
+    <h2 data-i18n="ar_va">${L('ar_va')}</h2>
+    <div class="ar-grid">
+${vas.map(r => '      ' + card(r)).join('\n')}
+    </div>
+  </section>
+` : ''}${scOk ? `
+  <section class="ar-sc">
+    <h2 data-i18n="ar_sc">${L('ar_sc')}</h2>
+    <iframe loading="lazy" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(a.sc)}&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true" allow="autoplay" title="${escAttr(a.n)} — SoundCloud"></iframe>
+  </section>
+` : ''}${a.yt && a.yt.length ? `
+  <section>
+    <h2 data-i18n="ar_tv">${L('ar_tv')}</h2>
+    <div class="ar-tv">
+${a.yt.map(([label, id]) => `      <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener"><img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="${escAttr(label)}" loading="lazy" /><span>${escText(label)}</span></a>`).join('\n')}
+    </div>
+  </section>
+` : ''}
+${layout.pcomp}
+</main>`;
+
+  const title = `${a.n} · ${t(dict, 'ar_title_suffix', lang)}`;
+  const desc = `${excerpt(bio, 120)} ${t(dict, 'ar_desc_suffix', lang)}`;
+  let head = '<head>\n' + layout.headBase
+    .replace(/<meta property="og:type" content="[^"]*"/, '<meta property="og:type" content="profile"')
+    .replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${photoAbs || BASE + '/img/logo-full.png'}"`);
+  head = seoHead(head, { title, desc, urls, lang, extraHead: [artistJsonLd(a, urls[lang], photoAbs, bio, albums)] });
+
+  let html = `<!DOCTYPE html>
+<html lang="${lang}" data-static-lang>
+${head}</head>
+<body>
+
+${layout.nav}
+
+${body}
+
+${layout.footer}
+
+<script src="/i18n.js" defer></script>
+<script src="/i18n-extra.js" defer></script>
+${layout.scripts.join('\n')}
+</body>
+</html>
+`;
+  html = applyTranslations(html, dict, lang, stats);
+  html = syncCounts(html, layout.total);
+  html = absolutizeAssets(html);
+  html = html.replace(/(href|src|action)="\.\//g, `$1="${P}/`);
   return html;
 }
 
@@ -519,6 +717,8 @@ function main() {
   const layout = releaseLayout();
   layout.total = releases.length;
   const roster = rosterIndex();
+  const rosterData = loadRoster();
+  const artistSlugs = new Set(rosterData.map(a => artistSlug(a.n)));
   if (write('release/release.css', layout.style + '\n' + RELEASE_CSS)) written++;
   const pagesBefore = files;
   for (const r of releases) {
@@ -536,10 +736,30 @@ function main() {
   }
   const releaseFiles = files - pagesBefore;
 
+  // páginas de artista
+  const aLayout = artistLayout();
+  aLayout.total = releases.length;
+  const bios = loadBios();
+  if (write('artists/artist.css', aLayout.style + '\n' + ARTIST_CSS)) written++;
+  const rosterLastmod = gitDate('roster.html');
+  const artistsBefore = files;
+  rosterData.forEach((a, i) => {
+    const slug = artistSlug(a.n);
+    for (const lang of LANGS) {
+      const html = renderArtist(a, i, lang, dict, bios, aLayout, byAlbum, stats);
+      const rel = `${lang === SOURCE_LANG ? '' : lang + '/'}artists/${slug}/index.html`;
+      scripts += checkScripts(rel, html);
+      if (write(rel, html)) written++;
+      files++;
+    }
+    entries.push({ urls: Object.fromEntries(LANGS.map(l => [l, `${BASE}${l === SOURCE_LANG ? '' : '/' + l}/artists/${slug}/`])), lastmod: rosterLastmod });
+  });
+  const artistFiles = files - artistsBefore;
+
   if (write('sitemap.xml', sitemap(entries))) written++;
   if (write('robots.txt', ROBOTS)) written++;
 
-  console.log(`build-i18n: ${files - releaseFiles} páginas (${PAGES.length} × ${LANGS.length} idiomas) + ${releaseFiles} páginas de release (${releases.length} × ${LANGS.length}), ${written} arquivos alterados`);
+  console.log(`build-i18n: ${files - releaseFiles - artistFiles} páginas (${PAGES.length} × ${LANGS.length} idiomas) + ${releaseFiles} de release (${releases.length} × ${LANGS.length}) + ${artistFiles} de artista (${rosterData.length} × ${LANGS.length}), ${written} arquivos alterados`);
   console.log(`  ${stats.applied} traduções aplicadas · ${scripts} scripts inline validados · sitemap: ${entries.length * LANGS.length} URLs`);
   if (stats.missing.size) console.log(`  chaves data-i18n sem tradução (mantêm o texto do HTML): ${[...stats.missing].sort().join(', ')}`);
 }

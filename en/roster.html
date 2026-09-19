@@ -387,6 +387,7 @@ document.addEventListener('click', function(e){
       </div>
       <h4>// contact</h4>
       <div class="links">
+        <a id="mPage" href="#"><span><span class="lb" data-i18n="roster_page_link">// artist page</span><span class="vl"></span></span><span>→</span></a>
         <a id="mEmail" href="#"><span><span class="lb">// email</span><span class="vl"></span></span><span>→</span></a>
         <a id="mSc" href="#" target="_blank" rel="noopener"><span><span class="lb">// soundcloud</span><span class="vl"></span></span><span>→</span></a>
         <a id="mBc" href="#" target="_blank" rel="noopener" style="display:none"><span><span class="lb" data-i18n="roster_on_bc">// on bandcamp</span><span class="vl"></span></span><span>→</span></a>
@@ -477,14 +478,14 @@ roster.forEach((a,i)=>{
   const avStyle=a.p ? 'background-image:url('+a.p+')' : 'background:'+gradient(i);
   const avContent=a.p ? '' : init;
   rs.insertAdjacentHTML('beforeend',
-    '<button class="a" data-i="'+i+'">'+
+    '<a class="a" href="./artists/'+artistSlug(a.n)+'/" data-i="'+i+'">'+
       '<div class="av '+(a.p?'ph':'')+'" style="'+avStyle+'">'+avContent+'</div>'+
       '<div class="info">'+
         '<div class="nm">'+a.n+'</div>'+
         '<div class="cy">'+a.c+'</div>'+
       '</div>'+
       '<span class="arrow">↗</span>'+
-    '</button>');
+    '</a>');
 });
 
 // ── Avatar load fallback ──
@@ -615,6 +616,9 @@ function openArtist(i){
   } else {
     ytSection.style.display='none';
   }
+  const mPage=document.getElementById('mPage');
+  mPage.href='./artists/'+artistSlug(a.n)+'/';
+  mPage.querySelector('.vl').textContent='/artists/'+artistSlug(a.n)+'/';
   const mEmail=document.getElementById('mEmail');
   mEmail.href='mailto:'+a.e+'?subject=contato%20-%20'+encodeURIComponent(a.n);
   mEmail.querySelector('.vl').textContent=a.e;
@@ -632,7 +636,8 @@ function openArtist(i){
 }
 function closeModal(){modal.classList.remove('show');document.body.classList.remove('lock')}
 document.querySelectorAll('.a').forEach(card=>{
-  card.addEventListener('click',()=>openArtist(parseInt(card.dataset.i)));
+  // clique simples abre o modal; cmd/ctrl/shift/botão do meio seguem o link (página do artista)
+  card.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;e.preventDefault();openArtist(parseInt(card.dataset.i));});
 });
 mClose.addEventListener('click',closeModal);
 modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
