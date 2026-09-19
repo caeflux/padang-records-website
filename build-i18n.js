@@ -186,6 +186,10 @@ function syncCounts(html, n) {
 }
 
 function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
+  template = template
+    .replace('<meta property="og:image" content="https://padangrecords.net/img/logo-full.png" />',
+             '<meta property="og:image" content="https://padangrecords.net/img/og-padang.jpg" />\n<meta property="og:image:width" content="1200" />\n<meta property="og:image:height" content="630" />')
+    .replace('<meta name="twitter:card" content="summary" />', '<meta name="twitter:card" content="summary_large_image" />');
   template = template.replace(/href="\.\/index\.html(#[^"]*)?"/g, (m, h) => `href="./${h || ''}"`);
   const key = page.replace(/\.html$/, '');
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
@@ -200,6 +204,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   if (!title || !desc) throw new Error(`faltam seo_title_${key}/seo_desc_${key} no i18n.js`);
   const extraHead = page === 'index.html' ? [orgJsonLd(lang, dict)]
                   : page === 'events.html' ? [eventsJsonLd(html, lang, urls[lang])].filter(Boolean)
+                  : page === 'lab.html' ? [labJsonLd(lang, urls[lang])].filter(Boolean)
                   : [];
   html = seoHead(html.slice(0, headEnd), { title, desc, urls, lang, extraHead }) + html.slice(headEnd);
   if (lang !== SOURCE_LANG) html = absolutizeAssets(html);
@@ -571,6 +576,26 @@ function eventsJsonLd(html, lang, pageUrl) {
   return events.length ? ldScript({ '@context': 'https://schema.org', '@graph': events }) : '';
 }
 
+// lab.html: a série como MusicPlaylist, cada episódio um MusicRecording
+function labJsonLd(lang, pageUrl) {
+  let eps = [];
+  try { eps = JSON.parse(read('data/lab-series.json')); } catch (e) { return ''; }
+  const dur = s => `PT${Math.floor(s / 3600)}H${Math.floor(s % 3600 / 60)}M${s % 60}S`;
+  return ldScript({
+    '@context': 'https://schema.org', '@type': 'MusicPlaylist',
+    name: 'Padang Lab Series', url: pageUrl, numTracks: eps.length,
+    description: 'DJ sets and live recordings from the Padang Records crew and guests — dark progressive, psytech, zenonesque and minimal psy.',
+    author: { '@type': 'Organization', name: 'Padang Records', url: BASE + '/' },
+    track: eps.map(e => {
+      const r = { '@type': 'MusicRecording', name: `Padang Lab Series EP.${e.ep} — ${e.title}${e.subtitle ? ' · ' + e.subtitle : ''}`, url: e.sc_url, byArtist: { '@type': 'MusicGroup', name: e.title } };
+      if (e.date) r.datePublished = e.date;
+      if (e.duration_sec) r.duration = dur(e.duration_sec);
+      if (e.artwork) r.image = e.artwork;
+      return r;
+    })
+  });
+}
+
 // ── 2d. páginas de artista: /artists/<slug>/ (+ /xx/artists/<slug>/) ──
 // (/artist/ sem "s" é o portal restrito — não confundir)
 function loadRoster() {
@@ -747,7 +772,7 @@ ${layout.pcomp}
   const desc = `${excerpt(bio, 120)} ${t(dict, 'ar_desc_suffix', lang)}`;
   let head = '<head>\n' + layout.headBase
     .replace(/<meta property="og:type" content="[^"]*"/, '<meta property="og:type" content="profile"')
-    .replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${photoAbs || BASE + '/img/logo-full.png'}"`);
+    .replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${photoAbs || BASE + '/img/og-padang.jpg'}"`);
   head = seoHead(head, { title, desc, urls, lang, extraHead: [
     artistJsonLd(a, urls[lang], photoAbs, bio, albums),
     breadcrumbLd(lang, [{ name: t(dict, 'nav_roster', lang) || 'Roster', item: urlOf('roster.html', lang) }, { name: a.n, item: urls[lang] }])
