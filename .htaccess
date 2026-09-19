@@ -1,5 +1,17 @@
 # Padang Records · cache strategy
 
+# ── Host canônico: https://padangrecords.net (sem www, sem http) ──
+# 4 variantes (http/https × www/sem-www) respondiam 200 → conteúdo duplicado pro Google.
+# A dupla condição em HTTPS/X-Forwarded-Proto evita loop caso o TLS termine num proxy.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://padangrecords.net%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTP_HOST} ^www\.padangrecords\.net$ [NC]
+  RewriteRule ^ https://padangrecords.net%{REQUEST_URI} [R=301,L]
+</IfModule>
+
 <IfModule mod_headers.c>
   # HTML: never cached — always fetch fresh (fixes the cron-deploy lag issue)
   <FilesMatch "\.(html|htm)$">
