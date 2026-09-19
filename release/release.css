@@ -181,5 +181,11 @@ body.nav-open{overflow:hidden}
 .rel-about .note{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px}
 .rel-about .txt{white-space:pre-line;line-height:1.7;color:var(--ink);max-width:760px}
 .rel-about .cr{white-space:pre-line;margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:var(--ink-dim)}
+.ar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.ar-card{display:block;border:1px solid rgba(255,255,255,.08);background:var(--bg-2);transition:transform .25s,border-color .25s}
+.ar-card:hover{transform:translateY(-3px);border-color:rgba(196,255,61,.5)}
+.ar-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.ar-card .t{padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);line-height:1.5}
+.ar-card .t small{display:block;color:var(--ink-dim);font-size:9px;letter-spacing:.25em;margin-top:4px}
 @media(max-width:860px){.rel{padding:96px 16px 48px}.rel-hero{grid-template-columns:1fr;gap:28px}.rel-meta{gap:8px 24px}}
 @media(max-width:480px){.rel-buy a{flex:1 1 100%;justify-content:center}.rel-meta{grid-template-columns:repeat(2,auto)}}

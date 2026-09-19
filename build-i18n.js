@@ -172,6 +172,13 @@ function absolutizeAssets(html) {
   return html.replace(ASSET, '$1/$2');
 }
 
+// roster.html: mapa album_id → slug para o modal linkar as páginas de release
+function syncRelSlugs(html, releases) {
+  const map = Object.fromEntries(releases.map(r => [r.album_id, r.slug]));
+  const block = `<!-- relslug:start --><script>window.RELSLUG=${JSON.stringify(map)};</script><!-- relslug:end -->`;
+  return html.replace(/<!-- relslug:start -->[\s\S]*?<!-- relslug:end -->/, block);
+}
+
 // contadores de catálogo que o build mantém em dia a partir do releases.json
 function syncCounts(html, n) {
   return html.replace(/(<b class="pc-n">)\d+(<\/b>)/g, `$1${n}$2`)
@@ -183,6 +190,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
   if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
   template = syncCounts(template, Object.keys(byAlbum).length);
+  if (page === 'roster.html') template = syncRelSlugs(template, Object.values(byAlbum));
   let html = applyTranslations(template, dict, lang, stats);
   html = setHtmlLang(html, lang);
   const headEnd = html.search(/<\/head>/i);
@@ -324,6 +332,12 @@ const RELEASE_CSS = `
 .rel-about .note{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px}
 .rel-about .txt{white-space:pre-line;line-height:1.7;color:var(--ink);max-width:760px}
 .rel-about .cr{white-space:pre-line;margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:var(--ink-dim)}
+.ar-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.ar-card{display:block;border:1px solid rgba(255,255,255,.08);background:var(--bg-2);transition:transform .25s,border-color .25s}
+.ar-card:hover{transform:translateY(-3px);border-color:rgba(196,255,61,.5)}
+.ar-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}
+.ar-card .t{padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);line-height:1.5}
+.ar-card .t small{display:block;color:var(--ink-dim);font-size:9px;letter-spacing:.25em;margin-top:4px}
 @media(max-width:860px){.rel{padding:96px 16px 48px}.rel-hero{grid-template-columns:1fr;gap:28px}.rel-meta{gap:8px 24px}}
 @media(max-width:480px){.rel-buy a{flex:1 1 100%;justify-content:center}.rel-meta{grid-template-columns:repeat(2,auto)}}
 `;
@@ -384,6 +398,15 @@ function renderRelease(r, lang, dict, layout, roster, stats) {
     artistHtml = artistHtml.replace(re, m => `<a href="${P}/artists/${artistSlug(name)}/">${m}</a>`);
   }
   const cover700 = r.cover_url.replace(/_10\.jpg$/, '_16.jpg');
+  const more = r.artist ? layout.releases.filter(x => x.slug !== r.slug && x.artist && fold(x.artist) === fold(r.artist)).slice(0, 6) : [];
+  const moreHtml = more.length ? `
+  <section class="rel-more">
+    <h2>${escText((t(dict, 'rel_more_by', lang) || 'more from {artist}').replace('{artist}', artistText))}</h2>
+    <div class="ar-grid">
+${more.map(x => `      <a class="ar-card" href="${P}/release/${x.slug}/"><img src="${x.cover_url.replace(/_10\.jpg$/, '_7.jpg')}" alt="${escAttr(x.title)}" loading="lazy" width="350" height="350" /><div class="t">${escText(x.title)}<small>${escText(x.released_label)} · ${x.type}</small></div></a>`).join('\n')}
+    </div>
+  </section>
+` : '';
   const L = key => escText(t(dict, key, lang) || key);
 
   const body = `<main class="rel" data-release="${r.slug}">
@@ -426,7 +449,7 @@ ${r.description_en || r.credits ? `
     <div class="txt">${escText(r.description_en)}</div>` : ''}${r.credits ? `
     <div class="cr">${escText(r.credits)}</div>` : ''}
   </section>
-` : ''}
+` : ''}${moreHtml}
 ${layout.blocks}
 </main>`;
 
@@ -656,7 +679,12 @@ function renderArtist(a, i, lang, dict, bios, layout, byAlbum, stats) {
   const photoRel = a.p ? (a.p.startsWith('./') ? a.p.slice(1) : a.p) : null;   // ./img/… → /img/…
   const photoAbs = photoRel ? (photoRel.startsWith('/') ? BASE + photoRel : photoRel) : null;
   const grad = `linear-gradient(135deg,${PALETTE[i % PALETTE.length][0]},${PALETTE[i % PALETTE.length][1]})`;
-  const rel = (a.r || []).map(([id, title]) => byAlbum[id] || { title, album_id: id });
+  // releases do artista = r: da entry ∪ releases.json cujo campo artist cita o nome (o r: de
+  // vários artistas está incompleto); ordem: data desc
+  const fromCatalog = layout.releases.filter(x => x.artist && rosterArtists(x.artist, layout.roster).includes(a.n));
+  const seen = new Set(fromCatalog.map(x => x.album_id));
+  const rel = fromCatalog.concat((a.r || []).filter(([id]) => !seen.has(id)).map(([id, title]) => byAlbum[id] || { title, album_id: id }))
+    .sort((x, y) => (y.released || '').localeCompare(x.released || ''));
   const vas = (a.va || []).map(([id, title]) => byAlbum[id] || { title, album_id: id });
   const albums = rel.filter(r => r.slug);
   const card = r => r.slug
@@ -819,6 +847,7 @@ function main() {
   // páginas de release
   const layout = releaseLayout();
   layout.total = releases.length;
+  layout.releases = releases;
   const roster = rosterIndex();
   const rosterData = loadRoster();
   const artistSlugs = new Set(rosterData.map(a => artistSlug(a.n)));
@@ -842,6 +871,8 @@ function main() {
   // páginas de artista
   const aLayout = artistLayout();
   aLayout.total = releases.length;
+  aLayout.releases = releases;
+  aLayout.roster = roster;
   const bios = loadBios();
   if (write('artists/artist.css', aLayout.style + '\n' + ARTIST_CSS)) written++;
   const rosterLastmod = gitDate('roster.html');

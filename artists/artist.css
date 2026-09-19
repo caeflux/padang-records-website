@@ -127,6 +127,7 @@ section{position:relative;padding:60px 32px 120px;z-index:2}
 .modal .links a .lb{color:var(--ink-dim);font-size:9px;display:block;margin-bottom:4px}
 .modal .links a .vl{color:var(--ink);font-size:11px;text-transform:none;letter-spacing:.05em;font-weight:500;word-break:break-all}
 .modal .links a:hover .vl{color:var(--neon-1)}
+.modal .rel-link{display:block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--neon-1)}.modal .rel-link:hover{opacity:.7}
 
 footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}

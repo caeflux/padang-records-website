@@ -320,6 +320,10 @@
     ar_desc_suffix:  { pt:"Artista da Padang Records — selo brasileiro de dark progressive, psytech, zenonesque e minimal psy.", en:"Padang Records artist — Brazilian label for dark progressive, psytech, zenonesque and minimal psy.", es:"Artista de Padang Records — sello brasileño de dark progressive, psytech, zenonesque y minimal psy.", de:"Padang-Records-Artist — brasilianisches Label für dark progressive, psytech, zenonesque und minimal psy.", fr:"Artiste Padang Records — label brésilien de dark progressive, psytech, zenonesque et minimal psy.", ja:"Padang Records のアーティスト — dark progressive、psytech、zenonesque、minimal psy のブラジルのレーベル。" },
     roster_page_link:{ pt:"// página do artista", en:"// artist page", es:"// página del artista", de:"// künstlerseite", fr:"// page de l'artiste", ja:"// アーティスト・ページ" },
 
+    /* ─ links internos ─ */
+    rel_page_link: { pt:"↳ página do release", en:"↳ release page", es:"↳ página del lanzamiento", de:"↳ Release-Seite", fr:"↳ page de la sortie", ja:"↳ リリース・ページ" },
+    rel_more_by:   { pt:"mais de {artist}", en:"more from {artist}", es:"más de {artist}", de:"mehr von {artist}", fr:"plus de {artist}", ja:"{artist} のその他のリリース" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];

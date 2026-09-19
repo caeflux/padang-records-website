@@ -163,6 +163,7 @@ section{position:relative;padding:60px 32px 120px;z-index:2}
 .modal .links a .lb{color:var(--ink-dim);font-size:9px;display:block;margin-bottom:4px}
 .modal .links a .vl{color:var(--ink);font-size:11px;text-transform:none;letter-spacing:.05em;font-weight:500;word-break:break-all}
 .modal .links a:hover .vl{color:var(--neon-1)}
+.modal .rel-link{display:block;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--neon-1)}.modal .rel-link:hover{opacity:.7}
 
 footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
@@ -397,6 +398,7 @@ document.addEventListener('click', function(e){
   </div>
 </div>
 
+<!-- relslug:start --><script>window.RELSLUG={"2867151":"unknown-roots","68493105":"altered-states","169035504":"chronicles","181452646":"grooving-the-abyss","203519030":"intersections","248063466":"va-rangda","348395039":"internal-contrast","379283376":"reborn-echoes-of-the-forest","422156874":"va-haunted-spectre-4","514785147":"what-make-us-human","533803093":"beyond-fences","549550898":"mind-echoes","587401879":"va-monkey-temple","633506472":"far-beyond-time-24bit","658188366":"new-world-disorder","662928559":"fire-in-the-kitchen","680019350":"va-new-species","702888646":"nyctophilia-ii","703162410":"packet-loss","768744708":"brahmasutra-24bit","780804819":"visionaries","789332129":"va-haunted-spectre-2","789661605":"the-weight-of-thought","853257382":"life-unfolding","896509243":"the-awakening","897944980":"unstable-orbit","906212584":"snug-as-a-bug","909039540":"flying-zoo","917565789":"va-deep","1067280876":"signals","1069948357":"apollo","1080905811":"va-the-nightmare","1103127662":"sacred-ritual","1106175940":"predators","1125603342":"mandelbrot-sequence-24bit","1158664780":"morphology","1189443189":"quantum-waves","1222950864":"consciousness-24bit","1237100577":"isolation-protocol","1273663411":"magic-plants","1321924080":"minimal-tech-series-vol-1-what-creates-illusion","1353115846":"the-dimension-of-imagination-ep","1378199978":"terra-infinita-24bit","1382887529":"va-yin-and-yang-studio-gang","1431631399":"mars-music","1470778343":"virtuous-spiral-24bit","1552425581":"va-nukaya","1554155606":"va-nyctophilia","1562571231":"byte-boulevard-2","1595401377":"hikari","1600607835":"razor","1608272757":"va-changeon","1690283939":"illustrate","1807987282":"surfing-in-oscillations-24bit","1828919626":"el-viaje-oscuro-del-alma","1839845081":"fruits-of-frequency","1882950180":"va-ancestral-spirits","1897277364":"portal-space","1939446444":"va-nibiru","1943202942":"subculture-24bit","2189224296":"dark-flowers","2196304769":"2025-anthology-free-va","2238830945":"2-minutes-to-midnight","2270609831":"radiant-sound","2280135454":"va-sonic-sacrament","2349176014":"va-dusk-till-dawn","2350459307":"circuit-breakdown","2549786643":"va-barong-garuda","2551562391":"thousand-years-of-peace","2559309591":"synchromisticism","2601034354":"paracozm-redux","2625561464":"technomad-ii","2660120127":"cada-maguito-con-su-librito","2756879849":"va-mechanical-patterns","2756904178":"ponto-de-aglutina-o","2772569825":"va-haunted-spectre","2772876353":"mirror-me-24bit","2872162903":"va-haunted-spectre-3","2960555901":"cosmic-visitors","3002952691":"va-sonic-secrets-24bit","3013191469":"brake-the-chains","3046541186":"tekra","3052932326":"ancestral-calls","3130683872":"no-border-underworld","3134150062":"self-inflicted","3157740670":"tula","3190092565":"version-bizar-lycanthrope-ep","3242577065":"xaman","3381875790":"two-in-one","3411053605":"broken-mind-24bit","3567541640":"inside-the-positronic-brain","3579983709":"nocturnal-legacy","3611691005":"dreamers","3649538037":"revolution-2","3740790556":"va-technomad","3743872036":"toto","3751984371":"adam-adama-24bit","3841947015":"ep-road-runner","3868469695":"dual-nature-24bit","3914417704":"crop-circles","3920355906":"orion-24bit","3945671451":"timeless","4005555260":"va-alternative-creation","4019896035":"species","4083238772":"va-exogenesis","4089734082":"integrated","4123959634":"cowcaine","4188209130":"va-hybrid-dynamics","4193988986":"va-sonic-sorcery-24bit","4214107741":"spaceman"};</script><!-- relslug:end -->
 <script>
 const D="demos@padangrecords.net";
 // p = photo URL (og:image from soundcloud), yt = [[label, videoId], ...]
@@ -548,9 +550,12 @@ function openArtist(i){
       let html='<div class="rel-grid">';
       a.r.forEach(rel=>{
         const id=rel[0], title=rel[1];
+        const slug=(window.RELSLUG||{})[id];
         html+='<div class="rel-card"><iframe loading="lazy" style="border:0;width:100%;height:380px" '
             +'src="https://bandcamp.com/EmbeddedPlayer/album='+id+'/size=large/bgcol=181a1b/linkcol=c4ff3d/tracklist=true/artwork=small/transparent=true/" '
-            +'seamless title="'+title+'"></iframe></div>';
+            +'seamless title="'+title+'"></iframe>'
+            +(slug?'<a class="rel-link" href="./release/'+slug+'/"><span data-i18n="rel_page_link">↳ página do release</span> · '+title+'</a>':'')
+            +'</div>';
       });
       html+='</div>';
       relDiv.innerHTML=html;
@@ -572,9 +577,12 @@ function openArtist(i){
     let html='<div class="va-grid">';
     a.va.forEach(v=>{
       const id=v[0], title=v[1];
+        const slug=(window.RELSLUG||{})[id];
       html+='<div class="va-card"><iframe loading="lazy" style="border:0;width:100%;height:340px" '
           +'src="https://bandcamp.com/EmbeddedPlayer/album='+id+'/size=large/bgcol=181a1b/linkcol=c4ff3d/tracklist=true/artwork=small/transparent=true/" '
-          +'seamless title="'+title+'"></iframe></div>';
+          +'seamless title="'+title+'"></iframe>'
+          +(slug?'<a class="rel-link" href="./release/'+slug+'/"><span data-i18n="rel_page_link">↳ página do release</span> · '+title+'</a>':'')
+          +'</div>';
     });
     html+='</div>';
     vaDiv.innerHTML=html;
@@ -630,6 +638,7 @@ function openArtist(i){
   const mBc=document.getElementById('mBc');
   if(a.bc){mBc.href=a.bc;mBc.querySelector('.vl').textContent=a.bc.replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,'');mBc.style.display='';}
   else{mBc.removeAttribute('href');mBc.style.display='none';}
+  if(window.PADANG_I18N&&PADANG_I18N.apply)PADANG_I18N.apply(document.documentElement.lang||'pt');
   modal.classList.add('show');
   document.body.classList.add('lock');
   if (window.fbq) fbq('track', 'ViewContent', {content_type: 'artist', content_name: a.n, content_ids: [a.n]});
