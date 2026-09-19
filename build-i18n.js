@@ -189,7 +189,10 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   const title = t(dict, `seo_title_${key}`, lang);
   const desc = t(dict, `seo_desc_${key}`, lang);
   if (!title || !desc) throw new Error(`faltam seo_title_${key}/seo_desc_${key} no i18n.js`);
-  html = seoHead(html.slice(0, headEnd), { title, desc, urls, lang }) + html.slice(headEnd);
+  const extraHead = page === 'index.html' ? [orgJsonLd(lang, dict)]
+                  : page === 'events.html' ? [eventsJsonLd(html, lang, urls[lang])].filter(Boolean)
+                  : [];
+  html = seoHead(html.slice(0, headEnd), { title, desc, urls, lang, extraHead }) + html.slice(headEnd);
   if (lang !== SOURCE_LANG) html = absolutizeAssets(html);
   return html;
 }
@@ -325,6 +328,17 @@ const RELEASE_CSS = `
 @media(max-width:480px){.rel-buy a{flex:1 1 100%;justify-content:center}.rel-meta{grid-template-columns:repeat(2,auto)}}
 `;
 
+// BreadcrumbList: home → seção → página (nomes na língua da página)
+function breadcrumbLd(lang, items) {
+  const home = `${BASE}${lang === SOURCE_LANG ? '' : '/' + lang}/`;
+  const list = [{ name: 'Padang Records', item: home }, ...items];
+  const ld = {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: list.map((x, i) => ({ '@type': 'ListItem', position: i + 1, name: x.name, item: x.item }))
+  };
+  return `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`;
+}
+
 function releaseJsonLd(r, url) {
   const byArtist = r.artist
     ? r.artist.split(/\s+&\s+/).map(n => ({ '@type': 'MusicGroup', name: n }))
@@ -421,7 +435,10 @@ ${layout.blocks}
   let head = '<head>\n' + layout.headBase
     .replace(/<meta property="og:type" content="[^"]*"/, '<meta property="og:type" content="music.album"')
     .replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${r.cover_url}"`);
-  head = seoHead(head, { title, desc, urls, lang, extraHead: [releaseJsonLd(r, urls[lang])] });
+  head = seoHead(head, { title, desc, urls, lang, extraHead: [
+    releaseJsonLd(r, urls[lang]),
+    breadcrumbLd(lang, [{ name: t(dict, 'nav_releases', lang) || 'Releases', item: urlOf('releases.html', lang) }, { name: `${artistText} — ${r.title}`, item: urls[lang] }])
+  ] });
 
   let html = `<!DOCTYPE html>
 <html lang="${lang}" data-static-lang>
@@ -445,6 +462,89 @@ ${layout.scripts.join('\n')}
   html = absolutizeAssets(html);
   html = html.replace(/(href|src|action)="\.\//g, `$1="${P}/`); // links entre páginas ficam no idioma
   return html;
+}
+
+// ── 2c'. JSON-LD das páginas principais ──────────────────────────
+const SAME_AS = [
+  'https://padang.bandcamp.com/',
+  'https://www.beatport.com/label/padang-records/76105',
+  'https://soundcloud.com/padangrec',
+  'https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A',
+  'https://www.instagram.com/padangrecords/'
+];
+const LD_LANG = { pt: 'pt-BR', en: 'en', es: 'es', de: 'de', fr: 'fr', ja: 'ja' };
+const ldScript = obj => `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, '\\u003c')}</script>`;
+
+// home: a organização (o que alimenta o painel "Padang Records" no Google) + o site
+function orgJsonLd(lang, dict) {
+  return ldScript({
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization', '@id': BASE + '/#org',
+        name: 'Padang Records', alternateName: 'Padang', url: BASE + '/',
+        logo: { '@type': 'ImageObject', url: BASE + '/img/logo-full.png' },
+        image: BASE + '/img/logo-full.png',
+        description: t(dict, 'seo_desc_index', lang),
+        foundingDate: '2013',
+        foundingLocation: { '@type': 'Place', name: 'Novo Hamburgo, Rio Grande do Sul, Brazil' },
+        email: 'contact@padangrecords.net',
+        sameAs: SAME_AS,
+        knowsAbout: ['Dark progressive', 'Psytech', 'Zenonesque', 'Minimal psy', 'Psytrance']
+      },
+      {
+        '@type': 'WebSite', '@id': BASE + '/#website',
+        name: 'Padang Records', url: `${BASE}${lang === SOURCE_LANG ? '' : '/' + lang}/`,
+        inLanguage: LD_LANG[lang], publisher: { '@id': BASE + '/#org' }
+      }
+    ]
+  });
+}
+
+// eventos: um MusicEvent por card futuro da events.html (nomes/locais já traduzidos)
+const MONTHS = { jan: 1, fev: 2, feb: 2, mar: 3, abr: 4, apr: 4, mai: 5, may: 5, jun: 6, jul: 7, ago: 8, aug: 8, set: 9, sep: 9, out: 10, oct: 10, nov: 11, dez: 12, dec: 12 };
+function loadEvData(html) {
+  const m = html.match(/const EVDATA = (\{[\s\S]*?\});\n/);
+  try { return m ? JSON.parse(m[1]) : {}; } catch (e) { return {}; }
+}
+function eventsJsonLd(html, lang, pageUrl) {
+  const evdata = loadEvData(html);
+  const today = new Date().toISOString().slice(0, 10);
+  const events = [];
+  const re = /<div class="ev">([\s\S]*?)<span class="arr">/g;
+  let m;
+  while ((m = re.exec(html))) {
+    const c = m[1];
+    const day = ((c.match(/class="day">([^<]*)/) || [])[1] || '').trim();
+    const mo = c.match(/class="mo"([^>]*)>([^<]*)</);
+    if (!mo || !/^\d{1,2}$/.test(day)) continue;
+    const [mon, yy] = mo[2].trim().toLowerCase().split('/');
+    const mm = MONTHS[mon];
+    if (!mm || !/^\d\d$/.test(yy || '')) continue;
+    const start = `20${yy}-${String(mm).padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const end = (mo[1].match(/data-end="([^"]+)"/) || [])[1] || start;
+    if (end < today) continue;
+    const key = (c.match(/class="name" data-i18n="ev_([^"]+)_n"/) || [])[1];
+    const name = stripTags((c.match(/class="name"[^>]*>([\s\S]*?)<\/div>/) || [])[1] || '');
+    const loc = stripTags((c.match(/class="loc"[^>]*>([\s\S]*?)<\/div>/) || [])[1] || '');
+    if (!name) continue;
+    const parts = loc.split('·').map(s => s.trim()).filter(Boolean);
+    const performers = [...c.matchAll(/class="av" title="([^"]+)"/g)].map(x => x[1].replace(/\s*\(.*$/, '').trim());
+    const d = (key && evdata['ev_' + key]) || {};
+    const ev = {
+      '@type': 'MusicEvent', name, startDate: start, endDate: end,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      image: BASE + '/img/logo-full.png',
+      url: d.site || pageUrl,
+      location: { '@type': 'Place', name: parts.slice(1).join(', ') || loc || name, address: { '@type': 'PostalAddress', addressLocality: parts[1] || parts[0] || '', addressCountry: parts[0] || '' } }
+    };
+    if (d.about) ev.description = d.about;
+    if (performers.length) ev.performer = performers.map(n => ({ '@type': 'MusicGroup', name: n }));
+    if (d.tickets) ev.offers = { '@type': 'Offer', url: d.tickets, availability: 'https://schema.org/InStock' };
+    events.push(ev);
+  }
+  return events.length ? ldScript({ '@context': 'https://schema.org', '@graph': events }) : '';
 }
 
 // ── 2d. páginas de artista: /artists/<slug>/ (+ /xx/artists/<slug>/) ──
@@ -619,7 +719,10 @@ ${layout.pcomp}
   let head = '<head>\n' + layout.headBase
     .replace(/<meta property="og:type" content="[^"]*"/, '<meta property="og:type" content="profile"')
     .replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${photoAbs || BASE + '/img/logo-full.png'}"`);
-  head = seoHead(head, { title, desc, urls, lang, extraHead: [artistJsonLd(a, urls[lang], photoAbs, bio, albums)] });
+  head = seoHead(head, { title, desc, urls, lang, extraHead: [
+    artistJsonLd(a, urls[lang], photoAbs, bio, albums),
+    breadcrumbLd(lang, [{ name: t(dict, 'nav_roster', lang) || 'Roster', item: urlOf('roster.html', lang) }, { name: a.n, item: urls[lang] }])
+  ] });
 
   let html = `<!DOCTYPE html>
 <html lang="${lang}" data-static-lang>
