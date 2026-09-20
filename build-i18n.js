@@ -194,6 +194,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   const key = page.replace(/\.html$/, '');
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
   if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
+  if (page === 'index.html') template = coverCards(template, byAlbum, dict, lang);
   template = syncCounts(template, Object.keys(byAlbum).length);
   if (page === 'roster.html') template = syncRelSlugs(template, Object.values(byAlbum));
   let html = applyTranslations(template, dict, lang, stats);
@@ -227,6 +228,20 @@ function tagTypes(html, bySlug) {
   return html.replace(/<div class="r( [^"]*)?" data-release="([^"]+)"( data-type="[^"]*")?>/g, (all, cls, slug, had) => {
     const r = bySlug[slug];
     return r ? `<div class="r${cls || ''}" data-release="${slug}" data-type="${r.type}">` : all;
+  });
+}
+
+// home: card mostra a capa do releases.json + botão de play que injeta o iframe.
+// Idempotente: depois da troca o markup é <div class="emb cov">, que não casa de novo.
+function coverCards(html, byAlbum, dict, lang) {
+  const play = t(dict, 'r_play', lang) || 'play';
+  return html.replace(/<div class="emb"><iframe[^>]*album=(\d+)\/[^>]*>(?:<a [^>]*>[^<]*<\/a>)?<\/iframe><\/div>/g, (all, id) => {
+    const r = byAlbum[id];
+    if (!r || !r.cover_url) return all;
+    const alt = `${r.artist || 'Various Artists'} — ${r.title}`;
+    return `<div class="emb cov"><button type="button" class="pbtn" data-album="${id}" data-title="${escAttr(alt)}" aria-label="${escAttr(play + ': ' + alt)}">`
+         + `<img src="${r.cover_url.replace(/_10\.jpg$/, '_16.jpg')}" alt="${escAttr(alt)}" width="700" height="700" loading="lazy" />`
+         + `<span class="pl" aria-hidden="true">▶</span></button></div>`;
   });
 }
 

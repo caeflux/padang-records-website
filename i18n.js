@@ -324,6 +324,9 @@
     rel_page_link: { pt:"↳ página do release", en:"↳ release page", es:"↳ página del lanzamiento", de:"↳ Release-Seite", fr:"↳ page de la sortie", ja:"↳ リリース・ページ" },
     rel_more_by:   { pt:"mais de {artist}", en:"more from {artist}", es:"más de {artist}", de:"mehr von {artist}", fr:"plus de {artist}", ja:"{artist} のその他のリリース" },
 
+    /* ─ home: botão de play sobre a capa do release ─ */
+    r_play: { pt:"tocar", en:"play", es:"reproducir", de:"abspielen", fr:"écouter", ja:"再生" },
+
   };
 
   const SUPPORTED = ['en','pt','es','de','fr','ja'];
