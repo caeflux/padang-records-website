@@ -239,9 +239,9 @@ function coverCards(html, byAlbum, dict, lang) {
     const r = byAlbum[id];
     if (!r || !r.cover_url) return all;
     const alt = `${r.artist || 'Various Artists'} — ${r.title}`;
-    return `<div class="emb cov"><button type="button" class="pbtn" data-album="${id}" data-title="${escAttr(alt)}" aria-label="${escAttr(play + ': ' + alt)}">`
+    return `<div class="emb cov"><button type="button" class="pbtn" data-album="${id}" data-title="${escAttr(alt)}">`
          + `<img src="${r.cover_url.replace(/_10\.jpg$/, '_16.jpg')}" alt="${escAttr(alt)}" width="700" height="700" loading="lazy" />`
-         + `<span class="pl" aria-hidden="true">▶</span></button></div>`;
+         + `<span class="pl" aria-hidden="true">▶</span><span class="sr" data-i18n="r_play">${escText(play)}</span></button></div>`;
   });
 }
 
