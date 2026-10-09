@@ -241,9 +241,10 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 | `language_selected` | `track.js` — botão de idioma | `lang`, `from_lang`, `page` |
 | `embed_play` | `track.js` — janela perde o foco para um iframe (heurística; 1× por iframe por pageview) | `platform`, `page`, `release_slug`, `album_id`, `lang` |
 | `demo_submit` | `demo.html` — envio aceito | `genre`, `lang` |
+| `follow_click` | `track.js` — clique em link `a[data-follow]` (seguir a label no Bandcamp: Padang Complete, newsletter, convite após inscrição) | `platform`, `placement`, `page`, `release_slug`, `lang` |
 | `newsletter_signup` | `newsletter.js` — inscrição aceita | `lang`, `page` |
 
-**Eventos-chave** (marcar na interface do GA4 → Admin → Eventos): `outbound_click`, `demo_submit`, `newsletter_signup`. Para ver os parâmetros nos relatórios, registrar como dimensões personalizadas (escopo evento): `platform`, `page`, `release_slug`, `lang`, `from_lang`, `genre`, `album_id`.
+**Eventos-chave** (marcar na interface do GA4 → Admin → Eventos): `outbound_click`, `demo_submit`, `newsletter_signup`. Para ver os parâmetros nos relatórios, registrar como dimensões personalizadas (escopo evento): `platform`, `placement`, `page`, `release_slug`, `lang`, `from_lang`, `genre`, `album_id`.
 
 **UTMs**: `track.js` acrescenta em runtime, em todo link para Bandcamp/Beatport, `utm_source=padangrecords.net&utm_medium=<page>&utm_campaign=<release_slug|catalog>&utm_content=<lang>` (o bloco Padang Complete usa `utm_campaign=full-discography` via `data-release`). Não mexe em UTMs de terceiros; preserva query strings.
 
