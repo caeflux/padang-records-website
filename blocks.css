@@ -14,6 +14,9 @@
 .pcomp .sub{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim)}
 .pcomp a.go{display:inline-flex;align-items:center;min-height:44px;padding:14px 22px;border:1px solid var(--neon-1);background:var(--neon-1);color:#0a0908;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.25em;text-transform:uppercase;transition:background .2s,color .2s}
 .pcomp a.go:hover{background:transparent;color:var(--neon-1)}
+.pcomp .acts{display:flex;flex-direction:column;gap:10px}
+.pcomp a.go.fw{background:transparent;color:var(--neon-1)}
+.pcomp a.go.fw:hover{background:var(--neon-1);color:#0a0908}
 
 /* ── newsletter ── */
 .nl{max-width:1100px;margin:0 auto;padding:0 32px 100px}
@@ -31,6 +34,10 @@
 .nl-status{min-height:1.2em;margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-dim)}
 .nl-status.ok{color:var(--neon-1)}
 .nl-status.err{color:#ff7a18}
+.nl-follow{display:inline-block;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:lowercase;color:var(--neon-1);border-bottom:1px solid rgba(196,255,61,.35)}
+.nl-follow:hover{border-bottom-color:var(--neon-1)}
+.nl-status .nl-follow{margin:10px 0 0;display:block;width:fit-content}
+.nl-box:has(.nl-status.ok)>.nl-follow{display:none} /* depois da inscrição, fica só o convite da mensagem */
 
 /* dentro da página de release o <main> já tem largura/padding */
 .rel .pcomp,.rel .nl{max-width:none;padding:0;margin-top:72px}
@@ -39,6 +46,7 @@
   .pcomp,.nl{padding:0 16px 64px}
   .pcomp .frm{grid-template-columns:1fr;padding:32px 20px}
   .pcomp a.go{justify-content:center}
+  .pcomp .acts{width:100%}
   .nl-box{padding:32px 20px}
   .nl-form{grid-template-columns:1fr}
   .rel .pcomp,.rel .nl{padding:0;margin-top:56px}

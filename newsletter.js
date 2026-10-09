@@ -1,16 +1,17 @@
 /* PADANG · newsletter.js — captura de e-mail (form.nl-form)
  * Tier 1: send-newsletter.php (PHP na HostGator) · Tier 2: FormSubmit (mesmo inbox).
  * Idioma capturado de <html lang> (URL do idioma). Dispara gtag newsletter_signup {lang, page}.
+ * No sucesso, mostra link para seguir a label no Bandcamp (a[data-follow="newsletter_success"]).
  */
 (function () {
   'use strict';
   var MSG = {
-    pt: { sending: '// enviando…', ok: '✓ pronto. você vai saber dos próximos lançamentos antes de todo mundo.', bad: '✗ confira o e-mail.', err: '✗ não deu para enviar agora. tente de novo em instantes.' },
-    en: { sending: '// sending…', ok: '✓ done. you will hear about new releases first.', bad: '✗ check your email address.', err: '✗ could not send right now. please try again in a moment.' },
-    es: { sending: '// enviando…', ok: '✓ listo. te enterarás de los nuevos lanzamientos antes que nadie.', bad: '✗ revisa tu e-mail.', err: '✗ no se pudo enviar ahora. inténtalo de nuevo en un momento.' },
-    de: { sending: '// wird gesendet…', ok: '✓ fertig. von neuen Releases erfährst du zuerst.', bad: '✗ bitte E-Mail-Adresse prüfen.', err: '✗ senden gerade nicht möglich. bitte gleich noch einmal versuchen.' },
-    fr: { sending: '// envoi…', ok: '✓ c\'est fait. vous saurez tout des nouvelles sorties en premier.', bad: '✗ vérifiez votre e-mail.', err: '✗ envoi impossible pour le moment. réessayez dans un instant.' },
-    ja: { sending: '// 送信中…', ok: '✓ 登録しました。新作情報をいち早くお届けします。', bad: '✗ メールアドレスを確認してください。', err: '✗ ただいま送信できません。しばらくしてから再度お試しください。' }
+    pt: { sending: '// enviando…', ok: '✓ pronto. você vai saber dos próximos lançamentos antes de todo mundo.', bad: '✗ confira o e-mail.', err: '✗ não deu para enviar agora. tente de novo em instantes.', follow: 'quer o aviso direto do bandcamp? siga a padang lá ↳' },
+    en: { sending: '// sending…', ok: '✓ done. you will hear about new releases first.', bad: '✗ check your email address.', err: '✗ could not send right now. please try again in a moment.', follow: 'want the alert straight from bandcamp? follow padang there ↳' },
+    es: { sending: '// enviando…', ok: '✓ listo. te enterarás de los nuevos lanzamientos antes que nadie.', bad: '✗ revisa tu e-mail.', err: '✗ no se pudo enviar ahora. inténtalo de nuevo en un momento.', follow: '¿quieres el aviso directo de bandcamp? sigue a padang allí ↳' },
+    de: { sending: '// wird gesendet…', ok: '✓ fertig. von neuen Releases erfährst du zuerst.', bad: '✗ bitte E-Mail-Adresse prüfen.', err: '✗ senden gerade nicht möglich. bitte gleich noch einmal versuchen.', follow: 'Benachrichtigung direkt von Bandcamp? folge Padang dort ↳' },
+    fr: { sending: '// envoi…', ok: '✓ c\'est fait. vous saurez tout des nouvelles sorties en premier.', bad: '✗ vérifiez votre e-mail.', err: '✗ envoi impossible pour le moment. réessayez dans un instant.', follow: 'l\'alerte directement de bandcamp ? suivez padang là-bas ↳' },
+    ja: { sending: '// 送信中…', ok: '✓ 登録しました。新作情報をいち早くお届けします。', bad: '✗ メールアドレスを確認してください。', err: '✗ ただいま送信できません。しばらくしてから再度お試しください。', follow: 'Bandcamp から直接通知を受け取るなら、Padang をフォロー ↳' }
   };
   function lang() { return (document.documentElement.getAttribute('lang') || 'pt').slice(0, 2).toLowerCase(); }
   function msg(k) { return (MSG[lang()] || MSG.en)[k]; }
@@ -37,6 +38,17 @@
       function success() {
         if (typeof window.gtag === 'function') window.gtag('event', 'newsletter_signup', { lang: p.lang, page: p.page });
         set('ok', msg('ok'));
+        if (status) {
+          // convite para seguir no Bandcamp: aviso automático de cada lançamento (follow_click via track.js)
+          var a = document.createElement('a');
+          a.className = 'nl-follow';
+          a.href = 'https://padang.bandcamp.com/';
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.setAttribute('data-follow', 'newsletter_success');
+          a.textContent = msg('follow');
+          status.appendChild(a);
+        }
         form.reset();
         btn.disabled = false;
       }

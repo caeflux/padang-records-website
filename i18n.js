@@ -290,12 +290,14 @@
     pc_releases: { pt:"lançamentos", en:"releases", es:"lanzamientos", de:"Releases", fr:"sorties", ja:"リリース" },
     pc_since:    { pt:"desde 2013", en:"since 2013", es:"desde 2013", de:"seit 2013", fr:"depuis 2013", ja:"2013年から" },
     pc_sub:      { pt:"leve a discografia digital completa", en:"get the full digital discography", es:"llévate la discografía digital completa", de:"hol dir die komplette digitale Diskografie", fr:"obtenez la discographie numérique complète", ja:"デジタル・ディスコグラフィーをまるごと手に入れる" },
+    pc_follow:   { pt:"+ seguir no bandcamp", en:"+ follow on bandcamp", es:"+ seguir en bandcamp", de:"+ auf Bandcamp folgen", fr:"+ suivre sur bandcamp", ja:"+ Bandcamp でフォロー" },
     pc_cta:      { pt:"↳ discografia completa no bandcamp", en:"↳ full discography on bandcamp", es:"↳ discografía completa en bandcamp", de:"↳ komplette Diskografie auf Bandcamp", fr:"↳ discographie complète sur bandcamp", ja:"↳ Bandcamp でディスコグラフィーを見る" },
     /* ─ newsletter (captura de e-mail) ─ */
     nl_title:  { pt:"lançamentos novos, antes de todo mundo. Sem spam.", en:"new releases, first. No spam.", es:"lanzamientos nuevos, antes que nadie. Sin spam.", de:"neue Releases zuerst. Kein Spam.", fr:"les nouvelles sorties, en premier. Pas de spam.", ja:"新作をいち早く。スパムなし。" },
     nl_name:   { pt:"nome (opcional)", en:"name (optional)", es:"nombre (opcional)", de:"Name (optional)", fr:"nom (facultatif)", ja:"名前（任意）" },
     nl_email:  { pt:"e-mail", en:"email", es:"e-mail", de:"E-Mail", fr:"e-mail", ja:"メールアドレス" },
     nl_submit: { pt:"assinar", en:"subscribe", es:"suscribirme", de:"abonnieren", fr:"s'abonner", ja:"登録する" },
+    nl_follow: { pt:"↳ ou siga a padang no bandcamp e receba o aviso de cada lançamento", en:"↳ or follow padang on bandcamp and get notified of every release", es:"↳ o sigue a padang en bandcamp y recibe el aviso de cada lanzamiento", de:"↳ oder folge Padang auf Bandcamp und erfahre von jedem Release", fr:"↳ ou suivez padang sur bandcamp et soyez prévenu de chaque sortie", ja:"↳ または Bandcamp で Padang をフォローして新作通知を受け取る" },
     nl_note:   { pt:"só novidades da padang records. cancele quando quiser.", en:"padang records release news only. unsubscribe anytime.", es:"solo novedades de padang records. date de baja cuando quieras.", de:"nur Release-News von Padang Records. Abmeldung jederzeit.", fr:"uniquement les nouveautés de padang records. désinscription à tout moment.", ja:"Padang Records の新作情報のみ。いつでも配信停止できます。" },
     /* ─ roster: link do artista no Bandcamp (campo bc: da entry) ─ */
     roster_on_bc: { pt:"// no bandcamp", en:"// on bandcamp", es:"// en bandcamp", de:"// auf bandcamp", fr:"// sur bandcamp", ja:"// bandcamp" },

@@ -5,6 +5,7 @@
  *   outbound_click     {platform, page, release_slug, lang, link_url}
  *   language_selected  {lang, from_lang, page}
  *   embed_play         {platform, page, release_slug, album_id, lang}
+ *   follow_click       {platform, placement, page, release_slug, lang} — links a[data-follow]
  *   (demo_submit e newsletter_signup são disparados pelos próprios formulários)
  *
  * UTMs: todo link de saída para Bandcamp/Beatport recebe, em runtime,
@@ -66,6 +67,7 @@
   }
 
   function releaseSlugFor(el, url, platform) {
+    if (el && el.hasAttribute && el.hasAttribute('data-follow')) return 'follow';
     var s = url ? slugFromUrl(url, platform) : null;
     if (s) return s;
     var ctx = el && el.closest ? el.closest('[data-release]') : null;
@@ -122,6 +124,16 @@
       lang: lang(),
       link_url: url.origin + url.pathname
     });
+    if (a.hasAttribute('data-follow')) {
+      var ctx = a.closest('[data-release]');
+      send('follow_click', {
+        platform: platform,
+        placement: a.getAttribute('data-follow'),
+        page: page(),
+        release_slug: pageReleaseSlug() || (ctx ? ctx.getAttribute('data-release') : 'catalog'),
+        lang: lang()
+      });
+    }
   }
   // capture: roda antes do handler do popup do Bandcamp (index.html), que faz preventDefault
   document.addEventListener('click', onClick, true);
