@@ -194,7 +194,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   const key = page.replace(/\.html$/, '');
   const urls = Object.fromEntries(LANGS.map(l => [l, urlOf(page, l)]));
   if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
-  if (page === 'index.html') template = coverCards(template, byAlbum, dict, lang);
+  if (page === 'index.html' || page === 'releases.html') template = coverCards(template, byAlbum, dict, lang);
   template = syncCounts(template, Object.keys(byAlbum).length);
   if (page === 'roster.html') template = syncRelSlugs(template, Object.values(byAlbum));
   let html = applyTranslations(template, dict, lang, stats);
@@ -231,7 +231,7 @@ function tagTypes(html, bySlug) {
   });
 }
 
-// home: card mostra a capa do releases.json + botão de play que injeta o iframe.
+// home e catálogo: card mostra a capa do releases.json + botão de play (player.js abre o dock).
 // Idempotente: depois da troca o markup é <div class="emb cov">, que não casa de novo.
 function coverCards(html, byAlbum, dict, lang) {
   const play = t(dict, 'r_play', lang) || 'play';
@@ -307,7 +307,7 @@ function releaseLayout() {
   if (scripts.length !== 2) throw new Error('releases.html: scripts do popup/menu mobile não encontrados');
   const headBase = head
     .replace(/<style>[\s\S]*?<\/style>\n?/, '<link rel="stylesheet" href="/release/release.css" />\n')
-    .replace(/<link rel="stylesheet" href="\.\/blocks\.css" \/>\n?/, '')
+    .replace(/<link rel="stylesheet" href="\.\/blocks\.css(?:\?[^"]*)?" \/>\n?/, '')
     .replace(/(<\/?head>)?\s*$/, '\n<link rel="stylesheet" href="/blocks.css" />\n<script src="/newsletter.js" defer></script>\n');
   // blocos de conversão: mesma marcação da home (fonte única), sem a animação .rv
   const home = read('index.html');
@@ -649,7 +649,7 @@ function artistLayout() {
   if (scripts.length !== 1) throw new Error('roster.html: script do menu mobile não encontrado');
   const headBase = head
     .replace(/<style>[\s\S]*?<\/style>\n?/, '<link rel="stylesheet" href="/artists/artist.css" />\n')
-    .replace(/<link rel="stylesheet" href="\.\/blocks\.css" \/>\n?/, '')
+    .replace(/<link rel="stylesheet" href="\.\/blocks\.css(?:\?[^"]*)?" \/>\n?/, '')
     .replace(/\s*$/, '\n<link rel="stylesheet" href="/blocks.css" />\n');
   const home = read('index.html');
   const m = home.match(/<section id="pc" class="[^"]*"[^>]*>/);

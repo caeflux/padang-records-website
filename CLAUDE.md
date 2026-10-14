@@ -103,7 +103,7 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 |---|---|
 | `index.html` | Home · hero, roster carrossel, releases recentes, **Padang Complete**, Latest Signal, PadangTV, **newsletter** |
 | `roster.html` | 58 artistas · card grid + modal de bio · array JS embutido · deep link `roster.html#artist=<slug>` abre o modal |
-| `releases.html` | 110 releases · por ano, Bandcamp embed · nome do artista no card linka `/release/<slug>/` (feito pelo build) · Padang Complete no fim |
+| `releases.html` | 111 releases · por ano · card = capa + play (o build troca o `<iframe>` do card pela capa do `releases.json` via `coverCards()`, na home e no catálogo) · nome do artista no card linka `/release/<slug>/` (feito pelo build) · Padang Complete no fim |
 | `events.html` | eventos · card + modal expansível · EVDATA dict inline |
 | `lab.html` | 24 episódios Padang Lab Series · SoundCloud embeds |
 | `about.html` | Timeline da label 2013→2026 |
@@ -115,6 +115,7 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 | `track.js` | Medição GA4 nas 8 páginas + releases: outbound_click, UTMs, language_selected, embed_play |
 | `newsletter.js` | Envio do form `.nl-form` (PHP → fallback FormSubmit) + evento `newsletter_signup` |
 | `blocks.css` | Estilos compartilhados de `.pcomp` (Padang Complete) e `.nl` (newsletter) |
+| `player.js` | Dock de reprodução (home + catálogo): clique no play do card abre barra fixa no rodapé com embed `size=small`; o card nunca é trocado pelo iframe. CSS do card compacto, da capa (`.r .emb.cov`) e do `.dock` ficam no `blocks.css` |
 | `en/ es/ de/ fr/ ja/` | **Gerado** — as 8 páginas por idioma + `release/` de cada idioma |
 | `release/<slug>/` | **Gerado** — página PT de cada release; `release/release.css` = estilo do releases.html + layout da página |
 | `sitemap.xml`, `robots.txt` | **Gerados** — 708 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
@@ -262,6 +263,7 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 ## Gotchas conhecidos
 
 - **Cron de 20 min, não 5** — push logo depois de :00/:20/:40 espera até a rodada seguinte. Conferir com `?cb=<aleatório>` na URL.
+- **`blocks.css` é versionado na URL** (`blocks.css?v=AAAAMMDDx` em `index.html`/`releases.html`): ao mudar o arquivo, suba a versão nos dois, senão o navegador usa o CSS antigo por 5 min.
 - **Cache de JS/CSS de 5 min** (`.htaccess`) — logo após o deploy, o navegador pode juntar HTML novo com JS antigo; se algo parecer não funcionar, espere 5 min ou recarregue forçado.
 - **Pastas geradas** — editar `en/…`, `release/…`, `sitemap.xml` ou o bloco `<!-- seo -->` à mão é perdido no próximo build.
 - **Sem redirecionamento pelo idioma do navegador** — de propósito (SEO). Só a escolha salva (`padang-lang`) redireciona.
