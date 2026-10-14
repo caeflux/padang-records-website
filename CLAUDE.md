@@ -202,7 +202,8 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 ### Adicionar release
 1. Dados do Bandcamp: abrir `https://padang.bandcamp.com/album/<slug>` e ler o JSON `data-tralbum` (`current.id` = album_id, `art_id`, `trackinfo`, `current.about`, `current.credits`, `current.release_date`)
 2. `data/releases.json`: prepend a entrada **com todos os campos** (ver "Release entry"); `beatport_url` quando o release estiver no Beatport
-3. `index.html`: swap ★ LATEST card, demote release anterior pra tipo normal, incrementa `110 releases` (todas ocorrências) e o `+98`, atualiza caption + iframe da Latest Signal
+3. `index.html`: swap ★ LATEST card, demote release anterior pra tipo normal, incrementa `110 releases` (todas ocorrências) e o `+98`, atualiza caption + iframe da Latest Signal, acrescenta o release no ticker `.tkr` (2× — o loop é duplicado)
+3b. **Hero**: `img/hero.jpg` é a capa do último release (1800 px de largura, JPEG q82, cortada embaixo se a arte tiver texto do artista). Regenerar com a capa nova; o CSS em `.hero .hb::before` já aponta para ela
 4. `releases.html`: swap ★ LATEST do ano correspondente, incrementa counter do ano
 5. Se o artista está no roster: `r:[["album_id","Título"]]` na entry
 6. `node build-i18n.js` → gera as 6 páginas do release, linka o card, atualiza sitemap e contadores `pc-n`/`rel-count`

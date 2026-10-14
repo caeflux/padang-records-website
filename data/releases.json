@@ -1,5 +1,32 @@
 [
   {
+    "slug": "the-forge",
+    "url": "https://padang.bandcamp.com/album/the-forge",
+    "title": "The Forge",
+    "artist": "Ubik",
+    "released": "2026-10-14",
+    "released_label": "14 Oct 2026",
+    "lastmod": "2026-10-14T00:00:00Z",
+    "tracks": 9,
+    "album_id": "1480387288",
+    "type": "LP",
+    "beatport_url": "https://www.beatport.com/release/the-forge/7572801",
+    "cover_url": "https://f4.bcbits.com/img/a3057276317_10.jpg",
+    "description_en": "Ubik — The Forge (LP, 2026). Dark progressive / psy tech on Padang Records, Brazil.\n\nsession 109: the forge\n\ntemperature rising.\nsymmetry broken.\nmidnight navigation: no stars, no map, nobody waiting at the dock.\n\ninsert raw signal.\nstrike.\nstrike.\nstrike.\n\nthe kraken is not in the sea.\nit's in the furnace, one eye open.\nit isn't hunting you.\nit's just awake.\n\nreality splits in two.\nboth halves glow.\nwhatever happens, happens.\n\nevery machine has a black box.\nnobody opens it.\nubik did.\ninside: neon, rust, a nightmare standing very still,\n\nblame the hammer.\nblame the fire.\nthe metal doesn't argue\nit only remembers.\n\nnine strikes.\none cube.\n\nthe surface went cold.\nthe core did not.\nquench: incomplete.\n\nthis is not steel yet\nthis is still the forge.\n\nsee you, space blacksmith",
+    "credits": "All tracks written and produced by Ubik\nMidnight Navigation in collaboration with Soulid\nDivergent Realities in collaboration with Alternative Roots\nMaster by SM Analogic Mastering UK",
+    "tracklist": [
+      {"n": 1, "title": "Broken Symmetry", "duration": 489},
+      {"n": 2, "title": "Ubik & Soulid - Midnight Navigation", "duration": 511},
+      {"n": 3, "title": "Klip", "duration": 414},
+      {"n": 4, "title": "Kraken", "duration": 477},
+      {"n": 5, "title": "Ubik & Alternative Roots - Divergent Realities", "duration": 480},
+      {"n": 6, "title": "Black Box", "duration": 452},
+      {"n": 7, "title": "Neon Nightmare", "duration": 520},
+      {"n": 8, "title": "Finalizer", "duration": 483},
+      {"n": 9, "title": "Bl@me", "duration": 501}
+    ]
+  },
+  {
     "slug": "beyond-fences",
     "url": "https://padang.bandcamp.com/album/beyond-fences",
     "title": "Beyond Fences",
