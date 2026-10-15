@@ -115,7 +115,7 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 | `track.js` | Medição GA4 nas 8 páginas + releases: outbound_click, UTMs, language_selected, embed_play |
 | `newsletter.js` | Envio do form `.nl-form` (PHP → fallback FormSubmit) + evento `newsletter_signup` |
 | `blocks.css` | Estilos compartilhados de `.pcomp` (Padang Complete) e `.nl` (newsletter) |
-| `player.js` | Dock de reprodução (home + catálogo): clique no play do card abre barra fixa no rodapé com o embed grande do Bandcamp sem capa (play/pause, seek, prev/next, tracklist). Estados: compacto 120px · `.open` 320px (tracklist) · `.min` 0px (só a barra, áudio continua); × para. O card nunca é trocado pelo iframe. CSS do card compacto, da capa (`.r .emb.cov`) e do `.dock` ficam no `blocks.css` |
+| `player.js` | Play do card troca a capa pelo embed grande do Bandcamp (controles, seek, prev/next, tracklist) e o card ocupa 2×2 na grade; só um embed por vez (abrir outro devolve a capa ao anterior). Dock = faixa fina no rodapé com capa pequena + "now playing // artista — álbum" (clique rola até o card) + × para. O embed não expõe a faixa atual (só `postMessage("playerinited")`). CSS em `blocks.css` |
 | `en/ es/ de/ fr/ ja/` | **Gerado** — as 8 páginas por idioma + `release/` de cada idioma |
 | `release/<slug>/` | **Gerado** — página PT de cada release; `release/release.css` = estilo do releases.html + layout da página |
 | `sitemap.xml`, `robots.txt` | **Gerados** — 708 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
