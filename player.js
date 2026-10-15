@@ -16,7 +16,7 @@
  */
 (function () {
   'use strict';
-  var dock = null, current = null, albumId = null, open = false;
+  var dock = null, current = null, albumId = null, open = true; // tracklist aberta no primeiro play
 
   function el(tag, cls, text) {
     var n = document.createElement(tag);
@@ -30,7 +30,7 @@
   }
   function src(id) {
     return 'https://bandcamp.com/EmbeddedPlayer/album=' + id +
-      '/size=large/bgcol=181a1b/linkcol=c4ff3d/tracklist=true/artwork=none/transparent=true/';
+      '/size=large/bgcol=0a0908/linkcol=c4ff3d/tracklist=true/artwork=none/transparent=true/';
   }
 
   // padding do body acompanha a altura real do dock
