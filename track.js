@@ -8,7 +8,7 @@
  *   follow_click       {platform, placement, page, release_slug, lang} — links a[data-follow]
  *   (demo_submit e newsletter_signup são disparados pelos próprios formulários)
  *
- * UTMs: todo link de saída para Bandcamp/Beatport recebe, em runtime,
+ * UTMs: todo link de saída para Bandcamp/Beatport/Padang Store (Nuvemshop) recebe, em runtime,
  *   utm_source=padangrecords.net & utm_medium=<page> & utm_campaign=<release_slug|catalog> & utm_content=<lang>
  * Links que já têm utm_source não são tocados; query strings existentes são preservadas.
  */
@@ -21,9 +21,10 @@
     ['soundcloud', function (h) { return /(^|\.)soundcloud\.com$/.test(h); }],
     ['spotify',    function (h) { return /(^|\.)spotify\.com$/.test(h); }],
     ['youtube',    function (h) { return /(^|\.)(youtube\.com|youtu\.be)$/.test(h); }],
-    ['spreadshop', function (h) { return h.indexOf('myspreadshop') >= 0; }]
+    ['spreadshop', function (h) { return h.indexOf('myspreadshop') >= 0; }],
+    ['padangstore', function (h) { return /(^|\.)padang-records-store\.com\.br$/.test(h); }]
   ];
-  var UTM_PLATFORMS = { bandcamp: 1, beatport: 1 };
+  var UTM_PLATFORMS = { bandcamp: 1, beatport: 1, padangstore: 1 };
   var LANG_PREFIX = /^\/(en|es|de|fr|ja)(\/|$)/;
 
   function send(name, params) {
@@ -103,7 +104,7 @@
   function decorateAll(root) {
     if (!root || !root.querySelectorAll) return;
     if (root.tagName === 'A') decorate(root);
-    var links = root.querySelectorAll('a[href*="bandcamp.com"], a[href*="beatport.com"]');
+    var links = root.querySelectorAll('a[href*="bandcamp.com"], a[href*="beatport.com"], a[href*="padang-records-store.com.br"]');
     for (var i = 0; i < links.length; i++) decorate(links[i]);
   }
 

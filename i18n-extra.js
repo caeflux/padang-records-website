@@ -370,7 +370,37 @@
 
     /* ─ shop CTAs ─ */
     shop_open:          { pt:"↳ abrir →", en:"↳ open →", es:"↳ abrir →", de:"↳ öffnen →", fr:"↳ ouvrir →", ja:"↳ 開く →" },
-    shop_view_products: { pt:"↳ ver produtos →", en:"↳ view products →", es:"↳ ver productos →", de:"↳ Produkte ansehen →", fr:"↳ voir les produits →", ja:"↳ 商品を見る →" }
+    shop_view_products: { pt:"↳ ver produtos →", en:"↳ view products →", es:"↳ ver productos →", de:"↳ Produkte ansehen →", fr:"↳ voir les produits →", ja:"↳ 商品を見る →" },
+
+    /* ─ Padang Store (Brasil · Nuvemshop · padang-records-store.com.br) ─ */
+    h_store_br:     { pt:"padang store · brasil", en:"padang store · brasil", es:"padang store · brasil", de:"padang store · brasilien", fr:"padang store · brésil", ja:"padang store · ブラジル" },
+    store_br_meta:  { pt:"// criações exclusivas · produzido no brasil pela hammerhead clothing · envio para todo o brasil · fora do brasil via whatsapp",
+                      en:"// exclusive pieces · made in brazil by hammerhead clothing · ships all over brazil · outside brazil via whatsapp",
+                      es:"// creaciones exclusivas · hecho en brasil por hammerhead clothing · envío a todo brasil · fuera de brasil vía whatsapp",
+                      de:"// exklusive stücke · in brasilien gefertigt von hammerhead clothing · versand in ganz brasilien · außerhalb brasiliens via whatsapp",
+                      fr:"// créations exclusives · fabriqué au brésil par hammerhead clothing · livraison dans tout le brésil · hors brésil via whatsapp",
+                      ja:"// 限定アイテム · hammerhead clothing によるブラジル製 · ブラジル全土へ発送 · 国外は whatsapp にて" },
+    store_kick:     { pt:"● nova loja · brasil · em reais", en:"● new store · brazil · prices in BRL", es:"● nueva tienda · brasil · precios en reales", de:"● neuer shop · brasilien · preise in BRL", fr:"● nouvelle boutique · brésil · prix en BRL", ja:"● 新ストア · ブラジル · レアル建て" },
+    store_p:        { pt:"Navegando por paisagens sonoras inexploradas, trazendo tesouros até a costa. Moletons e camisetas exclusivos da Padang Records — estampa oficial, produção da Hammerhead Clothing em Porto Alegre, tiragem limitada.",
+                      en:"Navigating uncharted soundscapes, bringing treasures to the shores. Exclusive Padang Records hoodies and tees — official artwork, made by Hammerhead Clothing in Porto Alegre, limited run.",
+                      es:"Navegando paisajes sonoros inexplorados, trayendo tesoros a la costa. Buzos y camisetas exclusivos de Padang Records — arte oficial, producidos por Hammerhead Clothing en Porto Alegre, tirada limitada.",
+                      de:"Unerforschte Klanglandschaften durchsegeln, Schätze an Land bringen. Exklusive Padang-Records-Hoodies und -Shirts — offizielles Artwork, gefertigt von Hammerhead Clothing in Porto Alegre, limitierte Auflage.",
+                      fr:"Naviguer dans des paysages sonores inexplorés, ramener des trésors sur le rivage. Hoodies et t-shirts exclusifs Padang Records — artwork officiel, fabriqués par Hammerhead Clothing à Porto Alegre, série limitée.",
+                      ja:"未踏のサウンドスケープを航海し、宝を岸へ運ぶ。Padang Records 限定のフーディーとTシャツ — 公式アートワーク、ポルトアレグレの Hammerhead Clothing 製、数量限定。" },
+    store_cta:      { pt:"↳ abrir padang store →", en:"↳ open padang store →", es:"↳ abrir padang store →", de:"↳ padang store öffnen →", fr:"↳ ouvrir la padang store →", ja:"↳ padang store を開く →" },
+    store_cta_wa:   { pt:"fora do brasil? whatsapp →", en:"outside brazil? whatsapp →", es:"¿fuera de brasil? whatsapp →", de:"außerhalb brasiliens? whatsapp →", fr:"hors du brésil ? whatsapp →", ja:"ブラジル国外は whatsapp →" },
+    store_p_hoodie: { pt:"moletom com capuz", en:"hoodie", es:"buzo con capucha", de:"kapuzenpullover", fr:"sweat à capuche", ja:"フーディー" },
+    store_p_tee_black:{ pt:"camiseta preta · overhing", en:"black tee · overhing fit", es:"camiseta negra · overhing", de:"schwarzes shirt · overhing", fr:"t-shirt noir · overhing", ja:"ブラックTシャツ · overhing" },
+    store_p_tee_brown:{ pt:"camiseta marrom · overhing", en:"brown tee · overhing fit", es:"camiseta marrón · overhing", de:"braunes shirt · overhing", fr:"t-shirt marron · overhing", ja:"ブラウンTシャツ · overhing" },
+    store_inst:     { pt:"até 12× sem juros", en:"up to 12 interest-free installments", es:"hasta 12 cuotas sin interés", de:"bis zu 12 zinsfreie raten", fr:"jusqu'à 12 fois sans frais", ja:"最大12回払い・無利息" },
+    store_buy:      { pt:"↳ comprar →", en:"↳ buy →", es:"↳ comprar →", de:"↳ kaufen →", fr:"↳ acheter →", ja:"↳ 購入 →" },
+    store_camp_name:{ pt:"coleção completa", en:"full collection", es:"colección completa", de:"ganze kollektion", fr:"collection complète", ja:"全コレクション" },
+    store_camp_sub: { pt:"true pirates · hoodies + tees", en:"true pirates · hoodies + tees", es:"true pirates · hoodies + tees", de:"true pirates · hoodies + shirts", fr:"true pirates · hoodies + t-shirts", ja:"true pirates · フーディー + Tシャツ" },
+    store_camp_cta: { pt:"↳ ver tudo →", en:"↳ see all →", es:"↳ ver todo →", de:"↳ alles ansehen →", fr:"↳ tout voir →", ja:"↳ すべて見る →" },
+    store_fact_1:   { pt:"frete grátis acima de R$ 500", en:"free shipping on orders over R$ 500", es:"envío gratis en compras desde R$ 500", de:"kostenloser versand ab R$ 500", fr:"livraison offerte dès R$ 500", ja:"R$ 500 以上で送料無料" },
+    store_fact_2:   { pt:"até 12× sem juros · pix · cartão", en:"up to 12 interest-free installments · pix · card", es:"hasta 12 cuotas sin interés · pix · tarjeta", de:"bis zu 12 zinsfreie raten · pix · karte", fr:"jusqu'à 12 fois sans frais · pix · carte", ja:"最大12回無利息 · pix · カード" },
+    store_fact_3:   { pt:"produzido pela hammerhead clothing · porto alegre", en:"made by hammerhead clothing · porto alegre", es:"producido por hammerhead clothing · porto alegre", de:"gefertigt von hammerhead clothing · porto alegre", fr:"fabriqué par hammerhead clothing · porto alegre", ja:"hammerhead clothing 製 · ポルトアレグレ" },
+    store_fact_4:   { pt:"fora do brasil? pedidos via whatsapp", en:"outside brazil? order via whatsapp", es:"¿fuera de brasil? pedidos vía whatsapp", de:"außerhalb brasiliens? bestellung via whatsapp", fr:"hors du brésil ? commande via whatsapp", ja:"ブラジル国外は whatsapp で注文" }
   };
 
   function extend() {

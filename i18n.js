@@ -37,7 +37,7 @@
                       ja:'フェスティバル <span>·</span> ショーケース <span>·</span> ラインナップ' },
     hero_demo_sub: { pt:"envie sua demo <span>·</span> abriremos quando soar certo", en:"send your demo <span>·</span> we open when it lands", es:"envía tu demo <span>·</span> abrimos cuando suene bien", de:"sende deine demo <span>·</span> wir öffnen wenn’s passt", fr:"envoie ta démo <span>·</span> on ouvre quand ça résonne", ja:"デモを送ろう <span>·</span> 響いたら開く" },
     hero_shop_sub: { pt:"music · merch · stickers · vinyl", en:"music · merch · stickers · vinyl", es:"música · merch · stickers · vinilos", de:"musik · merch · sticker · vinyl", fr:"musique · merch · stickers · vinyle", ja:"音楽 · グッズ · ステッカー · ヴァイナル" },
-    hero_shop_badge:{ pt:"● padang × spreadshirt · print on demand", en:"● padang × spreadshirt · print on demand", es:"● padang × spreadshirt · impresión bajo demanda", de:"● padang × spreadshirt · print on demand", fr:"● padang × spreadshirt · impression à la demande", ja:"● padang × spreadshirt · オンデマンド印刷" },
+    hero_shop_badge:{ pt:"● padang store brasil · spreadshirt mundial", en:"● padang store brazil · spreadshirt worldwide", es:"● padang store brasil · spreadshirt mundial", de:"● padang store brasilien · spreadshirt weltweit", fr:"● padang store brésil · spreadshirt monde", ja:"● padang store ブラジル · spreadshirt 世界" },
 
     footer_motto: { pt:"save your ears from sameness", en:"save your ears from sameness", es:"save your ears from sameness", de:"save your ears from sameness", fr:"save your ears from sameness", ja:"save your ears from sameness" },
 
@@ -265,12 +265,12 @@
                           fr:"Envoyez votre démo à Padang Records — dark progressive, psytech, zenonesque et minimal psy. Lisez le guide et envoyez vos morceaux inédits.",
                           ja:"Padang Records にデモを送る — dark progressive、psytech、zenonesque、minimal psy。送付ガイドを読んで、未発表曲を送ってください。" },
     seo_title_shop:     { pt:"PADANG RECORDS — loja · merch · vinil", en:"PADANG RECORDS — shop · merch · vinyl", es:"PADANG RECORDS — tienda · merch · vinilo", de:"PADANG RECORDS — Shop · Merch · Vinyl", fr:"PADANG RECORDS — boutique · merch · vinyle", ja:"PADANG RECORDS — ショップ · マーチ · ヴァイナル" },
-    seo_desc_shop:      { pt:"Merch oficial da Padang Records — camisetas, moletons e mais via Spreadshirt. Selo de dark progressive, psytech e minimal psy desde 2013.",
-                          en:"Official Padang Records merch — shirts, hoodies and more via Spreadshirt. Dark progressive, psytech and minimal psy label since 2013.",
-                          es:"Merch oficial de Padang Records — camisetas, sudaderas y más vía Spreadshirt. Sello de dark progressive, psytech y minimal psy desde 2013.",
-                          de:"Offizielles Padang-Records-Merch — Shirts, Hoodies und mehr über Spreadshirt. Label für dark progressive, psytech und minimal psy seit 2013.",
-                          fr:"Merch officiel Padang Records — t-shirts, sweats et plus via Spreadshirt. Label dark progressive, psytech et minimal psy depuis 2013.",
-                          ja:"Padang Records 公式マーチ — Spreadshirt で T シャツ、パーカーなど。2013年からの dark progressive、psytech、minimal psy レーベル。" },
+    seo_desc_shop:      { pt:"Merch oficial da Padang Records — Padang Store no Brasil (moletons e camisetas exclusivos pela Hammerhead Clothing) e Spreadshirt para o mundo. Selo de dark progressive, psytech e minimal psy desde 2013.",
+                          en:"Official Padang Records merch — Padang Store in Brazil (exclusive hoodies and tees by Hammerhead Clothing) and Spreadshirt worldwide. Dark progressive, psytech and minimal psy label since 2013.",
+                          es:"Merch oficial de Padang Records — Padang Store en Brasil (buzos y camisetas exclusivos por Hammerhead Clothing) y Spreadshirt para el mundo. Sello de dark progressive, psytech y minimal psy desde 2013.",
+                          de:"Offizielles Padang-Records-Merch — Padang Store in Brasilien (exklusive Hoodies und Shirts von Hammerhead Clothing) und Spreadshirt weltweit. Label für dark progressive, psytech und minimal psy seit 2013.",
+                          fr:"Merch officiel Padang Records — Padang Store au Brésil (hoodies et t-shirts exclusifs par Hammerhead Clothing) et Spreadshirt pour le monde. Label dark progressive, psytech et minimal psy depuis 2013.",
+                          ja:"Padang Records 公式マーチ — ブラジルの Padang Store（Hammerhead Clothing 製の限定フーディーとTシャツ）と世界向けの Spreadshirt。2013年からの dark progressive、psytech、minimal psy レーベル。" },
 
     /* ─ páginas de release (/release/<slug>/, geradas pelo build-i18n.js) ─ */
     rel_back:      { pt:"← catálogo completo", en:"← full catalog", es:"← catálogo completo", de:"← kompletter Katalog", fr:"← catalogue complet", ja:"← 全カタログ" },

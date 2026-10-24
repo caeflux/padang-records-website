@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- seo:start · gerado por build-i18n.js — não editar à mão -->
 <title>PADANG RECORDS — ショップ · マーチ · ヴァイナル</title>
-<meta name="description" content="Padang Records 公式マーチ — Spreadshirt で T シャツ、パーカーなど。2013年からの dark progressive、psytech、minimal psy レーベル。" />
+<meta name="description" content="Padang Records 公式マーチ — ブラジルの Padang Store（Hammerhead Clothing 製の限定フーディーとTシャツ）と世界向けの Spreadshirt。2013年からの dark progressive、psytech、minimal psy レーベル。" />
 <link rel="canonical" href="https://padangrecords.net/ja/shop.html" />
 <link rel="alternate" hreflang="pt" href="https://padangrecords.net/shop.html" />
 <link rel="alternate" hreflang="en" href="https://padangrecords.net/en/shop.html" />
@@ -15,7 +15,7 @@
 <link rel="alternate" hreflang="ja" href="https://padangrecords.net/ja/shop.html" />
 <link rel="alternate" hreflang="x-default" href="https://padangrecords.net/en/shop.html" />
 <meta property="og:title" content="PADANG RECORDS — ショップ · マーチ · ヴァイナル" />
-<meta property="og:description" content="Padang Records 公式マーチ — Spreadshirt で T シャツ、パーカーなど。2013年からの dark progressive、psytech、minimal psy レーベル。" />
+<meta property="og:description" content="Padang Records 公式マーチ — ブラジルの Padang Store（Hammerhead Clothing 製の限定フーディーとTシャツ）と世界向けの Spreadshirt。2013年からの dark progressive、psytech、minimal psy レーベル。" />
 <meta property="og:url" content="https://padangrecords.net/ja/shop.html" />
 <meta property="og:locale" content="ja_JP" />
 <meta property="og:locale:alternate" content="pt_BR" />
@@ -135,6 +135,40 @@ section{position:relative;padding:60px 32px;z-index:2}
 .info h4{font-family:'Major Mono Display',monospace;font-size:22px;text-transform:lowercase;letter-spacing:-.01em;color:var(--neon-1);margin-bottom:14px}
 .info p{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--ink-dim);line-height:1.7}
 .info p b{color:var(--ink)}
+
+/* ── Padang Store (Brasil · Nuvemshop) ── */
+.pstore{max-width:1400px;margin:0 auto}
+.ps-hero{position:relative;min-height:560px;display:flex;align-items:center;border:1px solid rgba(255,255,255,.08);background:#000 url("/img/shop/store-hero.jpg") 58% center/cover no-repeat;overflow:hidden}
+.ps-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,7,16,.94) 0,rgba(7,7,16,.78) 34%,rgba(7,7,16,.22) 64%,rgba(7,7,16,0) 100%)}
+.ps-hero .in{position:relative;z-index:1;padding:56px 52px;max-width:680px}
+.ps-hero .lg{width:200px;height:auto;margin-bottom:28px;filter:drop-shadow(0 10px 26px rgba(0,0,0,.7))}
+.ps-hero .kick{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--neon-1);border:1px solid rgba(196,255,61,.35);padding:7px 12px;border-radius:999px;margin-bottom:18px}
+.ps-hero h3{font-family:'Major Mono Display',monospace;font-size:clamp(40px,6vw,84px);line-height:.95;letter-spacing:-.02em;text-transform:lowercase;background:linear-gradient(180deg,#fff 0%,#fff 55%,var(--neon-3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ps-hero p{font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:17px;line-height:1.55;color:var(--ink);margin-top:18px;max-width:540px}
+.ps-hero .tg{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--ink-dim);margin-top:16px}
+.ps-hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.ps-cta{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:14px 20px;background:var(--neon-1);color:var(--bg);border:1px solid var(--neon-1);transition:transform .2s,box-shadow .2s,color .2s,border-color .2s}
+.ps-cta:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(196,255,61,.6)}
+.ps-cta.ghost{background:transparent;color:var(--ink);border-color:rgba(255,255,255,.28)}
+.ps-cta.ghost:hover{border-color:var(--neon-1);color:var(--neon-1);box-shadow:none}
+.ps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px;margin-top:24px}
+.ds.camp .art img{object-position:center top}
+.ps-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:24px}
+.ps-facts .fact{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid rgba(255,255,255,.08);background:rgba(13,13,26,.5);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-dim);line-height:1.5;text-decoration:none;transition:border-color .2s,color .2s}
+.ps-facts .fact .ic{font-family:'Major Mono Display',monospace;font-size:22px;color:var(--neon-1);line-height:1;flex:none}
+.ps-facts a.fact:hover{border-color:var(--neon-1);color:var(--ink)}
+@media(max-width:980px){.ps-hero{min-height:480px}.ps-hero .in{padding:44px 32px}}
+@media(max-width:720px){
+  .ps-hero{min-height:0;background-position:64% center}
+  .ps-hero::before{background:linear-gradient(180deg,rgba(7,7,16,.5) 0,rgba(7,7,16,.86) 45%,rgba(7,7,16,.96) 100%)}
+  .ps-hero .in{padding:40px 20px 32px}
+  .ps-hero .lg{width:140px;margin-bottom:22px}
+  .ps-hero p{font-size:15px}
+  .ps-cta{padding:13px 16px;font-size:10px}
+  .ps-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .ps-facts{grid-template-columns:1fr 1fr;gap:10px}
+}
+@media(max-width:480px){.ps-grid{grid-template-columns:1fr}.ps-facts{grid-template-columns:1fr}}
 
 footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
@@ -293,14 +327,93 @@ document.addEventListener('click', function(e){
 <section class="hero">
   <div class="bl"><b></b><b></b></div>
   <div class="ct">
-    <div class="badge" data-i18n="hero_shop_badge">● padang × spreadshirt · オンデマンド印刷</div>
+    <div class="badge" data-i18n="hero_shop_badge">● padang store ブラジル · spreadshirt 世界</div>
     <h1>shop</h1>
     <p class="tg" data-i18n="hero_shop_sub">音楽 · グッズ · ステッカー · ヴァイナル</p>
   </div>
 </section>
 
+<section id="store">
+  <div class="sh"><span class="num">01</span><h2 data-i18n="h_store_br">padang store · ブラジル</h2><div class="rule"></div><div class="meta" data-i18n="store_br_meta">// 限定アイテム · hammerhead clothing によるブラジル製 · ブラジル全土へ発送 · 国外は whatsapp にて</div></div>
+
+  <div class="pstore" data-release="padang-store">
+    <div class="ps-hero">
+      <div class="in">
+        <img class="lg" src="/img/shop/logo-stacked.png" alt="Padang Records" width="560" height="482" loading="lazy">
+        <div class="kick" data-i18n="store_kick">● 新ストア · ブラジル · レアル建て</div>
+        <h3>true pirates</h3>
+        <p data-i18n="store_p">未踏のサウンドスケープを航海し、宝を岸へ運ぶ。Padang Records 限定のフーディーとTシャツ — 公式アートワーク、ポルトアレグレの Hammerhead Clothing 製、数量限定。</p>
+        <div class="tg">underground attitude</div>
+        <div class="ctas">
+          <a class="ps-cta" href="https://padang-records-store.com.br/" target="_blank" rel="noopener" data-i18n="store_cta">↳ padang store を開く →</a>
+          <a class="ps-cta ghost" href="https://wa.me/5551991243610" target="_blank" rel="noopener" data-i18n="store_cta_wa">ブラジル国外は whatsapp →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-grid">
+
+      <a class="ds" href="https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/" target="_blank" rel="noopener">
+        <div class="art">
+          <span class="tag">★ hoodie</span>
+          <img src="/img/shop/moletom.jpg" alt="Moletom com Capuz Padang Records" loading="lazy" width="800" height="1000">
+        </div>
+        <div class="body">
+          <div class="name" data-i18n="store_p_hoodie">フーディー</div>
+          <div class="stats"><span>280 g/m² · P–G3</span><span><b data-i18n="store_inst">最大12回払い・無利息</b></span></div>
+        </div>
+        <div class="ft"><span class="price">R$ 200</span><span class="cta" data-i18n="store_buy">↳ 購入 →</span></div>
+      </a>
+
+      <a class="ds" href="https://padang-records-store.com.br/produtos/camiseta-1j9ks/" target="_blank" rel="noopener">
+        <div class="art">
+          <span class="tag">▲ tee · black</span>
+          <img src="/img/shop/camiseta-preta.jpg" alt="Camiseta preta Padang Records · modelagem overhing" loading="lazy" width="800" height="1000">
+        </div>
+        <div class="body">
+          <div class="name" data-i18n="store_p_tee_black">ブラックTシャツ · overhing</div>
+          <div class="stats"><span>210 g/m² · P–GG</span><span><b data-i18n="store_inst">最大12回払い・無利息</b></span></div>
+        </div>
+        <div class="ft"><span class="price">R$ 150</span><span class="cta" data-i18n="store_buy">↳ 購入 →</span></div>
+      </a>
+
+      <a class="ds" href="https://padang-records-store.com.br/produtos/camiseta-qb4pv/" target="_blank" rel="noopener">
+        <div class="art">
+          <span class="tag">▲ tee · brown</span>
+          <img src="/img/shop/camiseta-marrom.jpg" alt="Camiseta marrom Padang Records · modelagem overhing" loading="lazy" width="800" height="1000">
+        </div>
+        <div class="body">
+          <div class="name" data-i18n="store_p_tee_brown">ブラウンTシャツ · overhing</div>
+          <div class="stats"><span>210 g/m² · P–GG</span><span><b data-i18n="store_inst">最大12回払い・無利息</b></span></div>
+        </div>
+        <div class="ft"><span class="price">R$ 150</span><span class="cta" data-i18n="store_buy">↳ 購入 →</span></div>
+      </a>
+
+      <a class="ds camp" href="https://padang-records-store.com.br/produtos/" target="_blank" rel="noopener">
+        <div class="art">
+          <span class="tag">◉ true pirates</span>
+          <img src="/img/shop/true-pirates-m.jpg" alt="True Pirates — coleção Padang Records Store" loading="lazy" width="820" height="1000">
+        </div>
+        <div class="body">
+          <div class="name" data-i18n="store_camp_name">全コレクション</div>
+          <div class="stats"><span data-i18n="store_camp_sub">true pirates · フーディー + Tシャツ</span><span><b>R$ 150–200</b></span></div>
+        </div>
+        <div class="ft"><span class="price">padang store</span><span class="cta" data-i18n="store_camp_cta">↳ すべて見る →</span></div>
+      </a>
+
+    </div>
+
+    <div class="ps-facts">
+      <div class="fact"><span class="ic">✈</span><span data-i18n="store_fact_1">R$ 500 以上で送料無料</span></div>
+      <div class="fact"><span class="ic">◈</span><span data-i18n="store_fact_2">最大12回無利息 · pix · カード</span></div>
+      <div class="fact"><span class="ic">✦</span><span data-i18n="store_fact_3">hammerhead clothing 製 · ポルトアレグレ</span></div>
+      <a class="fact" href="https://wa.me/5551991243610" target="_blank" rel="noopener"><span class="ic">☏</span><span data-i18n="store_fact_4">ブラジル国外は whatsapp で注文</span></a>
+    </div>
+  </div>
+</section>
+
 <section>
-  <div class="sh"><span class="num">01</span><h2 data-i18n="h_designs">公式デザイン</h2><div class="rule"></div><div class="meta">// 5 designs · ~700 products total · t-shirts · hoodies · tanks · kids · mugs · bottles</div></div>
+  <div class="sh"><span class="num">02</span><h2 data-i18n="h_designs">公式デザイン</h2><div class="rule"></div><div class="meta">// worldwide · print on demand · spreadshirt · 5 designs · ~700 products · t-shirts · hoodies · tanks · kids · mugs · bottles</div></div>
 
   <div class="designs">
     <div class="gr">
@@ -384,14 +497,14 @@ document.addEventListener('click', function(e){
 </section>
 
 <section>
-  <div class="sh"><span class="num">02</span><h2 data-i18n="h_browse_live">ブラウズ · ライブ iframe</h2><div class="rule"></div><div class="meta">// official store embedded · browse directly on site · checkout via spreadshirt</div></div>
+  <div class="sh"><span class="num">03</span><h2 data-i18n="h_browse_live">ブラウズ · ライブ iframe</h2><div class="rule"></div><div class="meta">// official store embedded · browse directly on site · checkout via spreadshirt</div></div>
   <div class="embed">
     <iframe src="https://padang.myspreadshop.com/" loading="lazy" title="Padang Spreadshirt Shop"></iframe>
   </div>
 </section>
 
 <section>
-  <div class="sh"><span class="num">03</span><h2 data-i18n="h_by_category">カテゴリー別</h2><div class="rule"></div></div>
+  <div class="sh"><span class="num">04</span><h2 data-i18n="h_by_category">カテゴリー別</h2><div class="rule"></div></div>
   <div class="cats">
     <a class="cat-link" href="https://padang.myspreadshop.com/men?q=D1" target="_blank" rel="noopener">
       <div class="ic">♂</div>
@@ -427,7 +540,7 @@ document.addEventListener('click', function(e){
 </section>
 
 <section>
-  <div class="sh"><span class="num">04</span><h2 data-i18n="h_other_channels">その他のチャンネル</h2><div class="rule"></div></div>
+  <div class="sh"><span class="num">05</span><h2 data-i18n="h_other_channels">その他のチャンネル</h2><div class="rule"></div></div>
   <div class="chans">
     <a class="ch" href="https://padang.bandcamp.com/" target="_blank" rel="noopener">
       <div class="ic">▶</div>
@@ -466,6 +579,7 @@ document.addEventListener('click', function(e){
     <div data-i18n="footer_rights">© padang records · 2026 · all signals reserved</div>
     <div class="so">
       <a href="https://padang.bandcamp.com/" target="_blank">Bandcamp</a>
+      <a href="https://padang-records-store.com.br/" target="_blank">Padang Store</a>
       <a href="https://padang.myspreadshop.com/" target="_blank">Spreadshirt</a>
       <a href="https://soundcloud.com/padangrec" target="_blank">SoundCloud</a>
       <a href="https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A" target="_blank" data-i18n="nav_padangtv">PadangTV</a>
