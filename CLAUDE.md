@@ -280,6 +280,7 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 ## Gotchas conhecidos
 
 - **Cron de 20 min, não 5** — push logo depois de :00/:20/:40 espera até a rodada seguinte. Conferir com `?cb=<aleatório>` na URL.
+- **curl com User-Agent curto leva 406** — o mod_security da HostGator rejeita `-A "Mozilla/5.0"` puro (parece deploy que não saiu). Use um UA completo de navegador nas conferências por curl.
 - **`blocks.css` é versionado na URL** (`blocks.css?v=AAAAMMDDx` em `index.html`/`releases.html`): ao mudar o arquivo, suba a versão nos dois, senão o navegador usa o CSS antigo por 5 min.
 - **Cache de JS/CSS de 5 min** (`.htaccess`) — logo após o deploy, o navegador pode juntar HTML novo com JS antigo; se algo parecer não funcionar, espere 5 min ou recarregue forçado.
 - **Pastas geradas** — editar `en/…`, `release/…`, `sitemap.xml` ou o bloco `<!-- seo -->` à mão é perdido no próximo build.
