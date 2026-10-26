@@ -185,7 +185,7 @@ function syncCounts(html, n) {
              .replace(/(<span class="rel-count">)\d+(<\/span>)/g, `$1${n}$2`);
 }
 
-function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
+function renderPage(template, page, lang, dict, stats, byAlbum, bySlug, store) {
   template = template
     .replace('<meta property="og:image" content="https://padangrecords.net/img/logo-full.png" />',
              '<meta property="og:image" content="https://padangrecords.net/img/og-padang.jpg" />\n<meta property="og:image:width" content="1200" />\n<meta property="og:image:height" content="630" />')
@@ -196,6 +196,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug) {
   if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
   if (page === 'index.html' || page === 'releases.html') template = coverCards(template, byAlbum, dict, lang);
   template = syncCounts(template, Object.keys(byAlbum).length);
+  if (page === 'shop.html' && store) template = storeCards(template, store, dict);
   if (page === 'roster.html') template = syncRelSlugs(template, Object.values(byAlbum));
   let html = applyTranslations(template, dict, lang, stats);
   html = setHtmlLang(html, lang);
@@ -243,6 +244,43 @@ function coverCards(html, byAlbum, dict, lang) {
          + `<img src="${r.cover_url.replace(/_10\.jpg$/, '_16.jpg')}" alt="${escAttr(alt)}" width="700" height="700" loading="lazy" />`
          + `<span class="pl" aria-hidden="true">▶</span><span class="sr" data-i18n="r_play">${escText(play)}</span></button></div>`;
   });
+}
+
+// ── 2d. Padang Store (Nuvemshop): cards do shop.html gerados de data/store.json ──
+// `node sync-store.js` mantém o JSON; aqui só se renderiza o bloco <!-- store:start --> … <!-- store:end -->.
+// Texto em PT com data-i18n (traduzido depois por applyTranslations). Idempotente: o bloco é sempre reescrito.
+const STORE_BLOCK = /([ \t]*)<!-- store:start[\s\S]*?store:end -->/;
+const STORE_TAG = { hoodie: '★ hoodie', tee: '▲ tee', item: '◆ item' };
+const fmtBRL = v => v == null ? '' : 'R$ ' + (Number.isInteger(v) ? String(v) : v.toFixed(2).replace('.', ','));
+function storeCards(html, store, dict) {
+  if (!STORE_BLOCK.test(html)) return html;
+  const P = k => t(dict, k, 'pt') || k;
+  const cards = (store.products || []).map(p => {
+    const nameHtml = p.kind === 'hoodie' ? `<span data-i18n="store_p_hoodie">${escText(P('store_p_hoodie'))}</span>`
+                   : p.kind === 'tee' ? `<span data-i18n="store_p_tee">${escText(P('store_p_tee'))}</span> · <span data-i18n="store_c_${p.color || 'black'}">${escText(P('store_c_' + (p.color || 'black')))}</span>`
+                   : escText(p.name);
+    const alt = `${p.name} — Padang Records Store`;
+    const sizes = p.variants.map(v =>
+      `<button type="button" class="sz${v.available ? '' : ' out'}" data-v="${v.id}" data-stock="${v.stock == null ? '' : v.stock}"${v.available ? '' : ' disabled'}>${escText(v.size || '·')}</button>`).join('');
+    // foto principal vem do CDN da Nuvemshop; se falhar, cai na cópia local (img/shop/) ou no logo
+    const localName = { hoodie: 'moletom.jpg', tee: p.color === 'brown' ? 'camiseta-marrom.jpg' : 'camiseta-preta.jpg' }[p.kind];
+    const fallback = localName && fs.existsSync(path.join(ROOT, 'img/shop', localName)) ? `./img/shop/${localName}` : './img/shop/logo-stacked.png';
+    const img = p.images[0] || fallback;
+    return `<div class="ds sp${p.in_stock ? '' : ' soldout'}" data-product="${p.id}" data-kind="${p.kind}">
+        <a class="art" href="${escAttr(p.url)}" target="_blank" rel="noopener">
+          <span class="tag">${STORE_TAG[p.kind] || STORE_TAG.item}</span>
+          <img src="${escAttr(img)}" alt="${escAttr(alt)}" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='${fallback}'">
+        </a>
+        <div class="body">
+          <div class="name">${nameHtml}</div>
+          <div class="sizes" role="group" aria-label="${escAttr(P('store_size'))}"><span class="lbl" data-i18n="store_size">${escText(P('store_size'))}</span>${sizes}</div>
+          <div class="stats"><span><b data-i18n="store_inst">${escText(P('store_inst'))}</b></span><span class="so" data-i18n="store_soldout"${p.in_stock ? ' hidden' : ''}>${escText(P('store_soldout'))}</span></div>
+        </div>
+        <div class="ft"><span class="price">${p.compare_at ? `<s>${fmtBRL(p.compare_at)}</s> ` : ''}${fmtBRL(p.price)}</span><a class="cta buy" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-buy="${escAttr(store.store_url)}/comprar/"><span class="t1" data-i18n="store_pick">${escText(P('store_pick'))}</span><span class="t2" data-i18n="store_checkout" hidden>${escText(P('store_checkout'))}</span></a></div>
+      </div>`;
+  }).join('\n\n      ');
+  return html.replace(STORE_BLOCK, (all, ind) =>
+    `${ind}<!-- store:start · gerado por build-i18n.js a partir de data/store.json (node sync-store.js) — não editar à mão -->\n      ${cards}\n${ind}<!-- store:end -->`);
 }
 
 // ── 2c. páginas de release: /release/<slug>/ (+ /xx/release/<slug>/) ──
@@ -868,6 +906,7 @@ function main() {
   const newestRelease = releases.map(r => (r.lastmod || r.released || '').slice(0, 10)).sort().pop();
   const byAlbum = Object.fromEntries(releases.map(r => [r.album_id, r]));
   const bySlug = Object.fromEntries(releases.map(r => [r.slug, r]));
+  const store = fs.existsSync(path.join(ROOT, 'data/store.json')) ? JSON.parse(read('data/store.json')) : null;
   const stats = { applied: 0, missing: new Set() };
   const entries = [];
   let written = 0, scripts = 0, files = 0;
@@ -875,7 +914,7 @@ function main() {
   for (const page of PAGES) {
     const template = read(page);
     for (const lang of LANGS) {
-      const html = renderPage(template, page, lang, dict, stats, byAlbum, bySlug);
+      const html = renderPage(template, page, lang, dict, stats, byAlbum, bySlug, store);
       const rel = lang === SOURCE_LANG ? page : `${lang}/${page}`;
       scripts += checkScripts(rel, html);
       if (write(rel, html)) written++;

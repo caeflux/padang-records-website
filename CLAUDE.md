@@ -108,9 +108,11 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 | `lab.html` | 24 episódios Padang Lab Series · SoundCloud embeds |
 | `about.html` | Timeline da label 2013→2026 |
 | `demo.html` | Formulário de submissão · valida SC/Drive/Dropbox URL · manda pra `send-demo.php` |
-| `shop.html` | Spreadshirt embed |
+| `shop.html` | Seção 01 Padang Store (cards gerados de `data/store.json`, tamanhos + checkout direto, estoque ao vivo via `store.php`) + Spreadshirt (designs, iframe, categorias) |
 | `send-demo.php` | Backend do demo form · envia email pra `contact@padangrecords.net` |
 | `send-newsletter.php` | Backend da newsletter · honeypot + validação · e-mail `[newsletter] <lang> <email>` pra `contact@` |
+| `store.php` | Estoque/preço ao vivo da Padang Store (API Nuvemshop ou vitrine pública), cache 5 min |
+| `sync-store.js` | Sincroniza o catálogo da Padang Store em `data/store.json` (API ou vitrine) · `--auth` troca o code OAuth pelo token |
 | `build-i18n.js` | **Build** (Node, sem deps): idiomas, SEO, páginas de release, sitemap, robots — ver seção própria |
 | `track.js` | Medição GA4 nas 8 páginas + releases: outbound_click, UTMs, language_selected, embed_play |
 | `newsletter.js` | Envio do form `.nl-form` (PHP → fallback FormSubmit) + evento `newsletter_signup` |
@@ -123,6 +125,7 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 | `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
 | `data/releases.json` | Fonte canônica do catálogo (110 entradas, data desc) — alimenta páginas de release, sitemap e contadores |
 | `data/lab-series.json` | Episódios da Lab Series |
+| `data/store.json` | Catálogo da Padang Store (Nuvemshop): produtos, variações (tamanho/estoque/preço), imagens — gerado por `sync-store.js` |
 | `i18n.js` | 6 idiomas (PT/EN/ES/DE/FR/JA) · nav + genéricas + `seo_*` + `rel_*` + `pc_*` + `nl_*` · troca de idioma por URL |
 | `i18n-bios.js` | Bios traduzidas dos artistas (EN/ES/DE/FR/JA — PT é source em roster.html) |
 | `i18n-extra.js` | Chaves de events, lab, demo, shop |
@@ -177,6 +180,20 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 - `index.html`: card no grid, Latest Signal iframe e contadores manuais (`110 releases`, `+98`)
 - `releases.html`: card no ano correspondente + counter do ano
 - Contadores `<b class="pc-n">` (Padang Complete) e `<span class="rel-count">` (hero do catálogo) são **sincronizados pelo build** — não editar
+
+## Padang Store (Nuvemshop · loja BR) — catálogo sincronizado
+
+- Loja: https://padang-records-store.com.br (Nuvemshop, tema Morelia, operada pela Hammerhead Clothing). O `shop.html` mostra os produtos
+  dela na seção 01 com seletor de tamanho e botão que leva **direto ao checkout** (`/comprar/<id_da_variação>-1`).
+- `data/store.json` é a fonte dos cards. Gere/atualize com `node sync-store.js` (sem deps): usa a **API oficial** se existir
+  `~/.padang/nuvemshop.json` com `access_token` (app do Portal de Parceiros, token não expira), senão lê a vitrine pública
+  (sitemap + `LS.variants`). Rode antes do build quando houver produto/preço novo; o build reescreve o bloco
+  `<!-- store:start … store:end -->` do shop.html (nunca editar à mão).
+- `store.php` (deploy via `.cpanel.yml`) devolve estoque/preço ao vivo com cache de 5 min; usa a API se houver
+  `/home2/padangne/.nuvemshop.json` no servidor (fora do public_html), senão lê as páginas públicas. O JS do shop.html
+  desabilita tamanhos esgotados e atualiza o preço.
+- Token nunca entra no repo (é público). Primeira autorização: `node sync-store.js --authorize-url` → instalar o app →
+  `node sync-store.js --auth "<URL de redirect com ?code=>"` (code vale 5 min).
 
 ## Convenções de conteúdo (do memory + user preferences)
 

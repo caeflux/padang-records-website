@@ -1,0 +1,178 @@
+{
+  "store_id": 8175113,
+  "store_url": "https://padang-records-store.com.br",
+  "source": "storefront",
+  "synced_at": "2026-10-26T16:40:38.631Z",
+  "buy_link": "https://padang-records-store.com.br/comprar/{variant_id}-{qty}",
+  "products": [
+    {
+      "id": 367457445,
+      "handle": "moletom-com-capuz-62zzq",
+      "url": "https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/",
+      "name": "Moletom com Capuz",
+      "kind": "hoodie",
+      "color": null,
+      "price": 200,
+      "compare_at": null,
+      "currency": "BRL",
+      "images": [
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_1_1280px-1-869d22377443731c4c17894306377665-1024-1024.webp",
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_3_1280px-4d864c64a22a77c7c817894306377414-1024-1024.webp",
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_2_1280px-20214aa33372bd16e417894306373903-1024-1024.webp"
+      ],
+      "variants": [
+        {
+          "id": 1596855551,
+          "size": "P",
+          "price": 200,
+          "compare_at": null,
+          "stock": 1,
+          "available": true
+        },
+        {
+          "id": 1596855552,
+          "size": "M",
+          "price": 200,
+          "compare_at": null,
+          "stock": 1,
+          "available": true
+        },
+        {
+          "id": 1596855553,
+          "size": "G",
+          "price": 200,
+          "compare_at": null,
+          "stock": 2,
+          "available": true
+        },
+        {
+          "id": 1596855556,
+          "size": "GG",
+          "price": 200,
+          "compare_at": null,
+          "stock": 3,
+          "available": true
+        },
+        {
+          "id": 1596855558,
+          "size": "G1",
+          "price": 200,
+          "compare_at": null,
+          "stock": 2,
+          "available": true
+        },
+        {
+          "id": 1596855559,
+          "size": "G3",
+          "price": 200,
+          "compare_at": null,
+          "stock": 1,
+          "available": true
+        }
+      ],
+      "in_stock": true
+    },
+    {
+      "id": 367460491,
+      "handle": "camiseta-1j9ks",
+      "url": "https://padang-records-store.com.br/produtos/camiseta-1j9ks/",
+      "name": "Camiseta",
+      "kind": "tee",
+      "color": "black",
+      "price": 150,
+      "compare_at": null,
+      "currency": "BRL",
+      "images": [
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_costas_1280px-02ae404b933c1bd57417894317566531-1024-1024.webp",
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_frente_1280px-75451efe9f190243af17894317568079-1024-1024.webp",
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_frente_costas_1280px-aaa81f9486b2a9f85f17894317567262-1024-1024.webp"
+      ],
+      "variants": [
+        {
+          "id": 1596866050,
+          "size": "P",
+          "price": 150,
+          "compare_at": null,
+          "stock": 2,
+          "available": true
+        },
+        {
+          "id": 1596866051,
+          "size": "M",
+          "price": 150,
+          "compare_at": null,
+          "stock": 3,
+          "available": true
+        },
+        {
+          "id": 1596866052,
+          "size": "G",
+          "price": 150,
+          "compare_at": null,
+          "stock": 3,
+          "available": true
+        },
+        {
+          "id": 1596866053,
+          "size": "GG",
+          "price": 150,
+          "compare_at": null,
+          "stock": 2,
+          "available": true
+        }
+      ],
+      "in_stock": true
+    },
+    {
+      "id": 367464041,
+      "handle": "camiseta-qb4pv",
+      "url": "https://padang-records-store.com.br/produtos/camiseta-qb4pv/",
+      "name": "Camiseta",
+      "kind": "tee",
+      "color": "brown",
+      "price": 150,
+      "compare_at": null,
+      "currency": "BRL",
+      "images": [
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_marrom_frente_1280px-1-3b0d2bcc8090705c6c17894328860932-1024-1024.webp",
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/chatgpt-image-14-de-set-de-2026-21_41_27-4de56d534552c0c14717894328957956-1024-1024.webp",
+        "https://dcdn-us.mitiendanube.com/stores/008/175/113/products/chatgpt-image-14-de-set-de-2026-21_43_32-21a1ebf3fa7bcdf40017894330213969-1024-1024.webp"
+      ],
+      "variants": [
+        {
+          "id": 1596874883,
+          "size": "P",
+          "price": 150,
+          "compare_at": null,
+          "stock": 2,
+          "available": true
+        },
+        {
+          "id": 1596874884,
+          "size": "M",
+          "price": 150,
+          "compare_at": null,
+          "stock": 3,
+          "available": true
+        },
+        {
+          "id": 1596874885,
+          "size": "G",
+          "price": 150,
+          "compare_at": null,
+          "stock": 3,
+          "available": true
+        },
+        {
+          "id": 1596874886,
+          "size": "GG",
+          "price": 150,
+          "compare_at": null,
+          "stock": 2,
+          "available": true
+        }
+      ],
+      "in_stock": true
+    }
+  ]
+}

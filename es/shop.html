@@ -170,6 +170,22 @@ section{position:relative;padding:60px 32px;z-index:2}
 }
 @media(max-width:480px){.ps-grid{grid-template-columns:1fr}.ps-facts{grid-template-columns:1fr}}
 
+/* ── Padang Store · cards gerados (tamanhos + checkout direto) ── */
+.ds.sp{cursor:default}
+.ds.sp .art{display:flex}
+.ds .sizes{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px}
+.ds .sizes .lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);margin-right:4px}
+.ds .sz{background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--ink);min-width:36px;height:30px;padding:0 8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;cursor:pointer;transition:all .15s}
+.ds .sz:hover{border-color:rgba(196,255,61,.5)}
+.ds .sz.on{background:var(--neon-1);color:var(--bg);border-color:var(--neon-1)}
+.ds .sz.out{opacity:.3;text-decoration:line-through;cursor:not-allowed}
+.ds .stats .so{color:#ff6b6b}
+.ds .ft .price s{opacity:.5;font-weight:400;margin-right:6px}
+.ds .ft a.cta{color:var(--ink)}
+.ds:hover .ft a.cta{color:var(--neon-1)}
+.ds.soldout .art img{filter:grayscale(1) brightness(.6)}
+.ds.soldout .ft a.cta{opacity:.5}
+
 footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
 footer .so{display:flex;gap:20px;flex-wrap:wrap}
@@ -353,41 +369,46 @@ document.addEventListener('click', function(e){
 
     <div class="ps-grid">
 
-      <a class="ds" href="https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/" target="_blank" rel="noopener">
-        <div class="art">
+      <!-- store:start · gerado por build-i18n.js a partir de data/store.json (node sync-store.js) — não editar à mão -->
+      <div class="ds sp" data-product="367457445" data-kind="hoodie">
+        <a class="art" href="https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/" target="_blank" rel="noopener">
           <span class="tag">★ hoodie</span>
-          <img src="/img/shop/moletom.jpg" alt="Moletom com Capuz Padang Records" loading="lazy" width="800" height="1000">
-        </div>
+          <img src="https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_1_1280px-1-869d22377443731c4c17894306377665-1024-1024.webp" alt="Moletom com Capuz — Padang Records Store" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='/img/shop/moletom.jpg'">
+        </a>
         <div class="body">
-          <div class="name" data-i18n="store_p_hoodie">buzo con capucha</div>
-          <div class="stats"><span>280 g/m² · P–G3</span><span><b data-i18n="store_inst">hasta 12 cuotas sin interés</b></span></div>
+          <div class="name"><span data-i18n="store_p_hoodie">buzo con capucha</span></div>
+          <div class="sizes" role="group" aria-label="tamanho"><span class="lbl" data-i18n="store_size">talle</span><button type="button" class="sz" data-v="1596855551" data-stock="1">P</button><button type="button" class="sz" data-v="1596855552" data-stock="1">M</button><button type="button" class="sz" data-v="1596855553" data-stock="2">G</button><button type="button" class="sz" data-v="1596855556" data-stock="3">GG</button><button type="button" class="sz" data-v="1596855558" data-stock="2">G1</button><button type="button" class="sz" data-v="1596855559" data-stock="1">G3</button></div>
+          <div class="stats"><span><b data-i18n="store_inst">hasta 12 cuotas sin interés</b></span><span class="so" data-i18n="store_soldout" hidden>agotado</span></div>
         </div>
-        <div class="ft"><span class="price">R$ 200</span><span class="cta" data-i18n="store_buy">↳ comprar →</span></div>
-      </a>
+        <div class="ft"><span class="price">R$ 200</span><a class="cta buy" href="https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/" target="_blank" rel="noopener" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">elegí el talle →</span><span class="t2" data-i18n="store_checkout" hidden>↳ comprar ahora →</span></a></div>
+      </div>
 
-      <a class="ds" href="https://padang-records-store.com.br/produtos/camiseta-1j9ks/" target="_blank" rel="noopener">
-        <div class="art">
-          <span class="tag">▲ tee · black</span>
-          <img src="/img/shop/camiseta-preta.jpg" alt="Camiseta preta Padang Records · modelagem overhing" loading="lazy" width="800" height="1000">
-        </div>
+      <div class="ds sp" data-product="367460491" data-kind="tee">
+        <a class="art" href="https://padang-records-store.com.br/produtos/camiseta-1j9ks/" target="_blank" rel="noopener">
+          <span class="tag">▲ tee</span>
+          <img src="https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_costas_1280px-02ae404b933c1bd57417894317566531-1024-1024.webp" alt="Camiseta — Padang Records Store" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='/img/shop/camiseta-preta.jpg'">
+        </a>
         <div class="body">
-          <div class="name" data-i18n="store_p_tee_black">camiseta negra · overhing</div>
-          <div class="stats"><span>210 g/m² · P–GG</span><span><b data-i18n="store_inst">hasta 12 cuotas sin interés</b></span></div>
+          <div class="name"><span data-i18n="store_p_tee">camiseta</span> · <span data-i18n="store_c_black">negra</span></div>
+          <div class="sizes" role="group" aria-label="tamanho"><span class="lbl" data-i18n="store_size">talle</span><button type="button" class="sz" data-v="1596866050" data-stock="2">P</button><button type="button" class="sz" data-v="1596866051" data-stock="3">M</button><button type="button" class="sz" data-v="1596866052" data-stock="3">G</button><button type="button" class="sz" data-v="1596866053" data-stock="2">GG</button></div>
+          <div class="stats"><span><b data-i18n="store_inst">hasta 12 cuotas sin interés</b></span><span class="so" data-i18n="store_soldout" hidden>agotado</span></div>
         </div>
-        <div class="ft"><span class="price">R$ 150</span><span class="cta" data-i18n="store_buy">↳ comprar →</span></div>
-      </a>
+        <div class="ft"><span class="price">R$ 150</span><a class="cta buy" href="https://padang-records-store.com.br/produtos/camiseta-1j9ks/" target="_blank" rel="noopener" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">elegí el talle →</span><span class="t2" data-i18n="store_checkout" hidden>↳ comprar ahora →</span></a></div>
+      </div>
 
-      <a class="ds" href="https://padang-records-store.com.br/produtos/camiseta-qb4pv/" target="_blank" rel="noopener">
-        <div class="art">
-          <span class="tag">▲ tee · brown</span>
-          <img src="/img/shop/camiseta-marrom.jpg" alt="Camiseta marrom Padang Records · modelagem overhing" loading="lazy" width="800" height="1000">
-        </div>
+      <div class="ds sp" data-product="367464041" data-kind="tee">
+        <a class="art" href="https://padang-records-store.com.br/produtos/camiseta-qb4pv/" target="_blank" rel="noopener">
+          <span class="tag">▲ tee</span>
+          <img src="https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_marrom_frente_1280px-1-3b0d2bcc8090705c6c17894328860932-1024-1024.webp" alt="Camiseta — Padang Records Store" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='/img/shop/camiseta-marrom.jpg'">
+        </a>
         <div class="body">
-          <div class="name" data-i18n="store_p_tee_brown">camiseta marrón · overhing</div>
-          <div class="stats"><span>210 g/m² · P–GG</span><span><b data-i18n="store_inst">hasta 12 cuotas sin interés</b></span></div>
+          <div class="name"><span data-i18n="store_p_tee">camiseta</span> · <span data-i18n="store_c_brown">marrón</span></div>
+          <div class="sizes" role="group" aria-label="tamanho"><span class="lbl" data-i18n="store_size">talle</span><button type="button" class="sz" data-v="1596874883" data-stock="2">P</button><button type="button" class="sz" data-v="1596874884" data-stock="3">M</button><button type="button" class="sz" data-v="1596874885" data-stock="3">G</button><button type="button" class="sz" data-v="1596874886" data-stock="2">GG</button></div>
+          <div class="stats"><span><b data-i18n="store_inst">hasta 12 cuotas sin interés</b></span><span class="so" data-i18n="store_soldout" hidden>agotado</span></div>
         </div>
-        <div class="ft"><span class="price">R$ 150</span><span class="cta" data-i18n="store_buy">↳ comprar →</span></div>
-      </a>
+        <div class="ft"><span class="price">R$ 150</span><a class="cta buy" href="https://padang-records-store.com.br/produtos/camiseta-qb4pv/" target="_blank" rel="noopener" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">elegí el talle →</span><span class="t2" data-i18n="store_checkout" hidden>↳ comprar ahora →</span></a></div>
+      </div>
+      <!-- store:end -->
 
       <a class="ds camp" href="https://padang-records-store.com.br/produtos/" target="_blank" rel="noopener">
         <div class="art">
@@ -593,6 +614,54 @@ document.addEventListener('click', function(e){
 
 <script src="/i18n.js" defer></script>
 <script src="/i18n-extra.js" defer></script>
+<script>
+// Padang Store — seletor de tamanho → link direto para o checkout da Nuvemshop; estoque ao vivo via store.php
+(function(){
+  var grid = document.querySelector('.ps-grid'); if (!grid) return;
+  function fmt(v){ return 'R$ ' + (v % 1 === 0 ? String(v) : v.toFixed(2).replace('.', ',')); }
+  function setBuy(card){
+    var a = card.querySelector('a.buy'); if (!a) return;
+    var on = card.querySelector('.sz.on'), t1 = a.querySelector('.t1'), t2 = a.querySelector('.t2');
+    if (on) { a.href = a.getAttribute('data-buy') + on.getAttribute('data-v') + '-1'; t1.hidden = true; t2.hidden = false; }
+    else { a.href = card.querySelector('a.art').href; t1.hidden = false; t2.hidden = true; }
+  }
+  function applyStock(card){
+    var any = false;
+    card.querySelectorAll('.sz').forEach(function(b){
+      var s = b.getAttribute('data-stock'), out = s !== null && s !== '' && Number(s) <= 0;
+      b.disabled = out; b.classList.toggle('out', out);
+      if (out) b.classList.remove('on'); else any = true;
+    });
+    card.classList.toggle('soldout', !any);
+    var so = card.querySelector('.so'); if (so) so.hidden = any;
+    setBuy(card);
+  }
+  grid.addEventListener('click', function(e){
+    var b = e.target.closest('.sz'); if (!b || b.disabled) return;
+    var card = b.closest('.ds'), was = b.classList.contains('on');
+    card.querySelectorAll('.sz').forEach(function(x){ x.classList.remove('on'); });
+    if (!was) b.classList.add('on');
+    setBuy(card);
+  });
+  grid.querySelectorAll('.ds.sp').forEach(applyStock);
+  if (!window.fetch) return;
+  fetch('/store.php?v=' + Math.floor(Date.now() / 120000), { credentials: 'omit' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      if (!d || !d.variants) return;
+      grid.querySelectorAll('.ds.sp').forEach(function(card){
+        var price = null;
+        card.querySelectorAll('.sz').forEach(function(b){
+          var v = d.variants[b.getAttribute('data-v')]; if (!v) return;
+          if (v.stock !== undefined && v.stock !== null) b.setAttribute('data-stock', v.stock);
+          if (v.price && (price === null || v.price < price)) price = v.price;
+        });
+        if (price !== null) { var p = card.querySelector('.ft .price'); if (p && !p.querySelector('s')) p.textContent = fmt(price); }
+        applyStock(card);
+      });
+    }).catch(function(){});
+})();
+</script>
 <script>
 // MOBILE NAV — hamburger toggle
 (function(){
