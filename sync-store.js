@@ -13,7 +13,7 @@
  * Uso:
  *   node sync-store.js                       # api se houver token, senão storefront
  *   node sync-store.js --source storefront   # força a fonte
- *   node sync-store.js --authorize-url       # imprime a URL para instalar o app na loja (gera o code)
+ *   node sync-store.js --authorize-url       # imprime a URL para instalar o app na loja (abre logado na loja; gera o code)
  *   node sync-store.js --auth "<code ou URL de redirect com ?code=…>"   # troca o code pelo access_token
  *
  * Sem dependências. Node 18+ (usa fetch). Idempotente: só reescreve data/store.json se o catálogo mudou.
@@ -29,7 +29,8 @@ const CONFIG = process.env.NUVEMSHOP_CONFIG || path.join(os.homedir(), '.padang'
 const STORE_URL = 'https://padang-records-store.com.br';
 const DEFAULT_STORE_ID = 8175113;
 const UA = 'PadangRecordsSite/1.0 (+https://padangrecords.net; contact@padangrecords.net)';
-const API = id => `https://api.nuvemshop.com.br/v1/${id}`;
+const API_VERSIONS = ['2025-03', 'v1'];   // base atual é versionada; v1 segue como fallback
+const API = (id, v) => `https://api.nuvemshop.com.br/${v}/${id}`;
 
 const args = process.argv.slice(2);
 const flag = n => args.includes(n);
@@ -63,8 +64,13 @@ const num = v => (v === null || v === undefined || v === '') ? null : Number(v);
 
 // ── fonte: API oficial ──────────────────────────────────────────
 async function fromApi(cfg) {
-  const headers = { Authentication: `bearer ${cfg.access_token}`, Authorization: `bearer ${cfg.access_token}`, 'Content-Type': 'application/json' };
-  const list = await getJSON(`${API(cfg.store_id)}/products?per_page=200&published=true`, headers);
+  const headers = { Authorization: `Bearer ${cfg.access_token}`, Authentication: `bearer ${cfg.access_token}`, 'Content-Type': 'application/json' };
+  let list, lastErr;
+  for (const v of API_VERSIONS) {
+    try { list = await getJSON(`${API(cfg.store_id, v)}/products?per_page=200&published=true`, headers); break; }
+    catch (e) { lastErr = e; }
+  }
+  if (!list) throw lastErr;
   const pick = o => o && typeof o === 'object' ? (o.pt || o.es || o.en || Object.values(o)[0] || '') : (o || '');
   return list.filter(p => p.published !== false).map(p => {
     const name = String(pick(p.name)).trim();
@@ -186,7 +192,10 @@ async function main() {
   const cfg = loadConfig();
   if (flag('--authorize-url')) {
     if (!cfg.client_id) throw new Error(`defina client_id em ${CONFIG} primeiro`);
-    console.log(`https://www.nuvemshop.com.br/apps/${cfg.client_id}/authorize`);
+    // instalar na loja real: URL do admin da loja + /admin/apps/<app_id>/authorize (logado na loja)
+    const admin = (cfg.admin_url || 'https://lojadoavagner.lojavirtualnuvem.com.br').replace(/\/+$/, '');
+    console.log(`${admin}/admin/apps/${cfg.client_id}/authorize`);
+    console.log(`(alternativa genérica: https://www.nuvemshop.com.br/apps/${cfg.client_id}/authorize)`);
     return;
   }
   if (opt('--auth')) { await exchangeCode(cfg, opt('--auth')); return; }

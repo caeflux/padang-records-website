@@ -49,11 +49,15 @@ $home    = getenv('HOME');
 $cfgPath = ($home ? rtrim($home, '/') : dirname(__DIR__)) . '/.nuvemshop.json';
 $cfg     = is_file($cfgPath) ? json_decode(@file_get_contents($cfgPath), true) : null;
 if (is_array($cfg) && !empty($cfg['access_token']) && !empty($cfg['store_id'])) {
-  $json = padang_http_get(
-    'https://api.nuvemshop.com.br/v1/' . (int)$cfg['store_id'] . '/products?per_page=200&published=true&fields=id,variants',
-    array('Authentication: bearer ' . $cfg['access_token'], 'Content-Type: application/json')
-  );
-  $data = $json ? json_decode($json, true) : null;
+  $data = null;
+  foreach (array('2025-03', 'v1') as $ver) {   // base atual é versionada; v1 segue como fallback
+    $json = padang_http_get(
+      'https://api.nuvemshop.com.br/' . $ver . '/' . (int)$cfg['store_id'] . '/products?per_page=200&published=true&fields=id,variants',
+      array('Authorization: Bearer ' . $cfg['access_token'], 'Authentication: bearer ' . $cfg['access_token'], 'Content-Type: application/json')
+    );
+    $data = $json ? json_decode($json, true) : null;
+    if (is_array($data)) break;
+  }
   if (is_array($data)) {
     foreach ($data as $p) {
       if (empty($p['variants'])) continue;
