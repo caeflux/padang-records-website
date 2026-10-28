@@ -1,5 +1,33 @@
 [
   {
+    "slug": "altered-geometry",
+    "url": "https://padang.bandcamp.com/album/altered-geometry",
+    "title": "Altered Geometry",
+    "artist": "Sündenböck & Maddizin",
+    "released": "2026-10-28",
+    "released_label": "28 Oct 2026",
+    "lastmod": "2026-10-28T00:00:00Z",
+    "tracks": 10,
+    "album_id": "3211350508",
+    "type": "LP",
+    "beatport_url": null,
+    "cover_url": "https://f4.bcbits.com/img/a1582780448_10.jpg",
+    "description_en": "Sündenböck & Maddizin — Altered Geometry (LP, 2026). Dark progressive / psy tech on Padang Records, Brazil.\n\naltered geometry\n\na city of cubes\nseen from above\nevery roof the same.\nevery roof hollow.\nevery block a few degrees off\n\nsameness was the blueprint.\n\nlook closer\nsomething red is leaking between the blocks\n\nthe grid starts on the inside\nfirst you measure yourself\nthen you become the measure.\n\na humanoid shape\nstanding exactly where a person should be\nnobody checks if anyone is inside.\n\ntwo of them do.\nold friends, same room, years of it\none hears what the other hasn't played yet\n\na friendship is the first glitch in the pattern.\n\nno hand moves the pieces\nfour hands do.\n\nthey don't break the grid\nthey bend it.\none degree.\nthen another.\nuntil the corners stop agreeing\n\nthe kick keeps the floor honest\nthe rhythm under the concrete\nis older than the blueprint.\n\nseen from above\nit still looks like a city.\n\ndown here nobody stands where they should\nevery body a few degrees off\nthe same red leaking through every one of them\n\nthe blocks are still in place.\nthe geometry isn't.",
+    "credits": "All tracks written and produced by Florentin Böck & Mathis Schwoerer-Böhning\nDub de Ballenia: original by Bensaid, remix by Sündenböck & Maddizin\nMaster by SM Analogic Mastering UK",
+    "tracklist": [
+      {"n": 1, "title": "Introspective", "duration": 669},
+      {"n": 2, "title": "Altered Geometry", "duration": 576},
+      {"n": 3, "title": "Humanoid", "duration": 542},
+      {"n": 4, "title": "Invisible Influence", "duration": 433},
+      {"n": 5, "title": "Grounded by Reality", "duration": 473},
+      {"n": 6, "title": "Native Rythms", "duration": 594},
+      {"n": 7, "title": "Bensaid - Dub de Ballenia (Sündenböck & Maddizin Remix)", "duration": 546},
+      {"n": 8, "title": "Behind the Borders", "duration": 534},
+      {"n": 9, "title": "Siplicant", "duration": 511},
+      {"n": 10, "title": "Spiral Drift", "duration": 487}
+    ]
+  },
+  {
     "slug": "the-forge",
     "url": "https://padang.bandcamp.com/album/the-forge",
     "title": "The Forge",
