@@ -552,7 +552,7 @@ const SAME_AS = [
   'https://www.beatport.com/label/padang-records/76105',
   'https://soundcloud.com/padangrec',
   'https://www.youtube.com/channel/UCOFQWuWtL1njucmHIXf0R3A',
-  'https://www.instagram.com/padangrecords/'
+  'https://www.instagram.com/padang.records/'
 ];
 const LD_LANG = { pt: 'pt-BR', en: 'en', es: 'es', de: 'de', fr: 'fr', ja: 'ja' };
 const ldScript = obj => `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, '\\u003c')}</script>`;
