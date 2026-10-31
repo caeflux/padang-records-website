@@ -120,6 +120,24 @@ $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 // ─── Send ───────────────────────────────────────────────────
 $sent = mail($to, $subject, $body, $headers, '-fnoreply@padangrecords.net');
 
+// ─── Copia para a página de demos (admin/demos.html) ─────
+// Falha aqui não derruba o envio: o e-mail já saiu.
+if ($sent && function_exists('curl_init')) {
+    $links = [['url' => $sclink, 'kind' => preg_match('#soundcloud#i', $sclink) ? 'soundcloud' : (preg_match('#drive\.google#i', $sclink) ? 'drive' : 'dropbox')]];
+    if ($profile !== '' && filter_var($profile, FILTER_VALIDATE_URL)) $links[] = ['url' => $profile, 'kind' => 'link'];
+    $sbKey = 'sb_publishable_4RBtPiZOCpVWbCL2Rxeteg_8FmafK5R';
+    $ch = curl_init('https://scovsmnbzweljbagnvhk.supabase.co/rest/v1/rpc/padang_submit_demo');
+    curl_setopt_array($ch, [CURLOPT_POST => true, CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 8,
+        CURLOPT_HTTPHEADER => ['apikey: ' . $sbKey, 'Authorization: Bearer ' . $sbKey, 'Content-Type: application/json'],
+        CURLOPT_POSTFIELDS => json_encode([
+            'p_message_id' => 'form-' . bin2hex(random_bytes(8)), 'p_source' => 'form', 'p_received_at' => gmdate('c'),
+            'p_artist' => $artist, 'p_from_name' => $realname, 'p_from_email' => $email, 'p_subject' => '[DEMO] ' . $artist . ' - ' . $genre,
+            'p_genre' => $genre, 'p_body' => "LOCATION: $location\nBPM: " . ($bpm !== '' ? $bpm : '—') . "\n\nBIO:\n$bio\n\nMESSAGE:\n" . ($message !== '' ? $message : '—'),
+            'p_links' => $links, 'p_lang' => 'en'])]);
+    if (curl_exec($ch) === false) error_log('[padang demo] supabase: ' . curl_error($ch));
+    curl_close($ch);
+}
+
 if ($sent) {
     echo json_encode(['ok' => true]);
 } else {

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Padang Records · Demos</title>
+<meta name="theme-color" content="#0a0908" />
+<link rel="icon" href="../img/logo.svg" type="image/svg+xml" />
+<link rel="icon" href="../img/padang-logo.png" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./admin.css">
+<link rel="stylesheet" href="./demos.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+
+<!-- ══════════ TELA DE LOGIN (mesma conta da área restrita) ══════════ -->
+<div id="authView" class="screen" hidden>
+  <div class="auth-card">
+    <div class="auth-logo">padang</div>
+    <div class="auth-sub">// demos · a&amp;r</div>
+    <form id="authForm" autocomplete="on">
+      <label for="authEmail">E-mail</label>
+      <input type="email" id="authEmail" autocomplete="email" required placeholder="voce@exemplo.com">
+      <label for="authPass">Senha</label>
+      <input type="password" id="authPass" autocomplete="current-password" required minlength="6" placeholder="••••••••">
+      <div id="authError" class="form-error" hidden></div>
+      <div class="auth-actions">
+        <button type="submit" class="btn btn-primary" id="btnLogin">Entrar</button>
+      </div>
+    </form>
+    <a class="auth-back" href="./">← área restrita</a>
+  </div>
+</div>
+
+<div id="deniedView" class="screen" hidden>
+  <div class="auth-card">
+    <div class="auth-logo">padang</div>
+    <div class="denied-icon">⚠</div>
+    <p class="denied-msg">Acesso restrito — este e-mail não está na lista de administradores.</p>
+    <div class="auth-actions"><button type="button" class="btn btn-primary" id="btnDeniedLogout">Sair</button></div>
+  </div>
+</div>
+
+<div id="bootView" class="screen"><div class="boot-spinner" aria-label="Carregando"></div></div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="appView" hidden>
+  <header class="topbar">
+    <div class="tb-brand">padang <span>· demos</span></div>
+    <nav class="tabs" aria-label="Filtrar por status" id="statusTabs">
+      <button class="tab on" data-status="novo">Novas <b class="tab-n" data-n="novo"></b></button>
+      <button class="tab" data-status="interesse">Interesse <b class="tab-n" data-n="interesse"></b></button>
+      <button class="tab" data-status="talvez">Talvez / VA <b class="tab-n" data-n="talvez"></b></button>
+      <button class="tab" data-status="recusado">Recusadas <b class="tab-n" data-n="recusado"></b></button>
+      <button class="tab" data-status="all">Todas <b class="tab-n" data-n="all"></b></button>
+    </nav>
+    <div class="tb-user">
+      <a class="btn btn-ghost btn-sm" href="./">Admin</a>
+      <button class="btn btn-ghost btn-sm" id="btnLogout">Sair</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="buscar artista, e-mail, gênero…" aria-label="Buscar">
+      <select id="year" aria-label="Ano">
+        <option value="all">2025 + 2026</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+      </select>
+      <span class="toolbar-count" id="count"></span>
+    </div>
+    <p class="dm-help">Ouça, depois um clique: <b>✓ aceitar</b>, <b>~ talvez/VA</b> ou <b>✕ recusar</b>. A resposta sai do contact@ em nome do Carlos, no idioma do artista, depois de 6 s (dá para desfazer). <b>✎</b> abre o texto para editar antes.</p>
+    <div id="list" class="dm-list"></div>
+  </main>
+</div>
+
+<!-- ══════════ EDITAR RESPOSTA ══════════ -->
+<div class="modal-back" id="replyModal" hidden>
+  <div class="modal dm-modal" role="dialog" aria-modal="true" aria-labelledby="rmTitle">
+    <div class="modal-head"><span id="rmTitle">Resposta</span>
+      <button class="modal-x" id="rmClose" aria-label="Fechar">✕</button></div>
+    <div class="dm-rm-row">
+      <label for="rmKind">Tipo</label>
+      <select id="rmKind">
+        <option value="interesse">✓ Interesse</option>
+        <option value="talvez">~ Talvez / VA</option>
+        <option value="recusado">✕ Recusar</option>
+      </select>
+      <label for="rmLang">Idioma</label>
+      <select id="rmLang">
+        <option value="en">English</option>
+        <option value="pt">Português</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+    <label for="rmTo">Para</label>
+    <input id="rmTo" readonly>
+    <label for="rmText">Texto</label>
+    <textarea id="rmText" rows="14"></textarea>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" id="rmMark">Só marcar, sem enviar</button>
+      <button type="button" class="btn btn-primary" id="rmSend">Enviar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="./demos.js"></script>
+</body>
+</html>
