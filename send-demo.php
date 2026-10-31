@@ -80,7 +80,13 @@ if ($errors) {
 
 // ─── Build email ────────────────────────────────────────────
 $to      = 'contact@padangrecords.net';
-$subject = '[DEMO] ' . header_safe($artist) . ' — ' . header_safe($genre);
+// Cabeçalhos só em ASCII: byte 8-bit cru no Subject/Reply-To pontua como spam (SpamAssassin) e
+// provável causa da demo não chegar em out/2026 (newsletter, só ASCII, chegava). Texto não-ASCII vai codificado em RFC 2047.
+function mime_header($v) {
+    $v = header_safe($v);
+    return preg_match('/[^\x20-\x7E]/', $v) ? mb_encode_mimeheader($v, 'UTF-8', 'B', "\r\n") : $v;
+}
+$subject = mime_header('[DEMO] ' . $artist . ' - ' . $genre);
 
 $body  = "// PADANG DEMO SUBMISSION\n";
 $body .= str_repeat("=", 50) . "\n\n";
@@ -106,7 +112,8 @@ $body .= "IP: " . ($_SERVER['REMOTE_ADDR'] ?? '?') . "\n";
 
 // ─── Headers (Reply-To = submitter so the label can reply directly) ─
 $headers  = "From: Padang Demo Form <noreply@padangrecords.net>\r\n";
-$headers .= "Reply-To: " . header_safe($realname) . " <" . header_safe($email) . ">\r\n";
+$headers .= "Reply-To: " . mime_header($realname) . " <" . header_safe($email) . ">\r\n";
+$headers .= "MIME-Version: 1.0\r\n";
 $headers .= "X-Mailer: PADANG-demo/1.0\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
