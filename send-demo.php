@@ -106,7 +106,7 @@ $body .= "[X] Tracks unreleased\n";
 $body .= "[X] Rights & samples cleared\n";
 $body .= "[X] Read submission guide\n\n";
 $body .= "--\n";
-$body .= "Submitted: " . date('Y-m-d H:i:s') . " UTC\n";
+$body .= "Submitted: " . gmdate('Y-m-d H:i:s') . " UTC\n";
 $body .= "Origin: " . ($_SERVER['HTTP_REFERER'] ?? 'direct') . "\n";
 $body .= "IP: " . ($_SERVER['REMOTE_ADDR'] ?? '?') . "\n";
 
