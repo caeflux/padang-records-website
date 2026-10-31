@@ -115,3 +115,8 @@ $sent = mail($to, $subject, $body, $headers, '-fnoreply@padangrecords.net');
 
 if ($sent) {
     echo json_encode(['ok' => true]);
+} else {
+    error_log('[padang demo] mail() failed for ' . $email);
+    http_response_code(500);
+    echo json_encode(['ok' => false, 'error' => 'mail_failed']);
+}
