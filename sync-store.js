@@ -75,7 +75,9 @@ async function fromApi(cfg) {
   return list.filter(p => p.published !== false).map(p => {
     const name = String(pick(p.name)).trim();
     const handle = String(pick(p.handle)).trim();
-    const images = (p.images || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0)).map(i => i.src);
+    // a API devolve o upload original (PNG de ~1,8 MB); o CDN serve a variante WebP 1024 px (~270 KB) para qualquer base
+    const images = (p.images || []).slice().sort((a, b) => (a.position || 0) - (b.position || 0))
+      .map(i => String(i.src).replace(/^http:/, 'https:').replace(/(-\d+-\d+)?\.(?:png|jpe?g|webp|gif)(\?.*)?$/i, '-1024-1024.webp'));
     const variants = (p.variants || []).map(v => {
       const price = num(v.promotional_price) || num(v.price);
       const stock = v.stock_management === false ? null : num(v.stock);

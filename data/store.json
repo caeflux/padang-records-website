@@ -1,8 +1,8 @@
 {
   "store_id": 8175113,
   "store_url": "https://padang-records-store.com.br",
-  "source": "storefront",
-  "synced_at": "2026-10-26T16:40:38.631Z",
+  "source": "api",
+  "synced_at": "2026-10-31T23:59:16.175Z",
   "buy_link": "https://padang-records-store.com.br/comprar/{variant_id}-{qty}",
   "products": [
     {
