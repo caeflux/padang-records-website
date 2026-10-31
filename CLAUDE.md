@@ -36,7 +36,7 @@ Troca de idioma no navegador: o botão navega para a URL do idioma e salva a esc
 ```
 1. git pull                       (o outro computador pode ter publicado)
 2. Editar a FONTE: as 8 páginas da raiz, i18n*.js, data/*.json, track.js, blocks.css…
-   (nunca en/ es/ de/ fr/ ja/ release/ nem sitemap.xml/robots.txt — são gerados)
+   (nunca en/ es/ de/ fr/ ja/ release/ artists/ lab/ nem sitemap.xml/robots.txt — são gerados)
 3. node build-i18n.js             (deve terminar sem erro; 2ª rodada = "0 arquivos alterados")
 4. node --check <cada .js editado>
 5. git add -A && git commit -m "mensagem descritiva" && git push origin main
@@ -94,7 +94,7 @@ Salve em `/tmp/patch.py` (não no OneDrive) e execute via bash. Isso escreve dir
 ### Sempre valide antes de commit
 ```bash
 node --check i18n.js i18n-extra.js i18n-lab.js i18n-bios.js track.js newsletter.js build-i18n.js
-node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; erro aborta
+node build-i18n.js   # compila todo <script> inline das 1212 páginas geradas; erro aborta
 ```
 
 ## Mapa de arquivos
@@ -105,7 +105,8 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 | `roster.html` | 58 artistas · card grid + modal de bio · array JS embutido · deep link `roster.html#artist=<slug>` abre o modal |
 | `releases.html` | 111 releases · por ano · card = capa + play (o build troca o `<iframe>` do card pela capa do `releases.json` via `coverCards()`, na home e no catálogo) · nome do artista no card linka `/release/<slug>/` (feito pelo build) · Padang Complete no fim |
 | `events.html` | eventos · card + modal expansível · EVDATA dict inline |
-| `lab.html` | 24 episódios Padang Lab Series · SoundCloud embeds |
+| `lab.html` | 24 episódios Padang Lab Series · SoundCloud embeds · cada card linka `/lab/ep-<n>-<artista>/` (feito pelo build) |
+| `lab/ep-<n>-<artista>/` | **Gerado** — página PT de cada episódio: player, texto do SoundCloud, tracklist, artistas do roster, outros sets, anterior/próximo, JSON-LD `MusicRecording` (usa `release/release.css`) |
 | `about.html` | Timeline da label 2013→2026 |
 | `demo.html` | Formulário de submissão · valida SC/Drive/Dropbox URL · manda pra `send-demo.php` |
 | `shop.html` | Seção 01 Padang Store (cards gerados de `data/store.json`, tamanhos + checkout direto, estoque ao vivo via `store.php`) + Spreadshirt (designs, iframe, categorias) |
@@ -118,13 +119,14 @@ node build-i18n.js   # compila todo <script> inline das 708 páginas geradas; er
 | `newsletter.js` | Envio do form `.nl-form` (PHP → fallback FormSubmit) + evento `newsletter_signup` |
 | `blocks.css` | Estilos compartilhados de `.pcomp` (Padang Complete) e `.nl` (newsletter) |
 | `player.js` | Play do card troca a capa pelo embed grande do Bandcamp (controles, seek, prev/next, tracklist) e o card ocupa 2×2 na grade; só um embed por vez (abrir outro devolve a capa ao anterior). Dock = faixa fina no rodapé com capa pequena + "now playing // artista — álbum" (clique rola até o card) + × para. O embed não expõe a faixa atual (só `postMessage("playerinited")`). CSS em `blocks.css` |
-| `en/ es/ de/ fr/ ja/` | **Gerado** — as 8 páginas por idioma + `release/` de cada idioma |
+| `en/ es/ de/ fr/ ja/` | **Gerado** — as 8 páginas por idioma + `release/`, `artists/` e `lab/` de cada idioma |
 | `release/<slug>/` | **Gerado** — página PT de cada release; `release/release.css` = estilo do releases.html + layout da página |
-| `sitemap.xml`, `robots.txt` | **Gerados** — 708 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
+| `sitemap.xml`, `robots.txt` | **Gerados** — 1212 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
 | `admin/` | Área restrita da label · login Supabase (allowlist), upload CSV Bandcamp, relatórios/royalties, checklist merch/e-mail, insights · **sem GA/Pixel, noindex** · docs: `../ARQUITETURA-AREA-RESTRITA.md` (fora do repo) |
 | `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
 | `data/releases.json` | Fonte canônica do catálogo (110 entradas, data desc) — alimenta páginas de release, sitemap e contadores |
-| `data/lab-series.json` | Episódios da Lab Series |
+| `data/lab-series.json` | Episódios da Lab Series · `description_en`/`description_pt`, `tracklist` (uma faixa por linha), `youtube`, `artwork`, `duration_sec` vêm do `sync-lab.js`; `story` = prefixo das chaves do relato da lab.html (`lab_news2` → EP.24) |
+| `sync-lab.js` | Completa `data/lab-series.json` a partir da página SoundCloud de cada episódio (só campos ausentes; `--force` refaz, `--ep N` um só) · nunca sobrescreve tracklist escrita à mão |
 | `data/store.json` | Catálogo da Padang Store (Nuvemshop): produtos, variações (tamanho/estoque/preço), imagens — gerado por `sync-store.js` |
 | `i18n.js` | 6 idiomas (PT/EN/ES/DE/FR/JA) · nav + genéricas + `seo_*` + `rel_*` + `pc_*` + `nl_*` · troca de idioma por URL |
 | `i18n-bios.js` | Bios traduzidas dos artistas (EN/ES/DE/FR/JA — PT é source em roster.html) |
@@ -227,6 +229,12 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 6. `node build-i18n.js` → gera as 6 páginas do release, linka o card, atualiza sitemap e contadores `pc-n`/`rel-count`
 7. Fluxo padrão de deploy
 
+### Adicionar episódio da Lab Series
+1. `data/lab-series.json`: prepend `{ep, title, subtitle, sc_url, track_id, date, tags}` (`"live"` em `tags` = gravação ao vivo)
+2. `node sync-lab.js` → duração, capa, descrição, tracklist (se estiver na descrição do SoundCloud). Tracklist enviada pelo artista: escrever à mão no campo `tracklist`
+3. `lab.html`: card na grade (+ destaque `.news` se quiser; para a página do episódio usar o relato, pôr `"story": "<prefixo>"` no JSON) e a chave `ep<N>_t` em `i18n-lab.js`
+4. `node build-i18n.js` → gera `/lab/<slug>/` × 6, linka o card, entra no sitemap e na página do artista
+
 ### Adicionar evento
 1. Card HTML em `events.html` inserido cronologicamente na seção "2026 upcoming" (ou history se passado)
 2. EVDATA entry na constante inline (title, about, site, tickets)
@@ -267,7 +275,7 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 
 **UTMs**: `track.js` acrescenta em runtime, em todo link para Bandcamp/Beatport, `utm_source=padangrecords.net&utm_medium=<page>&utm_campaign=<release_slug|catalog>&utm_content=<lang>` (o bloco Padang Complete usa `utm_campaign=full-discography` via `data-release`). Não mexe em UTMs de terceiros; preserva query strings.
 
-`page` = `index`, `releases`, `roster`, `lab`, `events`, `about`, `demo`, `shop` ou `release`. `lang` = idioma da URL.
+`page` = `index`, `releases`, `roster`, `lab`, `events`, `about`, `demo`, `shop`, `release`, `artist` ou `lab_episode`. `lang` = idioma da URL.
 
 ### Meta Pixel `2047697899170790` (8 páginas + páginas de release)
 
@@ -306,7 +314,7 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 - 58 artistas no roster (campo `bc` ainda `null` em todos — preencher conforme o user informar)
 - 112 releases catalogados (mais recente: Sündenböck & Maddizin — Altered Geometry, 28 Oct 2026); 73 com Beatport
 - 24 episódios Padang Lab Series (mais recente: EP.24 VORG live @ Arkana Festival 2026)
-- 1068 URLs: 8 páginas × 6 idiomas + 112 releases × 6 idiomas + 58 artistas × 6 idiomas
+- 1212 URLs: 8 páginas × 6 idiomas + 112 releases × 6 idiomas + 58 artistas × 6 idiomas + 24 episódios da Lab Series × 6 idiomas (31/10/2026)
 - GA4 com 5 eventos + UTMs; Meta Pixel ativo; newsletter capturando via e-mail para `contact@`
 - Cron pipeline funcionando (repo público, deploy a cada 20 min)
 

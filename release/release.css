@@ -189,3 +189,23 @@ body.nav-open{overflow:hidden}
 .ar-card .t small{display:block;color:var(--ink-dim);font-size:9px;letter-spacing:.25em;margin-top:4px}
 @media(max-width:860px){.rel{padding:96px 16px 48px}.rel-hero{grid-template-columns:1fr;gap:28px}.rel-meta{gap:8px 24px}}
 @media(max-width:480px){.rel-buy a{flex:1 1 100%;justify-content:center}.rel-meta{grid-template-columns:repeat(2,auto)}}
+
+/* ── página de episódio da Lab Series (mesmo layout das páginas de release) ── */
+.lab-ep .rel-cat .lv{color:var(--neon-2)}
+.lab-ep .rel-player iframe{height:400px}
+.lab-story .txt p{line-height:1.7;color:var(--ink);max-width:760px;margin-bottom:16px}
+.lab-story .quote{font-family:'Major Mono Display',monospace;font-size:clamp(18px,2.4vw,24px);line-height:1.4;text-transform:lowercase;color:var(--neon-1);margin-top:26px}
+.lab-story .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px}
+.rel-tracks ol.free li{grid-template-columns:3em 1fr}
+.lab-who{display:grid;gap:16px}
+.lab-who a{display:grid;grid-template-columns:96px 1fr;gap:22px;align-items:center;padding:18px;border:1px solid rgba(255,255,255,.08);background:var(--bg-2);transition:border-color .25s}
+.lab-who a:hover{border-color:rgba(196,255,61,.5)}
+.lab-who .av{width:96px;height:96px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Major Mono Display',monospace;font-size:28px;color:#fff}
+.lab-who .av img{width:100%;height:100%;object-fit:cover}
+.lab-who b{display:block;font-family:'Major Mono Display',monospace;font-weight:400;font-size:24px;text-transform:lowercase;color:var(--ink)}
+.lab-who p{margin-top:8px;font-size:14px;line-height:1.6;color:var(--ink-dim)}
+.lab-who small{display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--neon-1)}
+.lab-nav{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.lab-nav a{color:var(--ink-dim);max-width:48%}.lab-nav a:hover{color:var(--neon-1)}
+.lab-nav a.nx{text-align:right;margin-left:auto}
+@media(max-width:560px){.lab-who a{grid-template-columns:64px 1fr;gap:16px}.lab-who .av{width:64px;height:64px;font-size:20px}}

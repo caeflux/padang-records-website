@@ -38,10 +38,12 @@
     return (document.documentElement.getAttribute('lang') || 'pt').slice(0, 2).toLowerCase();
   }
 
-  // "index", "releases", "roster", ... ou "release" nas páginas /release/<slug>/
+  // "index", "releases", "roster", ... ou "release" / "lab_episode" / "artist" nas páginas geradas
   function page() {
     var p = location.pathname.replace(LANG_PREFIX, '/');
     if (/^\/release\//.test(p)) return 'release';
+    if (/^\/lab\//.test(p)) return 'lab_episode';
+    if (/^\/artists\//.test(p)) return 'artist';
     var file = p.split('/').pop() || 'index.html';
     return file.replace(/\.html?$/, '') || 'index';
   }

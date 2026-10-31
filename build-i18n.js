@@ -198,6 +198,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug, store) {
   template = syncCounts(template, Object.keys(byAlbum).length);
   if (page === 'shop.html' && store) template = storeCards(template, store, dict);
   if (page === 'roster.html') template = syncRelSlugs(template, Object.values(byAlbum));
+  if (page === 'lab.html') template = linkLabCards(template, loadLab());
   let html = applyTranslations(template, dict, lang, stats);
   html = setHtmlLang(html, lang);
   const headEnd = html.search(/<\/head>/i);
@@ -631,21 +632,253 @@ function eventsJsonLd(html, lang, pageUrl) {
 
 // lab.html: a série como MusicPlaylist, cada episódio um MusicRecording
 function labJsonLd(lang, pageUrl) {
-  let eps = [];
-  try { eps = JSON.parse(read('data/lab-series.json')); } catch (e) { return ''; }
-  const dur = s => `PT${Math.floor(s / 3600)}H${Math.floor(s % 3600 / 60)}M${s % 60}S`;
+  const eps = loadLab();
+  if (!eps.length) return '';
   return ldScript({
     '@context': 'https://schema.org', '@type': 'MusicPlaylist',
     name: 'Padang Lab Series', url: pageUrl, numTracks: eps.length,
     description: 'DJ sets and live recordings from the Padang Records crew and guests — dark progressive, psytech, zenonesque and minimal psy.',
     author: { '@type': 'Organization', name: 'Padang Records', url: BASE + '/' },
     track: eps.map(e => {
-      const r = { '@type': 'MusicRecording', name: `Padang Lab Series EP.${e.ep} — ${e.title}${e.subtitle ? ' · ' + e.subtitle : ''}`, url: e.sc_url, byArtist: { '@type': 'MusicGroup', name: e.title } };
+      const r = { '@type': 'MusicRecording', name: `Padang Lab Series EP.${e.ep} — ${e.title}${e.subtitle ? ' · ' + e.subtitle : ''}`, url: labUrls(e)[lang], sameAs: e.sc_url, byArtist: { '@type': 'MusicGroup', name: e.title } };
       if (e.date) r.datePublished = e.date;
-      if (e.duration_sec) r.duration = dur(e.duration_sec);
+      if (e.duration_sec) r.duration = isoDurH(e.duration_sec);
       if (e.artwork) r.image = e.artwork;
       return r;
     })
+  });
+}
+
+// ── 2e. páginas da Lab Series: /lab/<slug>/ (+ /xx/lab/<slug>/) ──
+// fonte: data/lab-series.json (`node sync-lab.js` completa duração, descrição e tracklist a partir do SoundCloud)
+const loadLab = () => { try { return JSON.parse(read('data/lab-series.json')); } catch (e) { return []; } };
+const labSlug = e => `ep-${e.ep}-${artistSlug(e.title)}`;
+const labUrls = e => Object.fromEntries(LANGS.map(l => [l, `${BASE}${l === SOURCE_LANG ? '' : '/' + l}/lab/${labSlug(e)}/`]));
+const isLive = e => (e.tags || []).includes('live');
+const isoDurH = s => `PT${Math.floor(s / 3600)}H${Math.floor(s % 3600 / 60)}M${s % 60}S`;
+const hDur = (s, lang) => {
+  const h = Math.floor(s / 3600), m = String(Math.floor(s % 3600 / 60)).padStart(2, '0');
+  if (lang === 'ja') return h ? `${h}時間${m}分` : `${Math.round(s / 60)}分`;
+  return h ? `${h}h${m}` : `${Math.round(s / 60)} min`;
+};
+const EN_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function fmtDay(iso, lang) {
+  if (lang !== 'en') return fmtDate({ released: iso }, lang);
+  const [y, m, d] = iso.split('-');
+  return `${d} ${EN_MON[m - 1]} ${y}`;
+}
+// subtítulo do episódio no idioma da página (chaves ep<N>_t do i18n-lab.js; senão o do JSON)
+const labSub = (e, dict, lang) => stripTags(t(dict, `ep${e.ep}_t`, lang) || e.subtitle || '');
+const scArt = (u, size) => u ? u.replace(/-(?:large|t\d+x\d+)\./, `-${size}.`) : null;
+// texto indexável: "ARTISTA — SUBTÍTULO. Episódio N da Padang Lab Series: gravação ao vivo de 1h37, publicada em …"
+const LAB_SENTENCE = {
+  pt: (a, s, n, live, d, dur, tk) => `${a} — ${s}. Episódio ${n} da Padang Lab Series: ${live ? 'gravação ao vivo' : 'DJ set'}${dur ? ' de ' + dur : ''}, ${live ? 'publicada' : 'publicado'} em ${d}.${tk ? ` Tracklist com ${tk} faixas.` : ''}`,
+  en: (a, s, n, live, d, dur, tk) => `${a} — ${s}. Episode ${n} of the Padang Lab Series: ${dur ? `a ${dur} ` : ''}${live ? 'live recording' : 'DJ set'}, published ${d}.${tk ? ` Tracklist with ${tk} tracks.` : ''}`,
+  es: (a, s, n, live, d, dur, tk) => `${a} — ${s}. Episodio ${n} de la Padang Lab Series: ${live ? 'grabación en vivo' : 'DJ set'}${dur ? ' de ' + dur : ''}, publicado el ${d}.${tk ? ` Tracklist con ${tk} temas.` : ''}`,
+  de: (a, s, n, live, d, dur, tk) => `${a} — ${s}. Folge ${n} der Padang Lab Series: ${live ? 'Live-Aufnahme' : 'DJ-Set'}${dur ? ` (${dur})` : ''}, veröffentlicht am ${d}.${tk ? ` Tracklist mit ${tk} Tracks.` : ''}`,
+  fr: (a, s, n, live, d, dur, tk) => `${a} — ${s}. Épisode ${n} de la Padang Lab Series : ${live ? 'enregistrement live' : 'DJ set'}${dur ? ' de ' + dur : ''}, publié le ${d}.${tk ? ` Tracklist de ${tk} titres.` : ''}`,
+  ja: (a, s, n, live, d, dur, tk) => `${a} — ${s}。Padang Lab Series 第${n}回:${dur ? dur + 'の' : ''}${live ? 'ライブ録音' : 'DJセット'}、${d}公開。${tk ? `トラックリスト全${tk}曲。` : ''}`
+};
+const LAB_LISTEN = { pt: 'Ouça no SoundCloud.', en: 'Listen on SoundCloud.', es: 'Escúchalo en SoundCloud.', de: 'Auf SoundCloud anhören.', fr: 'Écoutez sur SoundCloud.', ja: 'SoundCloud で聴く。' };
+
+const LAB_CSS = `
+/* ── página de episódio da Lab Series (mesmo layout das páginas de release) ── */
+.lab-ep .rel-cat .lv{color:var(--neon-2)}
+.lab-ep .rel-player iframe{height:400px}
+.lab-story .txt p{line-height:1.7;color:var(--ink);max-width:760px;margin-bottom:16px}
+.lab-story .quote{font-family:'Major Mono Display',monospace;font-size:clamp(18px,2.4vw,24px);line-height:1.4;text-transform:lowercase;color:var(--neon-1);margin-top:26px}
+.lab-story .meta{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:14px}
+.rel-tracks ol.free li{grid-template-columns:3em 1fr}
+.lab-who{display:grid;gap:16px}
+.lab-who a{display:grid;grid-template-columns:96px 1fr;gap:22px;align-items:center;padding:18px;border:1px solid rgba(255,255,255,.08);background:var(--bg-2);transition:border-color .25s}
+.lab-who a:hover{border-color:rgba(196,255,61,.5)}
+.lab-who .av{width:96px;height:96px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Major Mono Display',monospace;font-size:28px;color:#fff}
+.lab-who .av img{width:100%;height:100%;object-fit:cover}
+.lab-who b{display:block;font-family:'Major Mono Display',monospace;font-weight:400;font-size:24px;text-transform:lowercase;color:var(--ink)}
+.lab-who p{margin-top:8px;font-size:14px;line-height:1.6;color:var(--ink-dim)}
+.lab-who small{display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--neon-1)}
+.lab-nav{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase}
+.lab-nav a{color:var(--ink-dim);max-width:48%}.lab-nav a:hover{color:var(--neon-1)}
+.lab-nav a.nx{text-align:right;margin-left:auto}
+@media(max-width:560px){.lab-who a{grid-template-columns:64px 1fr;gap:16px}.lab-who .av{width:64px;height:64px;font-size:20px}}
+`;
+
+function labEpJsonLd(e, url, lang, sub, desc) {
+  const by = e.title.split(/\s+vs\.?\s+/i).map(n => ({ '@type': 'MusicGroup', name: n }));
+  const ld = {
+    '@context': 'https://schema.org', '@type': 'MusicRecording',
+    name: `Padang Lab Series EP.${e.ep} — ${e.title} · ${sub}`,
+    url, description: desc, inLanguage: LD_LANG[lang],
+    byArtist: by.length === 1 ? by[0] : by,
+    isPartOf: { '@type': 'MusicPlaylist', name: 'Padang Lab Series', url: urlOf('lab.html', lang) },
+    sameAs: [e.sc_url, e.youtube ? `https://www.youtube.com/watch?v=${e.youtube}` : null].filter(Boolean)
+  };
+  if (e.date) ld.datePublished = e.date;
+  if (e.duration_sec) ld.duration = isoDurH(e.duration_sec);
+  if (e.artwork) ld.image = scArt(e.artwork, 't500x500');
+  return ldScript(ld);
+}
+
+function renderLabEp(e, lang, dict, layout, stats) {
+  const P = lang === SOURCE_LANG ? '' : '/' + lang;
+  const urls = labUrls(e);
+  const L = key => escText(t(dict, key, lang) || key);
+  const sub = labSub(e, dict, lang);
+  const live = isLive(e);
+  const date = e.date ? fmtDay(e.date, lang) : '';
+  const dur = e.duration_sec ? hDur(e.duration_sec, lang) : null;
+  const tracks = e.tracklist || [];
+  const sentence = LAB_SENTENCE[lang](e.title, sub, e.ep, live, date, dur, tracks.length);
+  const names = rosterArtists(e.title.replace(/\s+vs\.?\s+/gi, ' & '), layout.roster);
+  const trackId = (e.track_id || '').split(':').pop();
+  const player = trackId ? `https://api.soundcloud.com/tracks/${trackId}` : e.sc_url;
+  const about = lang === SOURCE_LANG && e.description_pt ? e.description_pt : e.description_en;
+  // relato do episódio, quando a lab.html tem um (chaves h_<story>, <story>_meta, _p1…, _quote)
+  const story = e.story ? (() => {
+    const ps = [];
+    for (let i = 1; t(dict, `${e.story}_p${i}`, lang); i++) ps.push(t(dict, `${e.story}_p${i}`, lang));
+    const q = t(dict, `${e.story}_quote`, lang);
+    return `
+  <section class="lab-story">
+    <h2>${escText(t(dict, 'h_' + e.story, lang) || '')}</h2>
+    <div class="meta">${escText(t(dict, e.story + '_meta', lang) || '')}</div>
+    <div class="txt">
+${ps.map(p => `      <p>${p}</p>`).join('\n')}${q ? `
+      <p class="quote">${q}</p>` : ''}
+    </div>
+  </section>
+`;
+  })() : '';
+  const who = names.map(n => {
+    const a = layout.rosterData.find(x => x.n === n);
+    const i = layout.rosterData.indexOf(a);
+    const bio = (layout.bios[n] && layout.bios[n][lang]) || a.b || '';
+    const photo = a.p ? (a.p.startsWith('./') ? a.p.slice(1) : a.p) : null;
+    const grad = `linear-gradient(135deg,${PALETTE[i % PALETTE.length][0]},${PALETTE[i % PALETTE.length][1]})`;
+    return `    <a href="${P}/artists/${artistSlug(n)}/"><span class="av" style="background:${grad}">${photo ? `<img src="${escAttr(photo)}" alt="${escAttr(n)}" width="96" height="96" loading="lazy" onerror="this.remove()" />` : escText(initials(n)).toLowerCase()}</span><span><b>${escText(n)}</b><p>${escText(excerpt(bio, 220))}</p><small data-i18n="roster_page_link">${L('roster_page_link')}</small></span></a>`;
+  });
+  // outros sets dos mesmos artistas (do roster ou, fora dele, pelo nome)
+  const key = x => rosterArtists(x.title.replace(/\s+vs\.?\s+/gi, ' & '), layout.roster);
+  const more = layout.lab.filter(x => x.ep !== e.ep && (names.length ? key(x).some(n => names.includes(n)) : fold(x.title) === fold(e.title)));
+  const card = x => `      <a class="ar-card" href="${P}/lab/${labSlug(x)}/">${x.artwork ? `<img src="${scArt(x.artwork, 't300x300')}" alt="${escAttr(x.title + ' — ' + labSub(x, dict, lang))}" loading="lazy" width="300" height="300" />` : ''}<div class="t">EP.${x.ep} · ${escText(x.title)}<small>${escText(labSub(x, dict, lang))}</small></div></a>`;
+  const prev = layout.lab.find(x => x.ep === e.ep - 1);
+  const next = layout.lab.find(x => x.ep === e.ep + 1);
+
+  const body = `<main class="rel lab-ep" data-lab-ep="${e.ep}">
+  <div class="crumb"><a href="${P}/lab.html" data-i18n="lab_back">${L('lab_back')}</a></div>
+  <article class="rel-hero">
+    <div class="rel-cover">${e.artwork ? `<img src="${scArt(e.artwork, 't500x500')}" width="500" height="500" alt="${escAttr(`Padang Lab Series EP.${e.ep} — ${e.title}`)}" />` : ''}</div>
+    <div class="rel-info">
+      <span class="rel-cat">lab series · ep.${e.ep}${live ? ` · <span class="lv" data-i18n="lab_live">${L('lab_live')}</span>` : ''}</span>
+      <h1>${escText(e.title)}</h1>
+      <div class="rel-artist">${escText(sub)}</div>
+      <p class="rel-lead">${escText(sentence)}</p>
+      <dl class="rel-meta">
+        <div><dt data-i18n="lab_published">${L('lab_published')}</dt><dd>${e.date ? `<time datetime="${e.date}">${escText(date)}</time>` : '—'}</dd></div>
+        <div><dt data-i18n="lab_duration">${L('lab_duration')}</dt><dd>${dur || '—'}</dd></div>
+        <div><dt data-i18n="lab_format">${L('lab_format')}</dt><dd data-i18n="${live ? 'lab_live' : 'lab_studio'}">${L(live ? 'lab_live' : 'lab_studio')}</dd></div>
+      </dl>
+      <div class="rel-buy">
+        <a class="bc" href="${e.sc_url}" target="_blank" rel="noopener" data-i18n="lab_listen_sc">${L('lab_listen_sc')}</a>${e.youtube ? `
+        <a class="bp" href="https://www.youtube.com/watch?v=${e.youtube}" target="_blank" rel="noopener" data-i18n="lab_watch_tv">${L('lab_watch_tv')}</a>` : ''}
+      </div>
+    </div>
+  </article>
+
+  <h2 data-i18n="rel_listen">${L('rel_listen')}</h2>
+  <section class="rel-player">
+    <iframe loading="lazy" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(player)}&color=%23c4ff3d&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true" allow="autoplay" title="${escAttr(`Padang Lab Series EP.${e.ep} — ${e.title}`)}"></iframe>
+  </section>
+${story}${tracks.length ? `
+  <section class="rel-tracks">
+    <h2 data-i18n="rel_tracklist">${L('rel_tracklist')}</h2>
+    <ol class="free">
+${tracks.map((tk, i) => `      <li><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="t">${escText(tk)}</span></li>`).join('\n')}
+    </ol>
+  </section>
+` : ''}${about ? `
+  <section class="rel-about">
+    <h2 data-i18n="lab_about">${L('lab_about')}</h2>
+    <div class="note" data-i18n="lab_about_note">${L('lab_about_note')}</div>
+    <div class="txt">${escText(about)}</div>
+  </section>
+` : ''}${who.length ? `
+  <section>
+    <h2 data-i18n="lab_artist">${L('lab_artist')}</h2>
+    <div class="lab-who">
+${who.join('\n')}
+    </div>
+  </section>
+` : ''}${more.length ? `
+  <section>
+    <h2>${escText((t(dict, 'lab_more_by', lang) || 'more sets from {artist}').replace('{artist}', names.join(' & ') || e.title))}</h2>
+    <div class="ar-grid">
+${more.map(card).join('\n')}
+    </div>
+  </section>
+` : ''}
+  <div class="lab-nav">${prev ? `
+    <a class="pv" href="${P}/lab/${labSlug(prev)}/">← ep.${prev.ep} · ${escText(prev.title)}</a>` : ''}${next ? `
+    <a class="nx" href="${P}/lab/${labSlug(next)}/">ep.${next.ep} · ${escText(next.title)} →</a>` : ''}
+  </div>
+
+${layout.blocks}
+</main>`;
+
+  const title = `${e.title} — ${sub} · Padang Lab Series EP.${e.ep}`;
+  const desc = `${sentence} ${LAB_LISTEN[lang]}`;
+  let head = '<head>\n' + layout.headBase
+    .replace(/<meta property="og:type" content="[^"]*"/, '<meta property="og:type" content="music.song"')
+    .replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${scArt(e.artwork, 't500x500') || BASE + '/img/og-padang.jpg'}"`)
+    .replace(/<meta property="og:image:width" content="[^"]*" \/>\n?<meta property="og:image:height" content="[^"]*" \/>\n?/, e.artwork ? '<meta property="og:image:width" content="500" />\n<meta property="og:image:height" content="500" />\n' : '$&')
+    .replace(/<meta name="twitter:card" content="[^"]*"/, e.artwork ? '<meta name="twitter:card" content="summary"' : '$&');
+  head = seoHead(head, { title, desc, urls, lang, extraHead: [
+    labEpJsonLd(e, urls[lang], lang, sub, sentence),
+    breadcrumbLd(lang, [{ name: 'Lab Series', item: urlOf('lab.html', lang) }, { name: `EP.${e.ep} — ${e.title}`, item: urls[lang] }])
+  ] });
+
+  let html = `<!DOCTYPE html>
+<html lang="${lang}" data-static-lang>
+${head}</head>
+<body>
+
+${layout.nav}
+
+${body}
+
+${layout.footer}
+
+<script src="/i18n.js" defer></script>
+<script src="/i18n-extra.js" defer></script>
+${layout.scripts.join('\n')}
+</body>
+</html>
+`;
+  html = applyTranslations(html, dict, lang, stats);
+  html = syncCounts(html, layout.total);
+  html = absolutizeAssets(html);
+  html = html.replace(/(href|src|action)="\.\//g, `$1="${P}/`);
+  return html;
+}
+
+// lab.html: o nome do artista em cada card e o rodapé do card linkam a página do episódio;
+// o link do SoundCloud nos destaques ganha a página ao lado. Idempotente (card já linkado tem .pg).
+function linkLabCards(html, eps) {
+  const byEp = new Map(eps.map(e => [e.ep, e]));
+  const bySc = new Map(eps.map(e => [e.sc_url, e]));
+  html = html.split(/(?=<div class="ep(?: [^"]*)?"[ >])/).map(seg => {
+    const m = seg.match(/^<div class="ep[^>]*>\s*<span class="num-tag"[^>]*>EP\.(\d+)<\/span>/);
+    const e = m && byEp.get(+m[1]);
+    if (!e || seg.includes('class="pg"')) return seg;
+    const href = `./lab/${labSlug(e)}/`;
+    return seg
+      .replace(/<div class="artist">([^<]*)<\/div>/, `<div class="artist"><a href="${href}">$1</a></div>`)
+      .replace(/<div class="ft"><span>[^<]*<\/span>/, `<div class="ft"><a class="pg" href="${href}" data-i18n="lab_ep_page">↳ página do episódio</a>`);
+  }).join('');
+  return html.replace(/<div class="lk">(<a href="([^"]+)"[\s\S]*?<\/a>)<\/div>/g, (m, a, u) => {
+    const e = bySc.get(u);
+    if (!e || a.includes('class="pg"')) return m;
+    return `<div class="lk"><a class="pg" href="./lab/${labSlug(e)}/" data-i18n="lab_ep_page">↳ página do episódio</a>${a}</div>`;
   });
 }
 
@@ -771,6 +1004,7 @@ function renderArtist(a, i, lang, dict, bios, layout, byAlbum, stats) {
     : `<div class="ar-card emb"><iframe loading="lazy" src="https://bandcamp.com/EmbeddedPlayer/album=${r.album_id}/size=large/bgcol=181a1b/linkcol=c4ff3d/tracklist=false/artwork=small/transparent=true/" seamless title="${escAttr(r.title)}"></iframe></div>`;
   const email = a.e === 'D' || !a.e ? 'demos@padangrecords.net' : a.e;
   const scOk = a.s && a.sc && !/\/search\//.test(a.sc);
+  const labEps = layout.lab.filter(e => rosterArtists(e.title, layout.roster).includes(a.n));
 
   const body = `<main class="ar" data-artist="${slug}">
   <div class="crumb"><a href="${P}/roster.html" data-i18n="ar_back">${L('ar_back')}</a></div>
@@ -803,6 +1037,13 @@ ${rel.map(r => '      ' + card(r)).join('\n')}
     <h2 data-i18n="ar_va">${L('ar_va')}</h2>
     <div class="ar-grid">
 ${vas.map(r => '      ' + card(r)).join('\n')}
+    </div>
+  </section>
+` : ''}${labEps.length ? `
+  <section>
+    <h2 data-i18n="ar_lab">${L('ar_lab')}</h2>
+    <div class="ar-grid">
+${labEps.map(e => `      <a class="ar-card" href="${P}/lab/${labSlug(e)}/">${e.artwork ? `<img src="${scArt(e.artwork, 't300x300')}" alt="${escAttr('Padang Lab Series EP.' + e.ep + ' — ' + e.title)}" loading="lazy" width="300" height="300" />` : ''}<div class="t">EP.${e.ep} · ${escText(labSub(e, dict, lang))}<small>${e.date ? escText(fmtDay(e.date, lang)) : ''}${e.duration_sec ? ' · ' + hDur(e.duration_sec, lang) : ''}</small></div></a>`).join('\n')}
     </div>
   </section>
 ` : ''}${scOk ? `
@@ -931,7 +1172,7 @@ function main() {
   const roster = rosterIndex();
   const rosterData = loadRoster();
   const artistSlugs = new Set(rosterData.map(a => artistSlug(a.n)));
-  if (write('release/release.css', layout.style + '\n' + RELEASE_CSS)) written++;
+  if (write('release/release.css', layout.style + '\n' + RELEASE_CSS + LAB_CSS)) written++;
   const pagesBefore = files;
   for (const r of releases) {
     for (const lang of LANGS) {
@@ -953,6 +1194,7 @@ function main() {
   aLayout.total = releases.length;
   aLayout.releases = releases;
   aLayout.roster = roster;
+  aLayout.lab = loadLab();
   const bios = loadBios();
   if (write('artists/artist.css', aLayout.style + '\n' + ARTIST_CSS)) written++;
   const rosterLastmod = gitDate('roster.html');
@@ -970,10 +1212,29 @@ function main() {
   });
   const artistFiles = files - artistsBefore;
 
+  // páginas da Lab Series (layout das páginas de release, com "Lab Series" aceso no menu)
+  const lab = aLayout.lab;
+  const lLayout = Object.assign({}, layout, {
+    nav: layout.nav.replace(/ class="on"/g, '').replace('<a href="./lab.html"', '<a href="./lab.html" class="on"'),
+    lab, roster, rosterData, bios
+  });
+  const labBefore = files;
+  for (const e of lab) {
+    for (const lang of LANGS) {
+      const html = renderLabEp(e, lang, dict, lLayout, stats);
+      const rel = `${lang === SOURCE_LANG ? '' : lang + '/'}lab/${labSlug(e)}/index.html`;
+      scripts += checkScripts(rel, html);
+      if (write(rel, html)) written++;
+      files++;
+    }
+    entries.push({ urls: labUrls(e), lastmod: e.lastmod || e.date || null });
+  }
+  const labFiles = files - labBefore;
+
   if (write('sitemap.xml', sitemap(entries))) written++;
   if (write('robots.txt', ROBOTS)) written++;
 
-  console.log(`build-i18n: ${files - releaseFiles - artistFiles} páginas (${PAGES.length} × ${LANGS.length} idiomas) + ${releaseFiles} de release (${releases.length} × ${LANGS.length}) + ${artistFiles} de artista (${rosterData.length} × ${LANGS.length}), ${written} arquivos alterados`);
+  console.log(`build-i18n: ${files - releaseFiles - artistFiles - labFiles} páginas (${PAGES.length} × ${LANGS.length} idiomas) + ${releaseFiles} de release (${releases.length} × ${LANGS.length}) + ${artistFiles} de artista (${rosterData.length} × ${LANGS.length}) + ${labFiles} da Lab Series (${lab.length} × ${LANGS.length}), ${written} arquivos alterados`);
   console.log(`  ${stats.applied} traduções aplicadas · ${scripts} scripts inline validados · sitemap: ${entries.length * LANGS.length} URLs`);
   if (stats.missing.size) console.log(`  chaves data-i18n sem tradução (mantêm o texto do HTML): ${[...stats.missing].sort().join(', ')}`);
 }

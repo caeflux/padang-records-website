@@ -322,6 +322,22 @@
     ar_desc_suffix:  { pt:"Artista da Padang Records — selo brasileiro de dark progressive, psytech, zenonesque e minimal psy.", en:"Padang Records artist — Brazilian label for dark progressive, psytech, zenonesque and minimal psy.", es:"Artista de Padang Records — sello brasileño de dark progressive, psytech, zenonesque y minimal psy.", de:"Padang-Records-Artist — brasilianisches Label für dark progressive, psytech, zenonesque und minimal psy.", fr:"Artiste Padang Records — label brésilien de dark progressive, psytech, zenonesque et minimal psy.", ja:"Padang Records のアーティスト — dark progressive、psytech、zenonesque、minimal psy のブラジルのレーベル。" },
     roster_page_link:{ pt:"// página do artista", en:"// artist page", es:"// página del artista", de:"// künstlerseite", fr:"// page de l'artiste", ja:"// アーティスト・ページ" },
 
+    /* ─ páginas de episódio da Lab Series (/lab/<slug>/, geradas pelo build-i18n.js) ─ */
+    lab_back:       { pt:"← todos os episódios", en:"← all episodes", es:"← todos los episodios", de:"← alle Folgen", fr:"← tous les épisodes", ja:"← 全エピソード" },
+    lab_ep_page:    { pt:"↳ página do episódio", en:"↳ episode page", es:"↳ página del episodio", de:"↳ Folgenseite", fr:"↳ page de l'épisode", ja:"↳ エピソードページ" },
+    lab_published:  { pt:"publicado", en:"published", es:"publicado", de:"veröffentlicht", fr:"publié", ja:"公開日" },
+    lab_duration:   { pt:"duração", en:"duration", es:"duración", de:"Dauer", fr:"durée", ja:"長さ" },
+    lab_format:     { pt:"formato", en:"format", es:"formato", de:"Format", fr:"format", ja:"形式" },
+    lab_live:       { pt:"live", en:"live", es:"en vivo", de:"live", fr:"live", ja:"ライブ" },
+    lab_studio:     { pt:"dj set", en:"dj set", es:"dj set", de:"dj-set", fr:"dj set", ja:"DJセット" },
+    lab_listen_sc:  { pt:"ouvir no soundcloud", en:"listen on soundcloud", es:"escuchar en soundcloud", de:"auf soundcloud hören", fr:"écouter sur soundcloud", ja:"soundcloud で聴く" },
+    lab_watch_tv:   { pt:"assistir na padangtv", en:"watch on padangtv", es:"ver en padangtv", de:"auf padangtv ansehen", fr:"regarder sur padangtv", ja:"padangtv で観る" },
+    lab_about:      { pt:"sobre o set", en:"about this set", es:"sobre el set", de:"über das set", fr:"à propos du set", ja:"このセットについて" },
+    lab_about_note: { pt:"// texto original do episódio no soundcloud", en:"// original episode notes from soundcloud", es:"// texto original del episodio en soundcloud", de:"// originaltext der folge auf soundcloud", fr:"// texte original de l'épisode sur soundcloud", ja:"// soundcloud のエピソード原文" },
+    lab_artist:     { pt:"nos decks", en:"behind the decks", es:"en los decks", de:"an den decks", fr:"aux platines", ja:"プレイヤー" },
+    lab_more_by:    { pt:"mais sets de {artist}", en:"more sets from {artist}", es:"más sets de {artist}", de:"mehr sets von {artist}", fr:"plus de sets de {artist}", ja:"{artist} のその他のセット" },
+    ar_lab:         { pt:"// sets na lab series", en:"// sets on the lab series", es:"// sets en la lab series", de:"// sets in der lab series", fr:"// sets dans la lab series", ja:"// lab series のセット" },
+
     /* ─ links internos ─ */
     rel_page_link: { pt:"↳ página do release", en:"↳ release page", es:"↳ página del lanzamiento", de:"↳ Release-Seite", fr:"↳ page de la sortie", ja:"↳ リリース・ページ" },
     rel_more_by:   { pt:"mais de {artist}", en:"more from {artist}", es:"más de {artist}", de:"mehr von {artist}", fr:"plus de {artist}", ja:"{artist} のその他のリリース" },
