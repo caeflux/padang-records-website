@@ -109,6 +109,8 @@ const io = new IntersectionObserver((entries) => {
 
 /* ───────────── Estado ───────────── */
 const state = { demos: [], status: 'novo', q: '', year: 'all', pending: {} };
+// O artista respondeu/reenviou depois da última vez que você mexeu na demo (o sincronizador do contact@ anexa ao cartão).
+const newFollow = (d) => !!d.followup_at && (!(d.handled_at || d.replied_at) || d.followup_at > (d.handled_at || d.replied_at));
 
 function card(d) {
   const embeds = [], links = [];
@@ -128,6 +130,7 @@ function card(d) {
       '<div class="dm-meta">' + esc(d.from_name ? d.from_name + ' · ' : '') + esc(d.from_email) + (d.genre ? ' · ' + esc(d.genre) : '') + '</div>' +
       '<span class="dm-badge ' + esc(d.status) + '">' + esc(KIND_LABEL[d.status] || d.status) + '</span>' +
       (d.source === 'form' ? ' <span class="dm-badge form">site</span>' : '') +
+      (newFollow(d) ? ' <span class="dm-badge follow">↩ resposta nova · ' + esc(fmtDate(d.followup_at)) + '</span>' : '') +
     '</div><div class="dm-date">' + esc(fmtDate(d.received_at)) + '</div></div>' +
     '<div class="dm-subj">' + esc(d.subject || '') + '</div>' +
     (embeds.length ? '<div class="dm-embeds">' + embeds.join('') + '</div>' : '') +
@@ -147,7 +150,7 @@ function card(d) {
 function filtered(status) {
   const q = state.q.toLowerCase();
   return state.demos.filter((d) =>
-    (status === 'all' || d.status === status) &&
+    (status === 'all' || d.status === status || (status === 'novo' && newFollow(d))) &&
     (state.year === 'all' || String(d.received_at).slice(0, 4) === state.year) &&
     (!q || [d.artist, d.from_name, d.from_email, d.subject, d.genre, d.body].join(' ').toLowerCase().includes(q)));
 }
@@ -181,7 +184,7 @@ async function sendReply(id, kind, text, send) {
   const out = await res.json().catch(() => ({}));
   if (!res.ok || !out.ok) { toast('Falhou: ' + (out.error || res.status), true); return false; }
   const d = state.demos.find((x) => x.id === id);
-  if (d) { d.status = kind; if (send) { d.replied_at = new Date().toISOString(); d.reply_text = text; } }
+  if (d) { d.status = kind; d.handled_at = new Date().toISOString(); if (send) { d.replied_at = new Date().toISOString(); d.reply_text = text; } }
   return true;
 }
 function queue(d, kind, text) {

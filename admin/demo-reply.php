@@ -55,7 +55,7 @@ function mime_header($v) {
     return preg_match('/[^\x20-\x7E]/', $v) ? mb_encode_mimeheader($v, 'UTF-8', 'B', "\r\n") : $v;
 }
 
-$patch = ['status' => $status];
+$patch = ['status' => $status, 'handled_at' => gmdate('c')];
 if ($send) {
     $to = $demo['from_email'];
     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) out(422, ['ok' => false, 'error' => 'bad_recipient']);

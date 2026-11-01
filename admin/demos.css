@@ -22,6 +22,7 @@
 .dm-badge.talvez{color:var(--warn);border-color:rgba(250,178,25,.45)}
 .dm-badge.recusado{color:var(--danger-soft);border-color:rgba(208,59,59,.45)}
 .dm-badge.form{color:var(--s6);border-color:rgba(144,133,233,.45)}
+.dm-badge.follow{color:var(--neon);border-color:var(--neon);background:var(--neon-dim)}
 
 .dm-embeds{display:flex;flex-direction:column;gap:8px}
 .dm-embeds iframe{width:100%;border:0;background:var(--bg-2);display:block}
