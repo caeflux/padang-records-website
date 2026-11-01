@@ -61,6 +61,20 @@ function colorOf(name, images) {
   return 'black';
 }
 const num = v => (v === null || v === undefined || v === '') ? null : Number(v);
+// descrição do produto (HTML da loja) → só tags inofensivas, sem atributos; vai para a ficha de produto do shop.html
+const ALLOWED_TAGS = new Set(['p', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'h3', 'h4', 'table', 'thead', 'tbody', 'tr', 'td', 'th', 'span', 'div']);
+function sanitizeHtml(html) {
+  let s = String(html || '');
+  s = s.replace(/<(script|style|iframe|object|embed|svg|form)\b[\s\S]*?<\/\1>/gi, '').replace(/<!--[\s\S]*?-->/g, '');
+  s = s.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g, (m, tag) => {
+    tag = tag.toLowerCase();
+    const close = m.startsWith('</');
+    if (tag === 'h1' || tag === 'h2') tag = 'h4';
+    if (!ALLOWED_TAGS.has(tag)) return '';
+    return close ? `</${tag}>` : `<${tag}>`;
+  });
+  return s.replace(/(<br>\s*){3,}/g, '<br><br>').replace(/[ \t]+\n/g, '\n').trim();
+}
 
 // ── fonte: API oficial ──────────────────────────────────────────
 async function fromApi(cfg) {
@@ -90,7 +104,7 @@ async function fromApi(cfg) {
         available: stock === null ? true : stock > 0
       };
     });
-    return { id: p.id, handle, url: p.canonical_url || `${STORE_URL}/produtos/${handle}/`, name, images, variants };
+    return { id: p.id, handle, url: p.canonical_url || `${STORE_URL}/produtos/${handle}/`, name, images, variants, description: sanitizeHtml(pick(p.description)) };
   });
 }
 
@@ -124,7 +138,8 @@ async function fromStorefront() {
       stock: num(v.stock),
       available: !!v.available
     }));
-    products.push({ id, handle: (url.match(/\/produtos\/([^/?#]+)/) || [])[1] || '', url, name, images, variants });
+    const dm = html.match(/<div[^>]*class="[^"]*(?:product-description|js-product-description)[^"]*"[^>]*>([\s\S]*?)<\/div>\s*(?:<\/div>|<div class="[^"]*js-product-description)/i);
+    products.push({ id, handle: (url.match(/\/produtos\/([^/?#]+)/) || [])[1] || '', url, name, images, variants, description: sanitizeHtml(dm ? dm[1] : '') });
   }
   return products;
 }
@@ -144,6 +159,7 @@ function normalize(products) {
         compare_at: p.variants.find(v => v.compare_at)?.compare_at || null,
         currency: 'BRL',
         images: p.images.slice(0, 6),
+        description: p.description || '',
         variants: p.variants,
         in_stock: p.variants.some(v => v.available)
       };

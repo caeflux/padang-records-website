@@ -268,16 +268,17 @@ function storeCards(html, store, dict) {
     const fallback = localName && fs.existsSync(path.join(ROOT, 'img/shop', localName)) ? `./img/shop/${localName}` : './img/shop/logo-stacked.png';
     const img = p.images[0] || fallback;
     return `<div class="ds sp${p.in_stock ? '' : ' soldout'}" data-product="${p.id}" data-kind="${p.kind}">
-        <a class="art" href="${escAttr(p.url)}" target="_blank" rel="noopener">
+        <a class="art" href="#p-${p.id}" data-imgs="${escAttr(JSON.stringify(p.images))}">
           <span class="tag">${STORE_TAG[p.kind] || STORE_TAG.item}</span>
           <img src="${escAttr(img)}" alt="${escAttr(alt)}" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='${fallback}'">
         </a>
         <div class="body">
-          <div class="name">${nameHtml}</div>
+          <div class="name"><a href="#p-${p.id}" class="pn">${nameHtml}</a></div>
+          <template class="desc">${p.description || ''}</template>
           <div class="sizes" role="group" aria-label="${escAttr(P('store_size'))}"><span class="lbl" data-i18n="store_size">${escText(P('store_size'))}</span>${sizes}</div>
           <div class="stats"><span><b data-i18n="store_inst">${escText(P('store_inst'))}</b></span><span class="so" data-i18n="store_soldout"${p.in_stock ? ' hidden' : ''}>${escText(P('store_soldout'))}</span></div>
         </div>
-        <div class="ft"><span class="price">${p.compare_at ? `<s>${fmtBRL(p.compare_at)}</s> ` : ''}${fmtBRL(p.price)}</span><a class="cta buy" href="${escAttr(p.url)}" target="_blank" rel="noopener" data-buy="${escAttr(store.store_url)}/comprar/"><span class="t1" data-i18n="store_pick">${escText(P('store_pick'))}</span><span class="t2" data-i18n="store_checkout" hidden>${escText(P('store_checkout'))}</span></a></div>
+        <div class="ft"><span class="price">${p.compare_at ? `<s>${fmtBRL(p.compare_at)}</s> ` : ''}${fmtBRL(p.price)}</span><a class="cta buy" href="#p-${p.id}" data-buy="${escAttr(store.store_url)}/comprar/"><span class="t1" data-i18n="store_pick">${escText(P('store_pick'))}</span><span class="t2" data-i18n="store_checkout" hidden>${escText(P('store_checkout'))}</span></a></div>
       </div>`;
   }).join('\n\n      ');
   return html.replace(STORE_BLOCK, (all, ind) =>

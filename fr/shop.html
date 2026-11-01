@@ -190,7 +190,7 @@ section{position:relative;padding:60px 32px;z-index:2}
 .ck{position:fixed;inset:0;z-index:1200;display:none;flex-direction:column;background:rgba(7,7,16,.96);backdrop-filter:blur(10px)}
 .ck.open{display:flex}
 body.ck-open{overflow:hidden}
-.ck .bar{display:flex;align-items:center;gap:14px;padding:0 16px;height:52px;flex:none;border-bottom:1px solid rgba(196,255,61,.18);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
+.ck .bar{display:flex;align-items:center;justify-content:flex-end;gap:14px;padding:0 16px;height:52px;flex:none;border-bottom:1px solid rgba(196,255,61,.18);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
 .ck .bar .lg{height:22px;width:auto;opacity:.9}
 .ck .bar .ttl{color:var(--neon-1);white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
 .ck .bar .ttl::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--neon-1);box-shadow:0 0 10px var(--neon-1);margin-right:8px;vertical-align:1px;animation:ps 1.6s infinite}
@@ -206,6 +206,27 @@ body.ck-open{overflow:hidden}
 .ds .sizes.need .sz:not(.out){border-color:var(--neon-1);box-shadow:0 0 0 1px rgba(196,255,61,.35)}
 @keyframes need{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
 @media(max-width:720px){.ck .bar{gap:8px;padding:0 10px;height:48px;font-size:9px}.ck .bar .note,.ck .bar .lg{display:none}.ck .bar .ttl{flex:1 1 auto}.ck .bar a{padding:7px 8px;letter-spacing:.12em}.ck .bar button.x{min-width:40px;padding:6px 10px}}
+
+/* ── ficha de produto (modal, tudo dentro do site) ── */
+.pm{position:fixed;inset:0;z-index:1100;display:none;align-items:center;justify-content:center;background:rgba(7,7,16,.92);backdrop-filter:blur(10px);padding:20px}
+.pm.open{display:flex}
+.pm .box{position:relative;width:min(1100px,100%);max-height:calc(100vh - 40px);overflow:auto;display:grid;grid-template-columns:1.1fr 1fr;background:var(--bg-2);border:1px solid rgba(196,255,61,.2)}
+.pm .x{position:absolute;top:10px;right:10px;z-index:2;background:rgba(7,7,16,.8);border:1px solid rgba(255,255,255,.2);color:var(--ink);width:40px;height:40px;cursor:pointer;font-size:16px}
+.pm .x:hover{border-color:var(--neon-1);color:var(--neon-1)}
+.pm .gal{background:#000}.pm .gal .big{width:100%;aspect-ratio:4/5;object-fit:cover}
+.pm .gal .th{display:flex;gap:6px;padding:8px}.pm .gal .th img{width:64px;height:80px;object-fit:cover;cursor:pointer;opacity:.5;border:1px solid transparent}.pm .gal .th img.on{opacity:1;border-color:var(--neon-1)}
+.pm .inf{padding:32px 28px;display:flex;flex-direction:column;gap:16px}
+.pm .inf .nm{font-family:'Major Mono Display',monospace;font-size:28px;text-transform:lowercase;line-height:1.1}
+.pm .inf .pr{font-family:'JetBrains Mono',monospace;color:var(--neon-1);font-size:16px;font-weight:700}
+.pm .inf .pr small{color:var(--ink-dim);font-weight:400;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-left:10px}
+.pm .inf .sizes{margin:0}
+.pm .inf .go{align-self:flex-start;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:14px 22px;background:var(--neon-1);color:var(--bg);border:0;cursor:pointer}
+.pm .inf .go.off{background:transparent;color:var(--ink);border:1px solid rgba(255,255,255,.25)}
+.pm .inf .ds-desc{font-size:14px;line-height:1.6;color:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding-top:16px}
+.pm .inf .ds-desc h3,.pm .inf .ds-desc h4{font-size:15px;margin:12px 0 6px}.pm .inf .ds-desc p{margin:0 0 8px}
+.pm .inf .ds-desc table{border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px;margin-top:8px}
+.pm .inf .ds-desc td,.pm .inf .ds-desc th{border:1px solid rgba(255,255,255,.12);padding:5px 9px;text-align:center}
+@media(max-width:820px){.pm{padding:0}.pm .box{grid-template-columns:1fr;max-height:100vh;height:100%}.pm .inf{padding:22px 18px 40px}}
 
 footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
@@ -382,56 +403,251 @@ document.addEventListener('click', function(e){
         <p data-i18n="store_p">Naviguer dans des paysages sonores inexplorés, ramener des trésors sur le rivage. Hoodies et t-shirts exclusifs Padang Records — artwork officiel, fabriqués par Hammerhead Clothing à Porto Alegre, série limitée.</p>
         <div class="tg">underground attitude</div>
         <div class="ctas">
-          <a class="ps-cta" href="https://padang-records-store.com.br/" target="_blank" rel="noopener" data-i18n="store_cta">↳ ouvrir la padang store →</a>
+          <a class="ps-cta" href="#ps-grid" data-i18n="store_cta">↳ ouvrir la padang store →</a>
           <a class="ps-cta ghost" href="https://wa.me/5551991243610" target="_blank" rel="noopener" data-i18n="store_cta_wa">hors du brésil ? whatsapp →</a>
         </div>
       </div>
     </div>
 
-    <div class="ps-grid">
+    <div class="ps-grid" id="ps-grid">
 
       <!-- store:start · gerado por build-i18n.js a partir de data/store.json (node sync-store.js) — não editar à mão -->
       <div class="ds sp" data-product="367457445" data-kind="hoodie">
-        <a class="art" href="https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/" target="_blank" rel="noopener">
+        <a class="art" href="#p-367457445" data-imgs="[&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_1_1280px-1-869d22377443731c4c17894306377665-1024-1024.webp&quot;,&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_3_1280px-4d864c64a22a77c7c817894306377414-1024-1024.webp&quot;,&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_2_1280px-20214aa33372bd16e417894306373903-1024-1024.webp&quot;]">
           <span class="tag">★ hoodie</span>
           <img src="https://dcdn-us.mitiendanube.com/stores/008/175/113/products/padang_moletom_1_1280px-1-869d22377443731c4c17894306377665-1024-1024.webp" alt="Moletom com Capuz — Padang Records Store" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='/img/shop/moletom.jpg'">
         </a>
         <div class="body">
-          <div class="name"><span data-i18n="store_p_hoodie">sweat à capuche</span></div>
+          <div class="name"><a href="#p-367457445" class="pn"><span data-i18n="store_p_hoodie">sweat à capuche</span></a></div>
+          <template class="desc"><h3>Moletom com Capuz Padang Records</h3>
+<p>Produzido pela <strong>Hammerhead Clothing</strong>, com excelente qualidade de confec&ccedil;&atilde;o, acabamento e estamparia, valorizando os detalhes das artes oficiais da Padang Records.</p>
+<p><strong>Caracter&iacute;sticas:</strong></p>
+<p>Caimento padr&atilde;o e ombros padr&atilde;o</p>
+<p>Moletom 2 cabos</p>
+<p>50% algod&atilde;o e 50% poli&eacute;ster</p>
+<p>Interior peluciado</p>
+<p>Gramatura: <strong>280 g/m&sup2;</strong></p>
+<p>Capuz forrado</p>
+<p>Punhos e barra de <strong>7 cm</strong></p>
+<p><strong>Medidas &mdash; Comprimento &times; Largura &times; Manga:</strong></p>
+<div>
+<div>
+<table>
+<thead>
+<tr>
+<th>Tamanho</th>
+<th>Comprimento</th>
+<th>Largura</th>
+<th>Manga</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td>68 cm</td>
+<td>56 cm</td>
+<td>61,5 cm</td>
+</tr>
+<tr>
+<td>M</td>
+<td>70 cm</td>
+<td>58 cm</td>
+<td>62 cm</td>
+</tr>
+<tr>
+<td>G</td>
+<td>72 cm</td>
+<td>60 cm</td>
+<td>64 cm</td>
+</tr>
+<tr>
+<td>GG</td>
+<td>74 cm</td>
+<td>62 cm</td>
+<td>65 cm</td>
+</tr>
+<tr>
+<td>G1</td>
+<td>76 cm</td>
+<td>64 cm</td>
+<td>68 cm</td>
+</tr>
+<tr>
+<td>G2</td>
+<td>78 cm</td>
+<td>66 cm</td>
+<td>69 cm</td>
+</tr>
+<tr>
+<td>G3</td>
+<td>80 cm</td>
+<td>68 cm</td>
+<td>70 cm</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>&nbsp;</p>
+<p><strong>Padang Records &times; Hammerhead Clothing &mdash; qualidade, resist&ecirc;ncia e identidade</strong></p></template>
           <div class="sizes" role="group" aria-label="tamanho"><span class="lbl" data-i18n="store_size">taille</span><button type="button" class="sz" data-v="1596855551" data-stock="1">P</button><button type="button" class="sz" data-v="1596855552" data-stock="1">M</button><button type="button" class="sz" data-v="1596855553" data-stock="2">G</button><button type="button" class="sz" data-v="1596855556" data-stock="3">GG</button><button type="button" class="sz" data-v="1596855558" data-stock="2">G1</button><button type="button" class="sz" data-v="1596855559" data-stock="1">G3</button></div>
           <div class="stats"><span><b data-i18n="store_inst">jusqu'à 12 fois sans frais</b></span><span class="so" data-i18n="store_soldout" hidden>épuisé</span></div>
         </div>
-        <div class="ft"><span class="price">R$ 200</span><a class="cta buy" href="https://padang-records-store.com.br/produtos/moletom-com-capuz-62zzq/" target="_blank" rel="noopener" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">choisir la taille →</span><span class="t2" data-i18n="store_checkout" hidden>↳ acheter maintenant →</span></a></div>
+        <div class="ft"><span class="price">R$ 200</span><a class="cta buy" href="#p-367457445" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">choisir la taille →</span><span class="t2" data-i18n="store_checkout" hidden>↳ acheter maintenant →</span></a></div>
       </div>
 
       <div class="ds sp" data-product="367460491" data-kind="tee">
-        <a class="art" href="https://padang-records-store.com.br/produtos/camiseta-1j9ks/" target="_blank" rel="noopener">
+        <a class="art" href="#p-367460491" data-imgs="[&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_costas_1280px-02ae404b933c1bd57417894317566531-1024-1024.webp&quot;,&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_frente_1280px-75451efe9f190243af17894317568079-1024-1024.webp&quot;,&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_frente_costas_1280px-aaa81f9486b2a9f85f17894317567262-1024-1024.webp&quot;]">
           <span class="tag">▲ tee</span>
           <img src="https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_costas_1280px-02ae404b933c1bd57417894317566531-1024-1024.webp" alt="Camiseta — Padang Records Store" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='/img/shop/camiseta-preta.jpg'">
         </a>
         <div class="body">
-          <div class="name"><span data-i18n="store_p_tee">t-shirt</span> · <span data-i18n="store_c_black">noir</span></div>
+          <div class="name"><a href="#p-367460491" class="pn"><span data-i18n="store_p_tee">t-shirt</span> · <span data-i18n="store_c_black">noir</span></a></div>
+          <template class="desc"><h3>Camiseta Padang Records &mdash; Modelagem Overhing</h3>
+<p>Camiseta oficial <strong>Padang Records</strong>, produzida pela <strong>Hammerhead Clothing</strong>, unindo qualidade de confec&ccedil;&atilde;o, conforto e uma modelagem ampla com presen&ccedil;a.</p>
+<p>A modelagem <strong>Overhing</strong> possui caimento largo e comprido, ombros ainda mais relaxados e mangas mais longas, proporcionando um visual pesado e elegante.</p>
+<p><strong>Caracter&iacute;sticas:</strong></p>
+<p>&nbsp;</p>
+<p>95% algod&atilde;o e 5% elastano</p>
+<p>Fio 26.1 penteado</p>
+<p>Gramatura de <strong>210 g/m&sup2;</strong></p>
+<p>Gola canelada de <strong>3,5 cm</strong></p>
+<p>Bainhas de <strong>3 cm</strong></p>
+<p>Modelagem ampla e alongada</p>
+<p>Ombros relaxados</p>
+<p>Mangas mais longas</p>
+<p>Estampas produzidas pela <strong>Hammerhead Clothing</strong>, com acabamento de alta qualidade<br><br></p>
+<table>
+<thead>
+<tr>
+<th>Tamanho</th>
+<th>Comprimento</th>
+<th>Largura</th>
+<th>Manga</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PP</strong></td>
+<td>69 cm</td>
+<td>55 cm</td>
+<td>21 cm</td>
+</tr>
+<tr>
+<td><strong>P</strong></td>
+<td>74 cm</td>
+<td>58 cm</td>
+<td>23 cm</td>
+</tr>
+<tr>
+<td><strong>M</strong></td>
+<td>76 cm</td>
+<td>60 cm</td>
+<td>25 cm</td>
+</tr>
+<tr>
+<td><strong>G</strong></td>
+<td>80 cm</td>
+<td>62 cm</td>
+<td>26 cm</td>
+</tr>
+<tr>
+<td><strong>GG</strong></td>
+<td>82 cm</td>
+<td>65 cm</td>
+<td>28 cm</td>
+</tr>
+<tr>
+<td><strong>G1</strong></td>
+<td>86 cm</td>
+<td>65 cm</td>
+<td>29 cm</td>
+</tr>
+</tbody>
+</table></template>
           <div class="sizes" role="group" aria-label="tamanho"><span class="lbl" data-i18n="store_size">taille</span><button type="button" class="sz" data-v="1596866050" data-stock="2">P</button><button type="button" class="sz" data-v="1596866051" data-stock="3">M</button><button type="button" class="sz" data-v="1596866052" data-stock="3">G</button><button type="button" class="sz" data-v="1596866053" data-stock="2">GG</button></div>
           <div class="stats"><span><b data-i18n="store_inst">jusqu'à 12 fois sans frais</b></span><span class="so" data-i18n="store_soldout" hidden>épuisé</span></div>
         </div>
-        <div class="ft"><span class="price">R$ 150</span><a class="cta buy" href="https://padang-records-store.com.br/produtos/camiseta-1j9ks/" target="_blank" rel="noopener" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">choisir la taille →</span><span class="t2" data-i18n="store_checkout" hidden>↳ acheter maintenant →</span></a></div>
+        <div class="ft"><span class="price">R$ 150</span><a class="cta buy" href="#p-367460491" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">choisir la taille →</span><span class="t2" data-i18n="store_checkout" hidden>↳ acheter maintenant →</span></a></div>
       </div>
 
       <div class="ds sp" data-product="367464041" data-kind="tee">
-        <a class="art" href="https://padang-records-store.com.br/produtos/camiseta-qb4pv/" target="_blank" rel="noopener">
+        <a class="art" href="#p-367464041" data-imgs="[&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_marrom_frente_1280px-1-3b0d2bcc8090705c6c17894328860932-1024-1024.webp&quot;,&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/chatgpt-image-14-de-set-de-2026-21_41_27-4de56d534552c0c14717894328957956-1024-1024.webp&quot;,&quot;https://dcdn-us.mitiendanube.com/stores/008/175/113/products/chatgpt-image-14-de-set-de-2026-21_43_32-21a1ebf3fa7bcdf40017894330213969-1024-1024.webp&quot;]">
           <span class="tag">▲ tee</span>
           <img src="https://dcdn-us.mitiendanube.com/stores/008/175/113/products/camiseta_marrom_frente_1280px-1-3b0d2bcc8090705c6c17894328860932-1024-1024.webp" alt="Camiseta — Padang Records Store" loading="lazy" width="1024" height="1280" onerror="this.onerror=null;this.src='/img/shop/camiseta-marrom.jpg'">
         </a>
         <div class="body">
-          <div class="name"><span data-i18n="store_p_tee">t-shirt</span> · <span data-i18n="store_c_brown">marron</span></div>
+          <div class="name"><a href="#p-367464041" class="pn"><span data-i18n="store_p_tee">t-shirt</span> · <span data-i18n="store_c_brown">marron</span></a></div>
+          <template class="desc"><h3>Camiseta Padang Records &mdash; Modelagem Overhing</h3>
+<p>Camiseta oficial <strong>Padang Records</strong>, produzida pela <strong>Hammerhead Clothing</strong>, unindo qualidade de confec&ccedil;&atilde;o, conforto e uma modelagem ampla com presen&ccedil;a.</p>
+<p>A modelagem <strong>Overhing</strong> possui caimento largo e comprido, ombros ainda mais relaxados e mangas mais longas, proporcionando um visual pesado e elegante.</p>
+<p><strong>Caracter&iacute;sticas:</strong></p>
+<p>&nbsp;</p>
+<p>95% algod&atilde;o e 5% elastano</p>
+<p>Fio 26.1 penteado</p>
+<p>Gramatura de <strong>210 g/m&sup2;</strong></p>
+<p>Gola canelada de <strong>3,5 cm</strong></p>
+<p>Bainhas de <strong>3 cm</strong></p>
+<p>Modelagem ampla e alongada</p>
+<p>Ombros relaxados</p>
+<p>Mangas mais longas</p>
+<p>Estampas produzidas pela <strong>Hammerhead Clothing</strong>, com acabamento de alta qualidade<br><br></p>
+<table>
+<thead>
+<tr>
+<th>Tamanho</th>
+<th>Comprimento</th>
+<th>Largura</th>
+<th>Manga</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PP</strong></td>
+<td>69 cm</td>
+<td>55 cm</td>
+<td>21 cm</td>
+</tr>
+<tr>
+<td><strong>P</strong></td>
+<td>74 cm</td>
+<td>58 cm</td>
+<td>23 cm</td>
+</tr>
+<tr>
+<td><strong>M</strong></td>
+<td>76 cm</td>
+<td>60 cm</td>
+<td>25 cm</td>
+</tr>
+<tr>
+<td><strong>G</strong></td>
+<td>80 cm</td>
+<td>62 cm</td>
+<td>26 cm</td>
+</tr>
+<tr>
+<td><strong>GG</strong></td>
+<td>82 cm</td>
+<td>65 cm</td>
+<td>28 cm</td>
+</tr>
+<tr>
+<td><strong>G1</strong></td>
+<td>86 cm</td>
+<td>65 cm</td>
+<td>29 cm</td>
+</tr>
+</tbody>
+</table></template>
           <div class="sizes" role="group" aria-label="tamanho"><span class="lbl" data-i18n="store_size">taille</span><button type="button" class="sz" data-v="1596874883" data-stock="2">P</button><button type="button" class="sz" data-v="1596874884" data-stock="3">M</button><button type="button" class="sz" data-v="1596874885" data-stock="3">G</button><button type="button" class="sz" data-v="1596874886" data-stock="2">GG</button></div>
           <div class="stats"><span><b data-i18n="store_inst">jusqu'à 12 fois sans frais</b></span><span class="so" data-i18n="store_soldout" hidden>épuisé</span></div>
         </div>
-        <div class="ft"><span class="price">R$ 150</span><a class="cta buy" href="https://padang-records-store.com.br/produtos/camiseta-qb4pv/" target="_blank" rel="noopener" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">choisir la taille →</span><span class="t2" data-i18n="store_checkout" hidden>↳ acheter maintenant →</span></a></div>
+        <div class="ft"><span class="price">R$ 150</span><a class="cta buy" href="#p-367464041" data-buy="https://padang-records-store.com.br/comprar/"><span class="t1" data-i18n="store_pick">choisir la taille →</span><span class="t2" data-i18n="store_checkout" hidden>↳ acheter maintenant →</span></a></div>
       </div>
       <!-- store:end -->
 
-      <a class="ds camp" href="https://padang-records-store.com.br/produtos/" target="_blank" rel="noopener">
+      <a class="ds camp" href="#ps-grid">
         <div class="art">
           <span class="tag">◉ true pirates</span>
           <img src="/img/shop/true-pirates-m.jpg" alt="True Pirates — coleção Padang Records Store" loading="lazy" width="820" height="1000">
@@ -616,13 +832,16 @@ document.addEventListener('click', function(e){
   </div>
 </section>
 
+<div class="pm" id="pm" role="dialog" aria-modal="true" hidden>
+  <div class="box">
+    <button type="button" class="x" aria-label="fechar">✕</button>
+    <div class="gal"><img class="big" alt=""><div class="th"></div></div>
+    <div class="inf"><div class="nm"></div><div class="pr"></div><div class="sizes"></div><button type="button" class="go off"></button><div class="ds-desc"></div></div>
+  </div>
+</div>
 <!-- painel do checkout embutido (preenchido por JS ao clicar em "comprar agora") -->
 <div class="ck" id="ck" role="dialog" aria-modal="true" aria-label="checkout" hidden>
   <div class="bar">
-    <img class="lg" src="/img/logo-full.png" alt="Padang Records">
-    <span class="ttl" data-i18n="store_ck_title">paiement sécurisé · padang store</span>
-    <span class="note" data-i18n="store_ck_note">paiement traité par nuvemshop · commande expédiée par hammerhead clothing (porto alegre)</span>
-    <a class="nt" href="https://padang-records-store.com.br/" target="_blank" rel="noopener" data-i18n="store_ck_open">ouvrir dans un onglet ↗</a>
     <button type="button" class="x" aria-label="fechar">✕</button>
   </div>
   <div class="frm"><div class="ld" data-i18n="store_ck_loading">chargement du paiement…</div></div>
@@ -671,7 +890,6 @@ document.addEventListener('click', function(e){
     ck.classList.remove('loaded');
     frm.appendChild(ifr);
     ifr.src = url;
-    ck.querySelector('a.nt').href = url;
     ck.hidden = false; ck.classList.add('open'); document.body.classList.add('ck-open');
     ck.querySelector('button.x').focus();
     if (window.gtag) { try { gtag('event', 'checkout_open', { platform: 'padangstore', page: 'shop', product: label || '', lang: (document.documentElement.lang || 'pt').slice(0, 2) }); } catch (e) {} }
@@ -686,6 +904,48 @@ document.addEventListener('click', function(e){
     ck.querySelector('button.x').addEventListener('click', closeCheckout);
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeCheckout(); });
   }
+  var pm = document.getElementById('pm'), pmCard = null;
+  function pmSync(){
+    if (!pmCard) return;
+    var on = pmCard.querySelector('.sz.on'), go = pm.querySelector('.go');
+    pm.querySelectorAll('.sizes .sz').forEach(function(b){ b.classList.toggle('on', !!on && b.getAttribute('data-v') === on.getAttribute('data-v')); });
+    go.classList.toggle('off', !on);
+    go.textContent = on ? pmCard.querySelector('a.buy .t2').textContent : pmCard.querySelector('a.buy .t1').textContent;
+  }
+  function openProduct(card){
+    pmCard = card;
+    var imgs = []; try { imgs = JSON.parse(card.querySelector('a.art').getAttribute('data-imgs') || '[]'); } catch (e) {}
+    var big = pm.querySelector('.big'), th = pm.querySelector('.th');
+    big.src = imgs[0] || card.querySelector('a.art img').src; big.alt = card.querySelector('a.art img').alt;
+    th.innerHTML = '';
+    imgs.forEach(function(u, i){ var t = document.createElement('img'); t.src = u; t.alt = ''; if (!i) t.className = 'on';
+      t.addEventListener('click', function(){ big.src = u; th.querySelectorAll('img').forEach(function(x){ x.classList.remove('on'); }); t.classList.add('on'); }); th.appendChild(t); });
+    pm.querySelector('.nm').textContent = card.querySelector('.name').textContent.trim();
+    pm.querySelector('.pr').innerHTML = card.querySelector('.ft .price').innerHTML + ' <small>' + card.querySelector('.stats b').textContent + '</small>';
+    var sz = pm.querySelector('.sizes'); sz.innerHTML = card.querySelector('.sizes').innerHTML; sz.className = 'sizes';
+    var d = card.querySelector('template.desc'); pm.querySelector('.ds-desc').innerHTML = d ? d.innerHTML : '';
+    pmSync();
+    pm.hidden = false; pm.classList.add('open'); document.body.classList.add('ck-open');
+    pm.querySelector('.box').scrollTop = 0; pm.querySelector('.x').focus();
+  }
+  function closeProduct(){ if (!pm.classList.contains('open')) return; pm.classList.remove('open'); pm.hidden = true; pmCard = null; if (!ck || !ck.classList.contains('open')) document.body.classList.remove('ck-open'); }
+  pm.querySelector('.x').addEventListener('click', closeProduct);
+  pm.addEventListener('click', function(e){
+    if (e.target === pm) return closeProduct();
+    var b = e.target.closest('.sz');
+    if (b && !b.disabled && pmCard) { var src = pmCard.querySelector('.sz[data-v="' + b.getAttribute('data-v') + '"]'); if (src) src.click(); pmSync(); return; }
+    if (e.target.closest('.go') && pmCard) {
+      var a = pmCard.querySelector('a.buy');
+      if (!a.classList.contains('go')) { var s = pm.querySelector('.sizes'); s.classList.remove('need'); void s.offsetWidth; s.classList.add('need'); return; }
+      var on = pmCard.querySelector('.sz.on'); var label = pm.querySelector('.nm').textContent + (on ? ' · ' + on.textContent.trim() : '');
+      closeProduct(); openCheckout(a.href, label);
+    }
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeProduct(); });
+  grid.addEventListener('click', function(e){
+    var lk = e.target.closest('a.art, a.pn');
+    if (lk && lk.closest('.ds.sp')) { e.preventDefault(); openProduct(lk.closest('.ds.sp')); return; }
+  });
   grid.addEventListener('click', function(e){
     var a = e.target.closest('a.buy'); if (!a) return;
     var card = a.closest('.ds');
