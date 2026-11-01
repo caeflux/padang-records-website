@@ -186,6 +186,27 @@ section{position:relative;padding:60px 32px;z-index:2}
 .ds.soldout .art img{filter:grayscale(1) brightness(.6)}
 .ds.soldout .ft a.cta{opacity:.5}
 
+/* ── Checkout embutido (painel sobre a página, iframe do checkout da Nuvemshop) ── */
+.ck{position:fixed;inset:0;z-index:1200;display:none;flex-direction:column;background:rgba(7,7,16,.96);backdrop-filter:blur(10px)}
+.ck.open{display:flex}
+body.ck-open{overflow:hidden}
+.ck .bar{display:flex;align-items:center;gap:14px;padding:0 16px;height:52px;flex:none;border-bottom:1px solid rgba(196,255,61,.18);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-dim)}
+.ck .bar .lg{height:22px;width:auto;opacity:.9}
+.ck .bar .ttl{color:var(--neon-1);white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.ck .bar .ttl::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--neon-1);box-shadow:0 0 10px var(--neon-1);margin-right:8px;vertical-align:1px;animation:ps 1.6s infinite}
+.ck .bar .note{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ck .bar a,.ck .bar button{color:var(--ink);background:transparent;border:1px solid rgba(255,255,255,.18);padding:8px 12px;font:inherit;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:border-color .2s,color .2s}
+.ck .bar a:hover,.ck .bar button:hover{border-color:var(--neon-1);color:var(--neon-1)}
+.ck .bar button.x{min-width:44px;font-size:14px;letter-spacing:0;padding:6px 12px}
+.ck .frm{flex:1;position:relative;background:#000}
+.ck .frm iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.ck .frm .ld{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ink-dim);pointer-events:none;transition:opacity .4s}
+.ck.loaded .frm .ld{opacity:0}
+.ds .sizes.need{animation:need .9s ease}
+.ds .sizes.need .sz:not(.out){border-color:var(--neon-1);box-shadow:0 0 0 1px rgba(196,255,61,.35)}
+@keyframes need{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+@media(max-width:720px){.ck .bar{gap:8px;padding:0 10px;height:48px;font-size:9px}.ck .bar .note,.ck .bar .lg{display:none}.ck .bar .ttl{flex:1 1 auto}.ck .bar a{padding:7px 8px;letter-spacing:.12em}.ck .bar button.x{min-width:40px;padding:6px 10px}}
+
 footer{border-top:1px solid rgba(255,255,255,.08);padding:48px 32px 32px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim)}
 footer .row{max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}
 footer .so{display:flex;gap:20px;flex-wrap:wrap}
@@ -595,6 +616,18 @@ document.addEventListener('click', function(e){
   </div>
 </section>
 
+<!-- painel do checkout embutido (preenchido por JS ao clicar em "comprar agora") -->
+<div class="ck" id="ck" role="dialog" aria-modal="true" aria-label="checkout" hidden>
+  <div class="bar">
+    <img class="lg" src="/img/logo-full.png" alt="Padang Records">
+    <span class="ttl" data-i18n="store_ck_title">secure checkout · padang store</span>
+    <span class="note" data-i18n="store_ck_note">payment processed by nuvemshop · order fulfilled by hammerhead clothing (porto alegre, brazil)</span>
+    <a class="nt" href="https://padang-records-store.com.br/" target="_blank" rel="noopener" data-i18n="store_ck_open">open in new tab ↗</a>
+    <button type="button" class="x" aria-label="fechar">✕</button>
+  </div>
+  <div class="frm"><div class="ld" data-i18n="store_ck_loading">loading checkout…</div></div>
+</div>
+
 <footer>
   <div class="row">
     <div data-i18n="footer_rights">© padang records · 2026 · all signals reserved</div>
@@ -622,9 +655,53 @@ document.addEventListener('click', function(e){
   function setBuy(card){
     var a = card.querySelector('a.buy'); if (!a) return;
     var on = card.querySelector('.sz.on'), t1 = a.querySelector('.t1'), t2 = a.querySelector('.t2');
-    if (on) { a.href = a.getAttribute('data-buy') + on.getAttribute('data-v') + '-1'; t1.hidden = true; t2.hidden = false; }
-    else { a.href = card.querySelector('a.art').href; t1.hidden = false; t2.hidden = true; }
+    if (on) { a.href = a.getAttribute('data-buy') + on.getAttribute('data-v') + '-1'; a.classList.add('go'); t1.hidden = true; t2.hidden = false; }
+    else { a.href = card.querySelector('a.art').href; a.classList.remove('go'); t1.hidden = false; t2.hidden = true; }
   }
+  // ── checkout embutido: o /comprar/<variação>-1 da Nuvemshop abre num painel sobre a página ──
+  var ck = document.getElementById('ck'), frm = ck && ck.querySelector('.frm'), ifr = null, lastFocus = null;
+  function openCheckout(url, label){
+    if (!ck) { location.href = url; return; }
+    lastFocus = document.activeElement;
+    if (ifr) ifr.remove();
+    ifr = document.createElement('iframe');
+    ifr.setAttribute('allow', 'payment *; clipboard-write');
+    ifr.setAttribute('title', label || 'checkout');
+    ifr.addEventListener('load', function(){ ck.classList.add('loaded'); });
+    ck.classList.remove('loaded');
+    frm.appendChild(ifr);
+    ifr.src = url;
+    ck.querySelector('a.nt').href = url;
+    ck.hidden = false; ck.classList.add('open'); document.body.classList.add('ck-open');
+    ck.querySelector('button.x').focus();
+    if (window.gtag) { try { gtag('event', 'checkout_open', { platform: 'padangstore', page: 'shop', product: label || '', lang: (document.documentElement.lang || 'pt').slice(0, 2) }); } catch (e) {} }
+  }
+  function closeCheckout(){
+    if (!ck || !ck.classList.contains('open')) return;
+    ck.classList.remove('open'); ck.hidden = true; document.body.classList.remove('ck-open');
+    if (ifr) { ifr.remove(); ifr = null; }
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  if (ck) {
+    ck.querySelector('button.x').addEventListener('click', closeCheckout);
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeCheckout(); });
+  }
+  grid.addEventListener('click', function(e){
+    var a = e.target.closest('a.buy'); if (!a) return;
+    var card = a.closest('.ds');
+    if (!a.classList.contains('go')) {           // sem tamanho: não sai da página, só destaca o seletor
+      e.preventDefault();
+      var sz = card.querySelector('.sizes'); if (!sz) return;
+      sz.classList.remove('need'); void sz.offsetWidth; sz.classList.add('need');
+      var first = sz.querySelector('.sz:not(.out)'); if (first) first.focus();
+      return;
+    }
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;   // cmd/ctrl-clique: deixa abrir em aba
+    e.preventDefault();
+    var name = card.querySelector('.name') ? card.querySelector('.name').textContent.trim() : '';
+    var on = card.querySelector('.sz.on');
+    openCheckout(a.href, name + (on ? ' · ' + on.textContent.trim() : ''));
+  });
   function applyStock(card){
     var any = false;
     card.querySelectorAll('.sz').forEach(function(b){
@@ -638,6 +715,7 @@ document.addEventListener('click', function(e){
   }
   grid.addEventListener('click', function(e){
     var b = e.target.closest('.sz'); if (!b || b.disabled) return;
+    var szRow = b.closest('.sizes'); if (szRow) szRow.classList.remove('need');
     var card = b.closest('.ds'), was = b.classList.contains('on');
     card.querySelectorAll('.sz').forEach(function(x){ x.classList.remove('on'); });
     if (!was) b.classList.add('on');

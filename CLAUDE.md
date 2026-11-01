@@ -186,7 +186,10 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 ## Padang Store (Nuvemshop · loja BR) — catálogo sincronizado
 
 - Loja: https://padang-records-store.com.br (Nuvemshop, tema Morelia, operada pela Hammerhead Clothing). O `shop.html` mostra os produtos
-  dela na seção 01 com seletor de tamanho e botão que leva **direto ao checkout** (`/comprar/<id_da_variação>-1`).
+  dela na seção 01 com seletor de tamanho; "comprar agora" abre o **checkout embutido** num painel (`#ck`, iframe de
+  `/comprar/<id_da_variação>-1`) sem sair do padangrecords.net. Só o checkout aceita iframe — as páginas da loja (home, produto)
+  mandam `frame-ancestors` só para domínios da Nuvemshop, por isso os links "abrir loja"/foto continuam abrindo em nova aba.
+  Sem tamanho escolhido, o botão só destaca o seletor. Cmd/Ctrl-clique abre o checkout em aba. Evento GA4 `checkout_open`.
 - `data/store.json` é a fonte dos cards. Gere/atualize com `node sync-store.js` (sem deps): usa a **API oficial** se existir
   `~/.padang/nuvemshop.json` com `access_token` (app do Portal de Parceiros, token não expira), senão lê a vitrine pública
   (sitemap + `LS.variants`). Rode antes do build quando houver produto/preço novo; o build reescreve o bloco
