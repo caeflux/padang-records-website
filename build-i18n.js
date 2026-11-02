@@ -196,7 +196,7 @@ function renderPage(template, page, lang, dict, stats, byAlbum, bySlug, store) {
   if (page === 'releases.html' || page === 'index.html') template = tagTypes(linkCards(template, byAlbum), bySlug);
   if (page === 'index.html' || page === 'releases.html') template = coverCards(template, byAlbum, dict, lang);
   template = syncCounts(template, Object.keys(byAlbum).length);
-  if (page === 'shop.html' && store) template = storeCards(template, store, dict);
+  if (page === 'shop.html' && store) template = storeCards(template, store, dict, lang);
   if (page === 'roster.html') template = syncRelSlugs(template, Object.values(byAlbum));
   if (page === 'lab.html') template = linkLabCards(template, loadLab());
   let html = applyTranslations(template, dict, lang, stats);
@@ -253,7 +253,23 @@ function coverCards(html, byAlbum, dict, lang) {
 const STORE_BLOCK = /([ \t]*)<!-- store:start[\s\S]*?store:end -->/;
 const STORE_TAG = { hoodie: '★ hoodie', tee: '▲ tee', item: '◆ item' };
 const fmtBRL = v => v == null ? '' : 'R$ ' + (Number.isInteger(v) ? String(v) : v.toFixed(2).replace('.', ','));
-function storeCards(html, store, dict) {
+const ENT = { amp: '&', nbsp: ' ', ccedil: 'ç', atilde: 'ã', otilde: 'õ', aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú', acirc: 'â', ecirc: 'ê', ocirc: 'ô', agrave: 'à', mdash: '—', ndash: '–', times: '×', sup2: '²', quot: '"' };
+const decodeEnt = s => String(s).replace(/&([a-z0-9]+);/gi, (m, k) => ENT[k] !== undefined ? ENT[k] : m);
+let STORE_I18N = null;
+function storeDesc(html, lang) {
+  let s = decodeEnt(html).replace(/<p>\s*<\/p>/g, '');
+  if (lang === SOURCE_LANG) return s;
+  if (!STORE_I18N) { try { STORE_I18N = JSON.parse(read('data/store-i18n.json')); } catch (e) { STORE_I18N = {}; } }
+  const map = STORE_I18N[lang] || {};
+  const keys = Object.keys(map).sort((a, b) => b.length - a.length);
+  // troca só texto entre tags; frases mais longas primeiro
+  return s.replace(/>([^<]+)</g, (m, txt) => {
+    let t = txt;
+    for (const k of keys) if (t.includes(k)) t = t.split(k).join(map[k]);
+    return '>' + t + '<';
+  });
+}
+function storeCards(html, store, dict, lang) {
   if (!STORE_BLOCK.test(html)) return html;
   const P = k => t(dict, k, 'pt') || k;
   const cards = (store.products || []).map(p => {
@@ -274,7 +290,7 @@ function storeCards(html, store, dict) {
         </a>
         <div class="body">
           <div class="name"><a href="#p-${p.id}" class="pn">${nameHtml}</a></div>
-          <template class="desc">${p.description || ''}</template>
+          <template class="desc">${storeDesc(p.description || '', lang || SOURCE_LANG)}</template>
           <div class="sizes" role="group" aria-label="${escAttr(P('store_size'))}"><span class="lbl" data-i18n="store_size">${escText(P('store_size'))}</span>${sizes}</div>
           <div class="stats"><span><b data-i18n="store_inst">${escText(P('store_inst'))}</b></span><span class="so" data-i18n="store_soldout"${p.in_stock ? ' hidden' : ''}>${escText(P('store_soldout'))}</span></div>
         </div>
