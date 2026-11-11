@@ -124,6 +124,7 @@ node build-i18n.js   # compila todo <script> inline das 1218 páginas geradas; e
 | `sitemap.xml`, `robots.txt` | **Gerados** — 1218 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
 | `admin/` | Área restrita da label · login Supabase (allowlist), upload CSV Bandcamp, relatórios/royalties, checklist merch/e-mail, insights · **sem GA/Pixel, noindex** · docs: `../ARQUITETURA-AREA-RESTRITA.md` (fora do repo) |
 | `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
+| `g/` | Link-presente · `padangrecords.net/g/<token>`: painel do DJ (token de 20 hex) ou página do amigo (token de 12 hex) · `page.html` + `gift.css` + `gift.js` (6 idiomas, textos no próprio JS) · `index.php` monta o cartão de prévia do link · `.htaccess` próprio · **sem GA/Pixel, noindex, não linkar no site** · ver seção própria |
 | `data/releases.json` | Fonte canônica do catálogo (110 entradas, data desc) — alimenta páginas de release, sitemap e contadores |
 | `data/lab-series.json` | Episódios da Lab Series · `description_en`/`description_pt`, `tracklist` (uma faixa por linha), `youtube`, `artwork`, `duration_sec` vêm do `sync-lab.js`; `story` = prefixo das chaves do relato da lab.html (`lab_news2` → EP.24) |
 | `sync-lab.js` | Completa `data/lab-series.json` a partir da página SoundCloud de cada episódio (só campos ausentes; `--force` refaz, `--ep N` um só) · nunca sobrescreve tracklist escrita à mão |
@@ -199,6 +200,26 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
   desabilita tamanhos esgotados e atualiza o preço.
 - Token nunca entra no repo (é público). Primeira autorização: `node sync-store.js --authorize-url` → instalar o app →
   `node sync-store.js --auth "<URL de redirect com ?code=>"` (code vale 5 min).
+
+## Link-presente (`/g/`) — códigos do Bandcamp que o DJ repassa aos amigos
+
+- Cada campanha = um DJ + um álbum + N códigos de download gerados no Bandcamp (Tools → Track/Album Codes). O DJ recebe **um link de painel**
+  (`padangrecords.net/g/<20 hex>`); o painel cria **um link único por amigo** (`/g/<12 hex>`). A página do amigo mostra a capa como um
+  ingresso e o botão leva a `padang.bandcamp.com/yum?code=…` com o código preenchido.
+- Os links são a credencial: quem tem o link do painel distribui os códigos. Nunca publicar, nunca commitar. A pasta não tem GA/Pixel
+  (as URLs levam o token) e responde `X-Robots-Tag: noindex`. **Não** pôr `/g/` no `robots.txt`: os robôs de prévia (WhatsApp, Instagram)
+  precisam ler a página.
+- Distribuidor no Supabase (projeto do admin), tabelas `padang_gift_campaigns` / `_codes` / `_tickets` com RLS e sem policies; tudo passa
+  por funções `security definer`: `padang_gift_load` (abre painel ou ingresso), `padang_gift_sent` (DJ confirma o envio),
+  `padang_gift_claim` (devolve o código no toque em resgatar), `padang_gift_peek` (só leitura, usada pelo `index.php`) e
+  `padang_gift_admin_load` (carga, protegida por segredo guardado só como hash em `padang_gift_admin`).
+- Carga de campanha nova: gerar os códigos no Bandcamp, salvar a lista em `website track sales/codigos-artistas/<grupo>.txt` (gitignored),
+  acrescentar o grupo em `carregar.py` (mesma pasta) e rodar `python3 carregar.py <grupo>`. O script confere o SHA-256 dos códigos e grava
+  o link do painel em `paineis.json`. Segredo em `~/.padang/gift-admin.json`.
+- Tokens `demo-…` (ex.: `/g/demo-rhabia`) rodam um distribuidor simulado no navegador, sem tocar o banco: servem para mostrar o fluxo.
+- Teste local: `php -S` com um roteador que faz o papel do `g/.htaccess` (`/g/<token>` → `g/index.php?t=<token>`); o painel de preview
+  não lê a pasta do iCloud, então espelhar `g/` e `img/` numa pasta temporária.
+- Ao mexer em `gift.css`/`gift.js`, subir o `?v=` em `g/page.html` (cache de 5 min).
 
 ## Convenções de conteúdo (do memory + user preferences)
 
