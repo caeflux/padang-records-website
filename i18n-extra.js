@@ -5,14 +5,14 @@
   const EXTRA = {
     /* ─ timeline 2026 (faltou no i18n.js core) ─ */
     tl_2026_y: { pt:"2026", en:"2026", es:"2026", de:"2026", fr:"2026", ja:"2026" },
-    tl_2026_t: { pt:"Nyctophilia II · Self Inflicted · Isolation Protocol", en:"Nyctophilia II · Self Inflicted · Isolation Protocol", es:"Nyctophilia II · Self Inflicted · Isolation Protocol", de:"Nyctophilia II · Self Inflicted · Isolation Protocol", fr:"Nyctophilia II · Self Inflicted · Isolation Protocol", ja:"Nyctophilia II · Self Inflicted · Isolation Protocol" },
+    tl_2026_t: { pt:"Nyctophilia II & III · The Forge · Altered Geometry", en:"Nyctophilia II & III · The Forge · Altered Geometry", es:"Nyctophilia II & III · The Forge · Altered Geometry", de:"Nyctophilia II & III · The Forge · Altered Geometry", fr:"Nyctophilia II & III · The Forge · Altered Geometry", ja:"Nyctophilia II & III · The Forge · Altered Geometry" },
     tl_2026_d: {
-      pt:"Nyctophilia II (Rhabia, jan) · Self Inflicted EP (Anadrome, fev) · Isolation Protocol (DMnT, abril) — release ★ latest. Lab Series chega a EP.21 (Alex Alipe @ Syncronic · Padang x Blacklite).",
-      en:"Nyctophilia II (Rhabia, Jan) · Self Inflicted EP (Anadrome, Feb) · Isolation Protocol (DMnT, April) — ★ latest release. Lab Series hits EP.21 (Alex Alipe @ Syncronic · Padang × Blacklite).",
-      es:"Nyctophilia II (Rhabia, ene) · Self Inflicted EP (Anadrome, feb) · Isolation Protocol (DMnT, abril) — ★ lanzamiento más reciente. Lab Series llega al EP.21 (Alex Alipe @ Syncronic · Padang × Blacklite).",
-      de:"Nyctophilia II (Rhabia, Jan) · Self Inflicted EP (Anadrome, Feb) · Isolation Protocol (DMnT, April) — ★ neuester Release. Lab Series erreicht EP.21 (Alex Alipe @ Syncronic · Padang × Blacklite).",
-      fr:"Nyctophilia II (Rhabia, jan) · Self Inflicted EP (Anadrome, fév) · Isolation Protocol (DMnT, avril) — ★ sortie la plus récente. Lab Series arrive à EP.21 (Alex Alipe @ Syncronic · Padang × Blacklite).",
-      ja:"Nyctophilia II (Rhabia、1月)、Self Inflicted EP (Anadrome、2月)、Isolation Protocol (DMnT、4月) — ★最新リリース。Lab Series は EP.21 に到達 (Alex Alipe @ Syncronic · Padang × Blacklite)。"
+      pt:"Nyctophilia II (Rhabia, jan) · Self Inflicted EP (Anadrome, fev) · Isolation Protocol (DMnT, abril) · Hikari (Falzar, ago) · Beyond Fences (Champirolls, set) · The Forge (Ubik, out) · Altered Geometry (Sündenböck & Maddizin, out) · Nyctophilia III (Rhabia, nov) — release ★ latest. Lab Series chega a EP.24 (VORG live @ Arkana Festival, Peru).",
+      en:"Nyctophilia II (Rhabia, Jan) · Self Inflicted EP (Anadrome, Feb) · Isolation Protocol (DMnT, April) · Hikari (Falzar, Aug) · Beyond Fences (Champirolls, Sep) · The Forge (Ubik, Oct) · Altered Geometry (Sündenböck & Maddizin, Oct) · Nyctophilia III (Rhabia, Nov) — ★ latest release. Lab Series hits EP.24 (VORG live @ Arkana Festival, Peru).",
+      es:"Nyctophilia II (Rhabia, ene) · Self Inflicted EP (Anadrome, feb) · Isolation Protocol (DMnT, abril) · Hikari (Falzar, ago) · Beyond Fences (Champirolls, sep) · The Forge (Ubik, oct) · Altered Geometry (Sündenböck & Maddizin, oct) · Nyctophilia III (Rhabia, nov) — ★ lanzamiento más reciente. Lab Series llega al EP.24 (VORG live @ Arkana Festival, Perú).",
+      de:"Nyctophilia II (Rhabia, Jan) · Self Inflicted EP (Anadrome, Feb) · Isolation Protocol (DMnT, April) · Hikari (Falzar, Aug) · Beyond Fences (Champirolls, Sep) · The Forge (Ubik, Okt) · Altered Geometry (Sündenböck & Maddizin, Okt) · Nyctophilia III (Rhabia, Nov) — ★ neuester Release. Lab Series erreicht EP.24 (VORG live @ Arkana Festival, Peru).",
+      fr:"Nyctophilia II (Rhabia, jan) · Self Inflicted EP (Anadrome, fév) · Isolation Protocol (DMnT, avril) · Hikari (Falzar, août) · Beyond Fences (Champirolls, sept) · The Forge (Ubik, oct) · Altered Geometry (Sündenböck & Maddizin, oct) · Nyctophilia III (Rhabia, nov) — ★ sortie la plus récente. Lab Series arrive à EP.24 (VORG live @ Arkana Festival, Pérou).",
+      ja:"Nyctophilia II (Rhabia、1月)、Self Inflicted EP (Anadrome、2月)、Isolation Protocol (DMnT、4月)、Hikari (Falzar、8月)、Beyond Fences (Champirolls、9月)、The Forge (Ubik、10月)、Altered Geometry (Sündenböck & Maddizin、10月)、Nyctophilia III (Rhabia、11月) — ★最新リリース。Lab Series は EP.24 に到達 (VORG live @ Arkana Festival、ペルー)。"
     },
 
     /* ─ demo guide bullets ─ */
