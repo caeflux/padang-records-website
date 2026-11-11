@@ -400,6 +400,25 @@ function shareTicket(t, name, fresh) {
     navigator.share({text, url}).then(done).catch(e => { if (!e || e.name !== 'AbortError') openSheet(url, text, done); });
   } else openSheet(url, text, done);
 }
+/* Copia sem depender só da API nova: se ela recusar ou não responder, usa o método antigo. */
+function copyText(text) {
+  const legacy = () => {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;left:-999px;top:0;opacity:0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+      const ok = document.execCommand('copy');
+      ta.remove();
+      return ok;
+    } catch (e) { return false; }
+  };
+  if (!navigator.clipboard || !navigator.clipboard.writeText) return Promise.resolve(legacy());
+  return Promise.race([
+    navigator.clipboard.writeText(text).then(() => true, () => legacy()),
+    new Promise(r => setTimeout(() => r(legacy()), 1200))
+  ]);
+}
 function openSheet(url, text, done) {
   const full = text + ' ' + url;
   sheet.innerHTML = `<div class="sheet-in" role="dialog" aria-modal="true">
@@ -417,8 +436,10 @@ function openSheet(url, text, done) {
     const el = ev.target;
     if (el === sheet || el.closest('[data-x]')) return close();
     if (el.closest('[data-copy]')) {
-      const fin = () => { close(); done().then(() => toast(L.copied)); };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(fin, fin); else fin();
+      copyText(url).then(ok => {
+        if (!ok) { toast(L.err); return; }   /* a folha fica aberta, com o link à vista para copiar à mão */
+        close(); done().then(() => toast(L.copied));
+      });
       return;
     }
     if (el.closest('[data-ch]')) { close(); done(); }
