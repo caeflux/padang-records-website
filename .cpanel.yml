@@ -7,10 +7,11 @@ deployment:
     - /bin/cp -R img data $DEPLOYPATH
     - /bin/cp -R en es de fr ja release artists lab $DEPLOYPATH
     - /bin/cp sitemap.xml robots.txt $DEPLOYPATH
-    - /bin/cp -R admin artist $DEPLOYPATH
+    - /bin/cp -R admin artist g $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
     - /bin/find $DEPLOYPATH -maxdepth 3 -type f \( -name "*.html" -o -name "*.js" -o -name "*.json" -o -name "*.svg" -o -name "*.txt" -o -name "*.php" -o -name "*.css" -o -name "*.xml" \) -exec chmod 644 {} \;
-    - /bin/chmod 755 $DEPLOYPATH/admin $DEPLOYPATH/artist
+    - /bin/chmod 755 $DEPLOYPATH/admin $DEPLOYPATH/artist $DEPLOYPATH/g
+    - /bin/chmod 644 $DEPLOYPATH/g/.htaccess
     - /bin/find $DEPLOYPATH/en $DEPLOYPATH/es $DEPLOYPATH/de $DEPLOYPATH/fr $DEPLOYPATH/ja $DEPLOYPATH/release $DEPLOYPATH/artists $DEPLOYPATH/lab -type d -exec chmod 755 {} \; -o -type f -exec chmod 644 {} \;
     - /bin/find $DEPLOYPATH -maxdepth 2 -type d -name img -o -type d -name data -exec chmod 755 {} \;
     - /bin/chmod 644 $DEPLOYPATH/.htaccess

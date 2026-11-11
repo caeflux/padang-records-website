@@ -1,0 +1,18 @@
+# Padang Records · link-presente
+# /g/<token> → index.php?t=<token>. O token vai no caminho, nunca em query string.
+# Regras de reescrita não são herdadas da raiz quando a pasta tem as suas: o host canônico é repetido aqui.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /g/
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://padangrecords.net%{REQUEST_URI} [R=301,L]
+  RewriteCond %{HTTP_HOST} ^www\.padangrecords\.net$ [NC]
+  RewriteRule ^ https://padangrecords.net%{REQUEST_URI} [R=301,L]
+  RewriteRule ^([A-Za-z0-9_-]{6,64})/?$ index.php?t=$1 [L,QSA]
+</IfModule>
+
+# Nada daqui deve ser indexado (links pessoais).
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
