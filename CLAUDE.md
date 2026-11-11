@@ -94,7 +94,7 @@ Salve em `/tmp/patch.py` (não no OneDrive) e execute via bash. Isso escreve dir
 ### Sempre valide antes de commit
 ```bash
 node --check i18n.js i18n-extra.js i18n-lab.js i18n-bios.js track.js newsletter.js build-i18n.js
-node build-i18n.js   # compila todo <script> inline das 1212 páginas geradas; erro aborta
+node build-i18n.js   # compila todo <script> inline das 1218 páginas geradas; erro aborta
 ```
 
 ## Mapa de arquivos
@@ -121,7 +121,7 @@ node build-i18n.js   # compila todo <script> inline das 1212 páginas geradas; e
 | `player.js` | Play do card troca a capa pelo embed grande do Bandcamp (controles, seek, prev/next, tracklist) e o card ocupa 2×2 na grade; só um embed por vez (abrir outro devolve a capa ao anterior). Dock = faixa fina no rodapé com capa pequena + "now playing // artista — álbum" (clique rola até o card) + × para. O embed não expõe a faixa atual (só `postMessage("playerinited")`). CSS em `blocks.css` |
 | `en/ es/ de/ fr/ ja/` | **Gerado** — as 8 páginas por idioma + `release/`, `artists/` e `lab/` de cada idioma |
 | `release/<slug>/` | **Gerado** — página PT de cada release; `release/release.css` = estilo do releases.html + layout da página |
-| `sitemap.xml`, `robots.txt` | **Gerados** — 1212 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
+| `sitemap.xml`, `robots.txt` | **Gerados** — 1218 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
 | `admin/` | Área restrita da label · login Supabase (allowlist), upload CSV Bandcamp, relatórios/royalties, checklist merch/e-mail, insights · **sem GA/Pixel, noindex** · docs: `../ARQUITETURA-AREA-RESTRITA.md` (fora do repo) |
 | `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
 | `data/releases.json` | Fonte canônica do catálogo (110 entradas, data desc) — alimenta páginas de release, sitemap e contadores |
@@ -312,12 +312,12 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 - **Google Drive** com bios/EPKs originais dos artistas (referenciado na memória, não indexado aqui)
 - **Google Sheet** de aniversários: `Padangers Birthday's Date.xlsx` (id `164cOl_2paNfluWBO5U65JOQfLRJn09X3`)
 
-## Estado atual (snapshot 2026-10-28)
+## Estado atual (snapshot 2026-11-11)
 
 - 58 artistas no roster (campo `bc` ainda `null` em todos — preencher conforme o user informar)
-- 112 releases catalogados (mais recente: Sündenböck & Maddizin — Altered Geometry, 28 Oct 2026); 73 com Beatport
+- 113 releases catalogados (mais recente: VA Nyctophilia III, compilado por Rhabia, 11 Nov 2026); 74 com Beatport
 - 24 episódios Padang Lab Series (mais recente: EP.24 VORG live @ Arkana Festival 2026)
-- 1212 URLs: 8 páginas × 6 idiomas + 112 releases × 6 idiomas + 58 artistas × 6 idiomas + 24 episódios da Lab Series × 6 idiomas (31/10/2026)
+- 1218 URLs: 8 páginas × 6 idiomas + 113 releases × 6 idiomas + 58 artistas × 6 idiomas + 24 episódios da Lab Series × 6 idiomas (11/11/2026)
 - GA4 com 5 eventos + UTMs; Meta Pixel ativo; newsletter capturando via e-mail para `contact@`
 - Cron pipeline funcionando (repo público, deploy a cada 20 min)
 
