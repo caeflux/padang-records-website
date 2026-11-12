@@ -124,7 +124,7 @@ node build-i18n.js   # compila todo <script> inline das 1218 páginas geradas; e
 | `sitemap.xml`, `robots.txt` | **Gerados** — 1218 URLs com alternates hreflang; robots bloqueia `/admin/` e `/artist/` |
 | `admin/` | Área restrita da label · login Supabase (allowlist), upload CSV Bandcamp, relatórios/royalties, checklist merch/e-mail, insights · **sem GA/Pixel, noindex** · docs: `../ARQUITETURA-AREA-RESTRITA.md` (fora do repo) |
 | `artist/` | Portal do artista · login próprio, net revenue/share 60%/saldo via RPCs sem PII · bilíngue PT/EN · **sem GA/Pixel, noindex** · não linkar no site principal |
-| `g/` | Link-presente · `padangrecords.net/g/<token>`: painel do DJ (token de 20 hex) ou página do amigo (token de 12 hex) · `page.html` + `gift.css` + `gift.js` (6 idiomas, textos no próprio JS) · `index.php` monta o cartão de prévia do link · `.htaccess` próprio · **sem GA/Pixel, noindex, não linkar no site** · ver seção própria |
+| `g/` | Link-presente · `padangrecords.net/g/<token>`: painel do DJ (token de 20 hex) ou página do amigo (token de 12 hex) · `page.html` + `gift.css` + `gift.js` (só em inglês, textos no próprio JS) · `index.php` monta o cartão de prévia do link · `.htaccess` próprio · **sem GA/Pixel, noindex, não linkar no site** · ver seção própria |
 | `data/releases.json` | Fonte canônica do catálogo (110 entradas, data desc) — alimenta páginas de release, sitemap e contadores |
 | `data/lab-series.json` | Episódios da Lab Series · `description_en`/`description_pt`, `tracklist` (uma faixa por linha), `youtube`, `artwork`, `duration_sec` vêm do `sync-lab.js`; `story` = prefixo das chaves do relato da lab.html (`lab_news2` → EP.24) |
 | `sync-lab.js` | Completa `data/lab-series.json` a partir da página SoundCloud de cada episódio (só campos ausentes; `--force` refaz, `--ep N` um só) · nunca sobrescreve tracklist escrita à mão |
@@ -216,6 +216,10 @@ Também precisa registrar no EVDATA (inline JS) e nas 3 i18n keys nos 6 idiomas 
 - Carga de campanha nova: gerar os códigos no Bandcamp, salvar a lista em `website track sales/codigos-artistas/<grupo>.txt` (gitignored),
   acrescentar o grupo em `carregar.py` (mesma pasta) e rodar `python3 carregar.py <grupo>`. O script confere o SHA-256 dos códigos e grava
   o link do painel em `paineis.json`. Segredo em `~/.padang/gift-admin.json`.
+- **Só em inglês** (decisão do Carlos, 12/11/2026): página do amigo, painel, mensagem pronta e cartão de prévia. Sem seletor de idioma.
+- **Números são só do artista.** A página do amigo não mostra nem recebe quantos presentes existem, foram enviados ou resgatados
+  (`padang_gift_load` devolve para o ingresso só quem deu, o álbum, o nome e a data do resgate daquele link). Contadores e a lista
+  de envios ficam só no painel.
 - Tokens `demo-…` (ex.: `/g/demo-rhabia`) rodam um distribuidor simulado no navegador, sem tocar o banco: servem para mostrar o fluxo.
 - Teste local: `php -S` com um roteador que faz o papel do `g/.htaccess` (`/g/<token>` → `g/index.php?t=<token>`); o painel de preview
   não lê a pasta do iCloud, então espelhar `g/` e `img/` numa pasta temporária.

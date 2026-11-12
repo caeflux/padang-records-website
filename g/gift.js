@@ -1,6 +1,7 @@
 /* Padang Records · link-presente (/g/<token>)
    Um token na URL decide a tela: ticket = página do amigo, painel = página do DJ.
-   O distribuidor fica no Supabase (funções padang_gift_*); o código do Bandcamp só sai no toque em "resgatar".
+   O distribuidor fica no Supabase (funções padang_gift_*); o código do Bandcamp só sai no toque em "redeem".
+   A página do amigo não recebe nem mostra números da campanha (quantos existem, enviados, resgatados): isso é só do painel.
    Tokens "demo-…" usam um distribuidor simulado no próprio navegador (localStorage). */
 (() => {
 'use strict';
@@ -11,154 +12,32 @@ const YUM = 'https://padang.bandcamp.com/yum';
 const $ = (s, r) => (r || document).querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 
-/* ───────── textos ───────── */
-const T = {
-  pt: {
-    forName: 'para {name}', forYou: 'para você', from: 'um presente de {giver}', various: 'vários artistas', tracks: 'faixas', album: 'álbum',
-    code: 'código', gift: 'presente', redeem: 'resgatar no bandcamp', open: 'abrir o bandcamp',
-    fine: 'link de uso único · sem prazo para resgatar', opening: 'abrindo o bandcamp com o seu código…',
-    claimedOn: 'resgate iniciado em {when}', listen: 'ouça antes', how: 'como funciona',
-    how1: 'Toque em resgatar. O código já vai preenchido.',
-    how2: 'Entre no Bandcamp ou crie uma conta gratuita.',
-    how3: 'O álbum completo vai para a sua coleção: streaming ilimitado no app e download em qualquer formato.',
-    noneT: 'esse presente não existe', noneP: 'Confira o link com quem te mandou.',
-    errT: 'não deu para abrir agora', errP: 'Confira a conexão e tente de novo.', retry: 'tentar de novo',
-    demo: 'demonstração · códigos de exemplo',
-    demoNote: 'Demonstração: no link real, este toque leva direto ao Bandcamp com o código preenchido.',
-    panel: 'painel de presentes', hello: 'olá,',
-    lead: 'Você tem {total} cópias de {album} para dar. Cada link vale o álbum completo no Bandcamp.',
-    sLeft: 'livres', sSent: 'enviados', sOpen: 'abertos', sClaim: 'resgatados',
-    toLabel: 'para quem?', optional: '(opcional)', toPh: 'nome do amigo', send: 'mandar para um amigo',
-    sendFine: 'cada toque usa um link único · whatsapp, telegram, direct, onde quiser',
-    shareTo: '{name}, ', share: 'um presente pra você: {album} completo no Bandcamp. É só abrir:', mailSubj: 'Um presente pra você',
-    chat: 'como chega no chat', ogT: 'Um presente de {giver}: {album}', ogD: 'Álbum completo no Bandcamp · Padang Records',
-    sentH: 'enviados', empty: 'Nenhum presente enviado ainda.', stSent: 'enviado', stOpen: 'aberto', stClaim: 'resgatado',
-    anon: 'sem nome', again: 'reenviar', out: 'Acabaram os presentes. Fale com a Padang se precisar de mais.',
-    sheetH: 'enviar por', copy: 'copiar link', copied: 'link copiado', mail: 'e-mail', sentOk: 'presente enviado',
-    err: 'não deu certo, tente de novo', close: 'fechar'
-  },
-  en: {
-    forName: 'for {name}', forYou: 'for you', from: 'a gift from {giver}', various: 'various artists', tracks: 'tracks', album: 'album',
-    code: 'code', gift: 'gift', redeem: 'redeem on bandcamp', open: 'open bandcamp',
-    fine: 'single-use link · no expiry date', opening: 'opening bandcamp with your code…',
-    claimedOn: 'redeem started on {when}', listen: 'listen first', how: 'how it works',
-    how1: 'Tap redeem. The code is already filled in.',
-    how2: 'Sign in to Bandcamp or create a free account.',
-    how3: 'The full album goes to your collection: unlimited streaming in the app and download in any format.',
-    noneT: 'this gift does not exist', noneP: 'Check the link with whoever sent it to you.',
-    errT: 'could not open it right now', errP: 'Check your connection and try again.', retry: 'try again',
-    demo: 'demo · sample codes',
-    demoNote: 'Demo: on a real link, this tap goes straight to Bandcamp with the code filled in.',
-    panel: 'gift panel', hello: 'hi,',
-    lead: 'You have {total} copies of {album} to give away. Each link is worth the full album on Bandcamp.',
-    sLeft: 'left', sSent: 'sent', sOpen: 'opened', sClaim: 'redeemed',
-    toLabel: 'who is it for?', optional: '(optional)', toPh: "friend's name", send: 'send to a friend',
-    sendFine: 'each tap uses a unique link · whatsapp, telegram, dm, anywhere',
-    shareTo: '{name}, ', share: 'a gift for you: {album}, the full album on Bandcamp. Just open:', mailSubj: 'A gift for you',
-    chat: 'how it lands in the chat', ogT: 'A gift from {giver}: {album}', ogD: 'Full album on Bandcamp · Padang Records',
-    sentH: 'sent', empty: 'No gifts sent yet.', stSent: 'sent', stOpen: 'opened', stClaim: 'redeemed',
-    anon: 'no name', again: 'send again', out: 'You are out of gifts. Talk to Padang if you need more.',
-    sheetH: 'send via', copy: 'copy link', copied: 'link copied', mail: 'e-mail', sentOk: 'gift sent',
-    err: 'that did not work, try again', close: 'close'
-  },
-  es: {
-    forName: 'para {name}', forYou: 'para ti', from: 'un regalo de {giver}', various: 'varios artistas', tracks: 'temas', album: 'álbum',
-    code: 'código', gift: 'regalo', redeem: 'canjear en bandcamp', open: 'abrir bandcamp',
-    fine: 'enlace de un solo uso · sin fecha de caducidad', opening: 'abriendo bandcamp con tu código…',
-    claimedOn: 'canje iniciado el {when}', listen: 'escucha antes', how: 'cómo funciona',
-    how1: 'Pulsa canjear. El código ya va rellenado.',
-    how2: 'Entra en Bandcamp o crea una cuenta gratuita.',
-    how3: 'El álbum completo va a tu colección: streaming ilimitado en la app y descarga en cualquier formato.',
-    noneT: 'este regalo no existe', noneP: 'Revisa el enlace con quien te lo envió.',
-    errT: 'no se pudo abrir ahora', errP: 'Revisa tu conexión e inténtalo de nuevo.', retry: 'reintentar',
-    demo: 'demostración · códigos de ejemplo',
-    demoNote: 'Demostración: en un enlace real, este toque lleva directo a Bandcamp con el código rellenado.',
-    panel: 'panel de regalos', hello: 'hola,',
-    lead: 'Tienes {total} copias de {album} para regalar. Cada enlace vale el álbum completo en Bandcamp.',
-    sLeft: 'libres', sSent: 'enviados', sOpen: 'abiertos', sClaim: 'canjeados',
-    toLabel: '¿para quién?', optional: '(opcional)', toPh: 'nombre de tu amigo', send: 'enviar a un amigo',
-    sendFine: 'cada toque usa un enlace único · whatsapp, telegram, dm, donde quieras',
-    shareTo: '{name}, ', share: 'un regalo para ti: {album} completo en Bandcamp. Solo tienes que abrir:', mailSubj: 'Un regalo para ti',
-    chat: 'cómo llega al chat', ogT: 'Un regalo de {giver}: {album}', ogD: 'Álbum completo en Bandcamp · Padang Records',
-    sentH: 'enviados', empty: 'Todavía no has enviado ningún regalo.', stSent: 'enviado', stOpen: 'abierto', stClaim: 'canjeado',
-    anon: 'sin nombre', again: 'reenviar', out: 'Se acabaron los regalos. Habla con Padang si necesitas más.',
-    sheetH: 'enviar por', copy: 'copiar enlace', copied: 'enlace copiado', mail: 'e-mail', sentOk: 'regalo enviado',
-    err: 'no funcionó, inténtalo de nuevo', close: 'cerrar'
-  },
-  de: {
-    forName: 'für {name}', forYou: 'für dich', from: 'ein geschenk von {giver}', various: 'verschiedene künstler', tracks: 'tracks', album: 'album',
-    code: 'code', gift: 'geschenk', redeem: 'auf bandcamp einlösen', open: 'bandcamp öffnen',
-    fine: 'einmal gültiger link · kein ablaufdatum', opening: 'bandcamp wird mit deinem code geöffnet…',
-    claimedOn: 'einlösung gestartet am {when}', listen: 'erst reinhören', how: 'so funktioniert es',
-    how1: 'Tippe auf Einlösen. Der Code ist schon eingetragen.',
-    how2: 'Melde dich bei Bandcamp an oder erstelle ein kostenloses Konto.',
-    how3: 'Das komplette Album landet in deiner Sammlung: unbegrenztes Streaming in der App und Download in jedem Format.',
-    noneT: 'dieses geschenk gibt es nicht', noneP: 'Frag die Person, die dir den Link geschickt hat.',
-    errT: 'das ging gerade nicht', errP: 'Prüfe deine Verbindung und versuch es noch einmal.', retry: 'noch einmal',
-    demo: 'demo · beispielcodes',
-    demoNote: 'Demo: Bei einem echten Link führt dieser Tipp direkt zu Bandcamp, mit eingetragenem Code.',
-    panel: 'geschenke-panel', hello: 'hallo,',
-    lead: 'Du hast {total} Exemplare von {album} zu verschenken. Jeder Link steht für das komplette Album auf Bandcamp.',
-    sLeft: 'frei', sSent: 'gesendet', sOpen: 'geöffnet', sClaim: 'eingelöst',
-    toLabel: 'für wen?', optional: '(optional)', toPh: 'name deines freundes', send: 'an einen freund senden',
-    sendFine: 'jeder tipp nutzt einen eigenen link · whatsapp, telegram, dm, wo du willst',
-    shareTo: '{name}, ', share: 'ein Geschenk für dich: {album}, das komplette Album auf Bandcamp. Einfach öffnen:', mailSubj: 'Ein Geschenk für dich',
-    chat: 'so kommt es im chat an', ogT: 'Ein Geschenk von {giver}: {album}', ogD: 'Komplettes Album auf Bandcamp · Padang Records',
-    sentH: 'gesendet', empty: 'Noch keine Geschenke gesendet.', stSent: 'gesendet', stOpen: 'geöffnet', stClaim: 'eingelöst',
-    anon: 'ohne name', again: 'erneut senden', out: 'Alle Geschenke sind weg. Melde dich bei Padang, wenn du mehr brauchst.',
-    sheetH: 'senden über', copy: 'link kopieren', copied: 'link kopiert', mail: 'e-mail', sentOk: 'geschenk gesendet',
-    err: 'das hat nicht geklappt, versuch es noch einmal', close: 'schließen'
-  },
-  fr: {
-    forName: 'pour {name}', forYou: 'pour toi', from: 'un cadeau de {giver}', various: 'artistes variés', tracks: 'titres', album: 'album',
-    code: 'code', gift: 'cadeau', redeem: 'récupérer sur bandcamp', open: 'ouvrir bandcamp',
-    fine: "lien à usage unique · sans date d'expiration", opening: 'ouverture de bandcamp avec ton code…',
-    claimedOn: 'récupération lancée le {when}', listen: 'écoute avant', how: 'comment ça marche',
-    how1: 'Appuie sur récupérer. Le code est déjà rempli.',
-    how2: 'Connecte-toi à Bandcamp ou crée un compte gratuit.',
-    how3: "L'album complet rejoint ta collection : streaming illimité dans l'app et téléchargement dans tous les formats.",
-    noneT: "ce cadeau n'existe pas", noneP: "Vérifie le lien avec la personne qui te l'a envoyé.",
-    errT: "impossible d'ouvrir pour l'instant", errP: 'Vérifie ta connexion et réessaie.', retry: 'réessayer',
-    demo: "démo · codes d'exemple",
-    demoNote: 'Démo : sur un vrai lien, ce geste mène directement à Bandcamp avec le code déjà rempli.',
-    panel: 'panneau de cadeaux', hello: 'salut,',
-    lead: "Tu as {total} exemplaires de {album} à offrir. Chaque lien vaut l'album complet sur Bandcamp.",
-    sLeft: 'restants', sSent: 'envoyés', sOpen: 'ouverts', sClaim: 'récupérés',
-    toLabel: 'pour qui ?', optional: '(facultatif)', toPh: 'prénom de ton ami', send: 'envoyer à un ami',
-    sendFine: 'chaque envoi utilise un lien unique · whatsapp, telegram, dm, où tu veux',
-    shareTo: '{name}, ', share: "un cadeau pour toi : {album}, l'album complet sur Bandcamp. Il suffit d'ouvrir :", mailSubj: 'Un cadeau pour toi',
-    chat: 'comment ça arrive dans le chat', ogT: 'Un cadeau de {giver} : {album}', ogD: 'Album complet sur Bandcamp · Padang Records',
-    sentH: 'envoyés', empty: "Aucun cadeau envoyé pour l'instant.", stSent: 'envoyé', stOpen: 'ouvert', stClaim: 'récupéré',
-    anon: 'sans nom', again: 'renvoyer', out: "Il n'y a plus de cadeaux. Contacte Padang s'il t'en faut d'autres.",
-    sheetH: 'envoyer par', copy: 'copier le lien', copied: 'lien copié', mail: 'e-mail', sentOk: 'cadeau envoyé',
-    err: "ça n'a pas marché, réessaie", close: 'fermer'
-  },
-  ja: {
-    forName: '{name}さんへ', forYou: 'あなたへ', from: '{giver}からの贈り物', various: 'ヴァリアス・アーティスト', tracks: '曲', album: 'アルバム',
-    code: 'コード', gift: 'ギフト', redeem: 'bandcampで受け取る', open: 'bandcampを開く',
-    fine: '1回限りのリンク · 有効期限なし', opening: 'コード入力済みのbandcampを開いています…',
-    claimedOn: '{when} に受け取りを開始', listen: 'まずは試聴', how: '受け取り方',
-    how1: '「受け取る」をタップ。コードは入力済みです。',
-    how2: 'Bandcampにログイン、または無料アカウントを作成。',
-    how3: 'アルバム全曲がコレクションに追加されます。アプリで無制限ストリーミング、好きなフォーマットでダウンロード。',
-    noneT: 'このギフトは存在しません', noneP: 'リンクを送ってくれた人に確認してください。',
-    errT: 'いまは開けませんでした', errP: '接続を確認して、もう一度お試しください。', retry: '再試行',
-    demo: 'デモ · サンプルコード',
-    demoNote: 'デモ：実際のリンクでは、このタップでコード入力済みのBandcampに移動します。',
-    panel: 'ギフトパネル', hello: 'こんにちは、',
-    lead: '{album} を {total} 枚プレゼントできます。リンク1つでBandcampのアルバム全曲が届きます。',
-    sLeft: '残り', sSent: '送信', sOpen: '開封', sClaim: '受取',
-    toLabel: '誰に送る？', optional: '（任意）', toPh: '友だちの名前', send: '友だちに送る',
-    sendFine: 'タップごとに専用リンク · whatsapp、telegram、dm、どこでも',
-    shareTo: '{name}さん、', share: 'あなたへの贈り物：{album}（Bandcampのアルバム全曲）。リンクを開くだけ：', mailSubj: 'あなたへの贈り物',
-    chat: 'チャットでの見え方', ogT: '{giver}からの贈り物：{album}', ogD: 'Bandcampのアルバム全曲 · Padang Records',
-    sentH: '送信済み', empty: 'まだギフトを送っていません。', stSent: '送信済み', stOpen: '開封', stClaim: '受取済み',
-    anon: '名前なし', again: '再送', out: 'ギフトがなくなりました。追加が必要な場合はPadangにご連絡ください。',
-    sheetH: '送信方法', copy: 'リンクをコピー', copied: 'リンクをコピーしました', mail: 'メール', sentOk: 'ギフトを送りました',
-    err: 'うまくいきませんでした。もう一度お試しください', close: '閉じる'
-  }
+/* ───────── textos (só inglês, por decisão da label) ───────── */
+const LOCALE = 'en-GB';
+const L = {
+  forName: 'for {name}', forYou: 'for you', from: 'a gift from {giver}', various: 'various artists', tracks: 'tracks', album: 'album',
+  code: 'code', redeem: 'redeem on bandcamp', open: 'open bandcamp',
+  fine: 'single-use link · no expiry date', opening: 'opening bandcamp with your code…',
+  claimedOn: 'redeem started on {when}', listen: 'listen first', how: 'how it works',
+  how1: 'Tap redeem. The code is already filled in.',
+  how2: 'Sign in to Bandcamp or create a free account.',
+  how3: 'The full album goes to your collection: unlimited streaming in the app and download in any format.',
+  noneT: 'this gift does not exist', noneP: 'Check the link with whoever sent it to you.',
+  errT: 'could not open it right now', errP: 'Check your connection and try again.', retry: 'try again',
+  demo: 'demo · sample codes',
+  demoNote: 'Demo: on a real link, this tap goes straight to Bandcamp with the code filled in.',
+  panel: 'gift panel', hello: 'hi,',
+  lead: 'You have {total} copies of {album} to give away. Each link is worth the full album on Bandcamp.',
+  sLeft: 'left', sSent: 'sent', sOpen: 'opened', sClaim: 'redeemed',
+  toLabel: 'who is it for?', optional: '(optional)', toPh: "friend's name", send: 'send to a friend',
+  sendFine: 'each tap uses a unique link · whatsapp, telegram, dm, anywhere',
+  shareTo: '{name}, ', share: 'a gift for you: {album}, the full album on Bandcamp. Just open:', mailSubj: 'A gift for you',
+  chat: 'how it lands in the chat', ogT: 'A gift from {giver}: {album}', ogD: 'Full album on Bandcamp · Padang Records',
+  sentH: 'sent', empty: 'No gifts sent yet.', stSent: 'sent', stOpen: 'opened', stClaim: 'redeemed',
+  anon: 'no name', again: 'send again', out: 'You are out of gifts. Talk to Padang if you need more.',
+  sheetH: 'send via', copy: 'copy link', copied: 'link copied', mail: 'e-mail', sentOk: 'gift sent',
+  err: 'that did not work, try again', close: 'close'
 };
-const LANGS = Object.keys(T);
 
 /* ───────── token e links ───────── */
 const qs = new URLSearchParams(location.search);
@@ -176,8 +55,8 @@ function liveApi() {
     body: JSON.stringify(args)
   }).then(r => { if (!r.ok) throw new Error('rpc ' + r.status); return r.json(); });
   return {
-    load: (tok, lg) => /^[a-z0-9]{12,64}$/.test(tok) ? rpc('padang_gift_load', {p_token: tok, p_lang: lg || null}) : Promise.resolve({kind: 'none'}),
-    sent: (k, t, name, lg) => rpc('padang_gift_sent', {p_panel: k, p_ticket: t, p_name: name || null, p_lang: lg || null}),
+    load: tok => /^[a-z0-9]{12,64}$/.test(tok) ? rpc('padang_gift_load', {p_token: tok, p_lang: 'en'}) : Promise.resolve({kind: 'none'}),
+    sent: (k, t, name) => rpc('padang_gift_sent', {p_panel: k, p_ticket: t, p_name: name || null, p_lang: 'en'}),
     claim: t => rpc('padang_gift_claim', {p_ticket: t})
   };
 }
@@ -228,7 +107,7 @@ function demoApi() {
       if (!x) { x = s.tk[tok] = {k: 'demo-rhabia', n: 7, name: '', sent: Date.now(), opened: 0, claimed: 0}; }
       if (x.sent && !x.opened) { x.opened = Date.now(); write(s); }
       const p = DEMO_PANELS[x.k];
-      return wait({kind: 'ticket', demo: true, giver: p.giver, album: ALBUMS[p.slug], total: p.total, n: x.n, name: x.name, claimed: x.claimed});
+      return wait({kind: 'ticket', demo: true, giver: p.giver, album: ALBUMS[p.slug], name: x.name, claimed: x.claimed});
     },
     sent(k, t, name) {
       const s = read(), x = s.tk[t];
@@ -249,31 +128,12 @@ const DEMO = /^demo-/.test(token);
 const api = DEMO ? demoApi() : liveApi();
 
 /* ───────── estado e utilidades ───────── */
-const app = $('#app'), sheet = $('#sheet'), toastEl = $('#toast'), langSel = $('#lang');
-let lang, L, data = null, nameDraft = '', toastTimer = 0;
-
-function pickLang() {
-  let saved = null;
-  try { saved = localStorage.getItem('padang-gift-lang'); } catch (e) {}
-  const cands = [saved].concat(navigator.languages || [navigator.language || 'en']);
-  for (const c of cands) { const l = String(c || '').slice(0, 2).toLowerCase(); if (T[l]) return l; }
-  return 'en';
-}
-function setLang(l, chosen) {
-  lang = l; L = T[l];
-  document.documentElement.lang = l;
-  langSel.innerHTML = LANGS.map(x => `<option value="${x}"${x === l ? ' selected' : ''}>${x}</option>`).join('');
-  if (chosen) {
-    try { localStorage.setItem('padang-gift-lang', l); } catch (e) {}
-    /* o próximo link do painel sai com a prévia no idioma escolhido */
-    if (data && data.kind === 'panel') api.load(token, l).catch(() => {});
-  }
-  if (data) render();
-}
+const app = $('#app'), sheet = $('#sheet'), toastEl = $('#toast');
+let data = null, nameDraft = '', toastTimer = 0;
 const pad3 = n => ('00' + n).slice(-3);
 const cover = (a, size) => a.cover.replace(/_\d+\.jpg$/, '_' + size + '.jpg');
 const typeLine = a => (a.type === 'VA' ? 'V/A' : a.type === 'LP' ? L.album : 'EP') + ' · ' + a.tracks + ' ' + L.tracks;
-const when = ts => new Date(ts).toLocaleString(lang, {day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'});
+const when = ts => new Date(ts).toLocaleString(LOCALE, {day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'});
 const shortUrl = u => u.replace(/^https?:\/\//, '');
 function shareText(name) {
   const base = L.share.replace('{album}', data.album.title);
@@ -311,7 +171,6 @@ function viewTicket() {
     <div class="tk-stub">
       <div class="tk-row">
         <div><span class="lb">${esc(L.code)}</span><span class="code${done ? '' : ' hid'}">${done ? esc(data.code) : '••••-••••'}</span></div>
-        <div class="ser"><span class="lb">${esc(L.gift)}</span><span class="num">${pad3(data.n)}<i> / ${data.total}</i></span></div>
       </div>
       ${action}
     </div>
@@ -353,7 +212,7 @@ function chatPreview() {
     <div class="card"><img src="${esc(cover(a, 7))}" width="150" height="150" alt="">
       <div><b>${esc(L.ogT.replace('{giver}', data.giver).replace('{album}', a.title))}</b><span>${esc(L.ogD)}</span><i>padangrecords.net</i></div></div>
     <div class="msg"><span id="pv-msg">${esc(shareText(nameDraft.trim()))}</span> <u>${esc(shortUrl(linkFor(t)))}</u></div>
-    <div class="tm">${esc(new Date().toLocaleTimeString(lang, {hour: '2-digit', minute: '2-digit'}))}</div>
+    <div class="tm">${esc(new Date().toLocaleTimeString(LOCALE, {hour: '2-digit', minute: '2-digit'}))}</div>
   </div></div>`;
 }
 function viewPanel() {
@@ -390,7 +249,7 @@ function viewPanel() {
 }
 function shareTicket(t, name, fresh) {
   const url = linkFor(t), text = shareText(name);
-  const done = () => api.sent(token, t, name, lang).then(d => {
+  const done = () => api.sent(token, t, name).then(d => {
     if (d && d.kind === 'panel') data = d;
     if (fresh) nameDraft = '';
     render();
@@ -461,7 +320,7 @@ function render() {
 }
 function boot() {
   app.innerHTML = '<div class="load"><span></span></div>';
-  api.load(token, lang).then(d => { data = d || {kind: 'none'}; render(); }, () => { data = {kind: 'error'}; render(); });
+  api.load(token).then(d => { data = d || {kind: 'none'}; render(); }, () => { data = {kind: 'error'}; render(); });
 }
 app.addEventListener('click', ev => {
   const el = ev.target;
@@ -476,10 +335,9 @@ app.addEventListener('input', ev => {
   nameDraft = ev.target.value;
   const pv = $('#pv-msg'); if (pv) pv.textContent = shareText(nameDraft.trim());
 });
-langSel.addEventListener('change', () => setLang(langSel.value, true));
 document.addEventListener('visibilitychange', () => {
   if (document.hidden || !data || data.kind !== 'panel' || !sheet.hidden) return;
-  api.load(token, lang).then(d => {
+  api.load(token).then(d => {
     if (!d || d.kind !== 'panel') return;
     const f = document.activeElement && document.activeElement.id === 'to';
     data = d; render();
@@ -487,6 +345,5 @@ document.addEventListener('visibilitychange', () => {
   }).catch(() => {});
 });
 
-setLang(pickLang(), false);
 boot();
 })();

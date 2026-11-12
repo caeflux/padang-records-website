@@ -35,18 +35,12 @@ function padang_gift_peek($url, $key, $token) {
   return is_array($j) ? $j : null;
 }
 
-// {quem deu, álbum} por idioma — os mesmos textos de ogT/ogD em gift.js
-$OG = array(
-  'pt' => array('Um presente de %s: %s', 'Álbum completo no Bandcamp · Padang Records', 'Um presente · Padang Records', 'Painel de presentes · Padang Records'),
-  'en' => array('A gift from %s: %s', 'Full album on Bandcamp · Padang Records', 'A gift · Padang Records', 'Gift panel · Padang Records'),
-  'es' => array('Un regalo de %s: %s', 'Álbum completo en Bandcamp · Padang Records', 'Un regalo · Padang Records', 'Panel de regalos · Padang Records'),
-  'de' => array('Ein Geschenk von %s: %s', 'Komplettes Album auf Bandcamp · Padang Records', 'Ein Geschenk · Padang Records', 'Geschenke-Panel · Padang Records'),
-  'fr' => array('Un cadeau de %s : %s', 'Album complet sur Bandcamp · Padang Records', 'Un cadeau · Padang Records', 'Panneau de cadeaux · Padang Records'),
-  'ja' => array('%sからの贈り物：%s', 'Bandcampのアルバム全曲 · Padang Records', 'ギフト · Padang Records', 'ギフトパネル · Padang Records'),
-);
+// só inglês, os mesmos textos de ogT/ogD em gift.js
+$OG_GIFT  = 'A gift from %s: %s';
+$OG_DESC  = 'Full album on Bandcamp · Padang Records';
+$OG_PANEL = 'Gift panel · Padang Records';
 
-$lang  = 'pt';
-$title = $OG[$lang][2];
+$title = 'A gift · Padang Records';
 $desc  = 'save your ears from sameness.';
 $img   = $SITE . '/img/og-padang.jpg';
 $imgW  = 1200;
@@ -57,15 +51,14 @@ if ($t !== '' && preg_match('/^[a-z0-9]{12,64}$/', $t)) {
   $p = padang_gift_peek($SB_URL, $SB_KEY, $t);
   if (is_array($p) && isset($p['kind'])) {
     if ($p['kind'] === 'ticket' && !empty($p['giver']) && !empty($p['title'])) {
-      if (!empty($p['lang']) && isset($OG[$p['lang']])) { $lang = $p['lang']; }
-      $title = sprintf($OG[$lang][0], $p['giver'], $p['title']);
-      $desc  = $OG[$lang][1];
+      $title = sprintf($OG_GIFT, $p['giver'], $p['title']);
+      $desc  = $OG_DESC;
       if (!empty($p['cover']) && preg_match('#^https://f4\.bcbits\.com/img/a\d+_\d+\.jpg$#', $p['cover'])) {
         $img  = preg_replace('/_\d+\.jpg$/', '_16.jpg', $p['cover']); // 700 px
         $imgW = 700; $imgH = 700; $card = 'summary';
       }
     } elseif ($p['kind'] === 'panel') {
-      $title = $OG[$lang][3];
+      $title = $OG_PANEL;
     }
   }
 }
